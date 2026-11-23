@@ -21,8 +21,12 @@ Rules
   internals — only its `index.ts`.
 - Import shared UI from `@starter/ui`, networking from `@starter/api-client`. Use relative imports
   inside this package (no `@/` alias — the apps' bundler does not apply package-local aliases).
-- Tests run on iOS, Android and web renderers (`jest.config.js`), so platform files
-  (`.web.tsx`, `.native.tsx`) are covered.
+- Tests run on the iOS and Android renderers (`jest.config.js`). RNTL cannot render
+  react-native-web output, so web rendering is covered by end-to-end tests.
+- User-facing strings go in `<feature>/locales/en.json` (registered in `src/i18n/resources.ts`)
+  and are read with `useTranslation('<feature>')` — keys are type-checked (ADR-0012).
+- Analytics events are declared in `src/analytics-events.ts` before being tracked (ADR-0014).
+  Report handled errors with `reportError` from `@starter/config/observability` (ADR-0013).
 
 State (ADR-0007, ADR-0009)
 

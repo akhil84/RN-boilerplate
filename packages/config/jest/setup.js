@@ -12,3 +12,10 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 jest.mock('@react-native-community/netinfo', () =>
   require('@react-native-community/netinfo/jest/netinfo-mock.js'),
 );
+// Error reporting is a no-op in tests; assert on it with jest.mocked(Sentry.captureException).
+jest.mock('@sentry/react-native', () => ({
+  init: jest.fn(),
+  captureException: jest.fn(),
+  setUser: jest.fn(),
+  wrap: (component) => component,
+}));

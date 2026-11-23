@@ -7,7 +7,11 @@ describe('parseEnv', () => {
       EXPO_PUBLIC_API_TIMEOUT_MS: '5000',
     });
 
-    expect(env).toEqual({ apiUrl: 'https://api.example.com', apiTimeoutMs: 5000 });
+    expect(env).toEqual({
+      apiUrl: 'https://api.example.com',
+      apiTimeoutMs: 5000,
+      sentryDsn: undefined,
+    });
   });
 
   it('defaults the API timeout to 15 seconds', () => {
@@ -34,6 +38,25 @@ describe('parseEnv', () => {
     expect(() =>
       parseEnv({ EXPO_PUBLIC_API_URL: 'https://api.example.com', EXPO_PUBLIC_API_TIMEOUT_MS: 'x' }),
     ).toThrow(/EXPO_PUBLIC_API_TIMEOUT_MS/);
+  });
+});
+
+describe('parseEnv — Sentry DSN', () => {
+  const base = { EXPO_PUBLIC_API_URL: 'https://api.example.com' };
+
+  it('treats an empty DSN as unset', () => {
+    expect(parseEnv({ ...base, EXPO_PUBLIC_SENTRY_DSN: '' }).sentryDsn).toBeUndefined();
+  });
+
+  it('accepts a DSN URL', () => {
+    const dsn = 'https://key@o0.ingest.sentry.io/1';
+    expect(parseEnv({ ...base, EXPO_PUBLIC_SENTRY_DSN: dsn }).sentryDsn).toBe(dsn);
+  });
+
+  it('rejects a malformed DSN', () => {
+    expect(() => parseEnv({ ...base, EXPO_PUBLIC_SENTRY_DSN: 'nope' })).toThrow(
+      /EXPO_PUBLIC_SENTRY_DSN/,
+    );
   });
 });
 

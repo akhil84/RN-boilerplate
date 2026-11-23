@@ -9,7 +9,8 @@
     "./jest": "./jest/create-jest-config.js",
     "./jest/setup": "./jest/setup.js",
     "./jest/style-mock": "./jest/style-mock.js",
-    "./env": "./src/env.ts"
+    "./env": "./src/env.ts",
+    "./observability": "./src/observability/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings=0",
@@ -22,7 +23,10 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@sentry/react-native": "catalog:",
+    "@testing-library/react-native": "catalog:",
     "@types/jest": "catalog:",
+    "@types/react": "catalog:",
     "eslint": "catalog:",
     "expo": "catalog:",
     "expo-constants": "catalog:",
@@ -30,12 +34,15 @@
     "jest-expo": "catalog:",
     "react": "catalog:",
     "react-native": "catalog:",
+    "react-native-safe-area-context": "catalog:",
     "typescript": "catalog:"
   },
   "peerDependencies": {
+    "@sentry/react-native": "*",
     "eslint": "*",
     "expo": "*",
     "expo-constants": "*",
-    "jest-expo": "*"
+    "jest-expo": "*",
+    "react": "*"
   }
 }

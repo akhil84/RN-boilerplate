@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { MaxContentWidth, Spacing, ThemedText, ThemedView } from '@starter/ui';
@@ -8,14 +9,16 @@ import { MaxContentWidth, Spacing, ThemedText, ThemedView } from '@starter/ui';
  * (loading / empty / error / success) described in DES for the starter screens.
  */
 export function HomeScreen() {
+  const { t } = useTranslation('home');
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <ThemedText type="title" role="heading" testID="home-title" style={styles.center}>
-          Starter App
+          {t('title')}
         </ThemedText>
         <ThemedText themeColor="textSecondary" style={styles.center}>
-          Shared screen from @starter/features
+          {t('subtitle')}
         </ThemedText>
       </SafeAreaView>
     </ThemedView>

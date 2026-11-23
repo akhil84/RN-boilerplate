@@ -16,7 +16,7 @@ import {
 
 import { api } from '@starter/api-client';
 
-import { preferencesSlice } from './preferences-slice';
+import { initialPreferences, preferencesSlice, type PreferencesState } from './preferences-slice';
 
 const rootReducer = combineReducers({
   [api.reducerPath]: api.reducer,
@@ -35,9 +35,20 @@ export const persistedSlices: (keyof RootState)[] = [preferencesSlice.name];
  * Bump `PERSIST_VERSION` and add a migration whenever a persisted slice changes shape, so users
  * upgrading the app keep their saved state.
  */
-export const PERSIST_VERSION = 1;
+export const PERSIST_VERSION = 2;
 export const migrations: MigrationManifest = {
   1: (state) => state,
+  // v2 added `preferences.language`.
+  2: (state) => {
+    if (!state) return state;
+    const { preferences, ...rest } = state as typeof state & {
+      preferences?: Partial<PreferencesState>;
+    };
+    return {
+      ...rest,
+      preferences: { ...initialPreferences, ...preferences },
+    } as typeof state;
+  },
 };
 
 export function makeStore({ storage = AsyncStorage as Storage } = {}) {

@@ -6,6 +6,7 @@ import {
   TabTrigger,
   type TabTriggerSlotProps,
 } from 'expo-router/ui';
+import { useTranslation } from 'react-i18next';
 import { Pressable, type PressableProps, StyleSheet, View } from 'react-native';
 
 import { MaxContentWidth, Spacing, ThemedText, ThemedView } from '@starter/ui';
@@ -15,16 +16,18 @@ import { MaxContentWidth, Spacing, ThemedText, ThemedView } from '@starter/ui';
  * drawer layout (ADR-0003, DES for the starter screens).
  */
 export default function AppTabs() {
+  const { t } = useTranslation();
+
   return (
     <Tabs>
       <TabSlot style={styles.slot} />
       <TabList asChild>
         <CustomTabList>
           <TabTrigger name="home" href="/" asChild>
-            <TabButton>Home</TabButton>
+            <TabButton>{t('tabs.home')}</TabButton>
           </TabTrigger>
           <TabTrigger name="settings" href="/settings" asChild>
-            <TabButton>Settings</TabButton>
+            <TabButton>{t('tabs.settings')}</TabButton>
           </TabTrigger>
         </CustomTabList>
       </TabList>
@@ -47,11 +50,13 @@ export function TabButton({ children, isFocused, ...props }: TabTriggerSlotProps
 }
 
 export function CustomTabList(props: TabListProps) {
+  const { t } = useTranslation();
+
   return (
     <View {...props} style={styles.tabListContainer}>
       <ThemedView type="backgroundElement" style={styles.innerContainer}>
         <ThemedText type="smallBold" style={styles.brandText}>
-          Starter App
+          {t('appName')}
         </ThemedText>
         {props.children}
       </ThemedView>

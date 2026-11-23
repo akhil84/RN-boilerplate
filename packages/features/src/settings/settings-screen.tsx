@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { MaxContentWidth, Spacing, ThemedText, ThemedView } from '@starter/ui';
@@ -8,11 +9,13 @@ import { MaxContentWidth, Spacing, ThemedText, ThemedView } from '@starter/ui';
  * environment rows.
  */
 export function SettingsScreen() {
+  const { t } = useTranslation('settings');
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <ThemedText type="subtitle" role="heading" testID="settings-title">
-          Settings
+          {t('title')}
         </ThemedText>
       </SafeAreaView>
     </ThemedView>

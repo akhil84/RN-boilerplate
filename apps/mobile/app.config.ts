@@ -16,6 +16,18 @@ type Variant = keyof typeof VARIANTS;
 const APP_NAME = 'Starter App';
 const BUNDLE_ID = 'com.example.starterapp';
 
+/**
+ * Sentry's config plugin uploads source maps during release builds, which fails without
+ * credentials — so it is only added when the project has configured Sentry (ADR-0013).
+ * Set SENTRY_ORG and SENTRY_PROJECT (and SENTRY_AUTH_TOKEN as a secret) in EAS environment
+ * variables to enable it.
+ */
+function sentryPlugin(): [string, { organization: string; project: string }][] {
+  const organization = process.env.SENTRY_ORG;
+  const project = process.env.SENTRY_PROJECT;
+  return organization && project ? [['@sentry/react-native/expo', { organization, project }]] : [];
+}
+
 function resolveVariant(value: string | undefined): Variant {
   if (value && value in VARIANTS) return value as Variant;
   return 'development';
@@ -60,6 +72,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
           imageWidth: 76,
         },
       ],
+      'expo-localization',
+      ...sentryPlugin(),
     ],
     experiments: {
       typedRoutes: true,

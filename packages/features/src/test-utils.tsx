@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 
 import { renderWithProviders as renderWithUiProviders } from '@starter/ui/test-utils';
 
+import './i18n/i18n';
+
 import { makeStore } from './store/store';
 
 /**

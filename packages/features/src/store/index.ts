@@ -2,7 +2,10 @@ export { AppProviders, getAppStore } from './app-providers';
 export { useAppDispatch, useAppSelector } from './hooks';
 export { setupAppListeners } from './listeners';
 export {
+  initialPreferences,
+  languageChanged,
   preferencesSlice,
+  selectLanguagePreference,
   selectThemePreference,
   themeChanged,
   type PreferencesState,

@@ -34,7 +34,7 @@ describe('store persistence', () => {
     await persistor.flush();
 
     const saved = JSON.parse((await AsyncStorage.getItem('persist:root')) ?? '{}');
-    expect(JSON.parse(saved.preferences)).toEqual({ theme: 'dark' });
+    expect(JSON.parse(saved.preferences)).toEqual({ theme: 'dark', language: 'system' });
     expect(saved.api).toBeUndefined();
   });
 
@@ -51,5 +51,26 @@ describe('store persistence', () => {
     await waitForRehydrate(persistor);
 
     expect(selectThemePreference(store.getState())).toBe('light');
+  });
+});
+
+describe('persisted state migrations', () => {
+  beforeEach(async () => {
+    await AsyncStorage.clear();
+  });
+
+  it('v1 → v2 keeps the saved theme and adds the language preference', async () => {
+    await AsyncStorage.setItem(
+      'persist:root',
+      JSON.stringify({
+        preferences: JSON.stringify({ theme: 'dark' }),
+        _persist: JSON.stringify({ version: 1, rehydrated: true }),
+      }),
+    );
+
+    const { store, persistor } = makeStore();
+    await waitForRehydrate(persistor);
+
+    expect(store.getState().preferences).toEqual({ theme: 'dark', language: 'system' });
   });
 });

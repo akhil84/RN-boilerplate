@@ -17,6 +17,8 @@
     "@starter/api-client": "workspace:*",
     "@starter/config": "workspace:*",
     "@starter/ui": "workspace:*",
+    "i18next": "catalog:",
+    "react-i18next": "catalog:",
     "react-redux": "catalog:",
     "redux-persist": "catalog:",
     "zod": "catalog:"
@@ -24,6 +26,8 @@
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "*",
     "@react-native-community/netinfo": "*",
+    "expo-localization": "*",
+    "expo-router": "*",
     "react": "*",
     "react-native": "*",
     "react-native-safe-area-context": "*"
@@ -37,6 +41,8 @@
     "eslint": "catalog:",
     "expo": "catalog:",
     "expo-constants": "catalog:",
+    "expo-localization": "catalog:",
+    "expo-router": "catalog:",
     "jest": "catalog:",
     "jest-expo": "catalog:",
     "react": "catalog:",

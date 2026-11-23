@@ -2,19 +2,31 @@ import '@/global.css';
 
 import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 
-import { AppProviders } from '@starter/features';
+import { ErrorBoundary, initErrorReporting } from '@starter/config/observability';
+import { AppProviders, ErrorFallback, useScreenTracking } from '@starter/features';
 import { useColorScheme } from '@starter/ui';
 
 import AppTabs from '@/components/app-tabs';
 
-export default function RootLayout() {
+initErrorReporting(); // no-op unless EXPO_PUBLIC_SENTRY_DSN is set
+
+function RootNavigation() {
   const colorScheme = useColorScheme();
+  useScreenTracking();
 
   return (
-    <AppProviders>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <AppTabs />
-      </ThemeProvider>
-    </AppProviders>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <AppTabs />
+    </ThemeProvider>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
+      <AppProviders>
+        <RootNavigation />
+      </AppProviders>
+    </ErrorBoundary>
   );
 }

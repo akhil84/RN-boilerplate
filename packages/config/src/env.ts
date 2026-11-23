@@ -16,10 +16,16 @@ const envSchema = z
       .int()
       .positive()
       .default(15000),
+    // Optional: error reporting is off unless a DSN is set (ADR-0013).
+    EXPO_PUBLIC_SENTRY_DSN: z.preprocess(
+      (value) => (value === '' ? undefined : value),
+      z.url({ error: 'EXPO_PUBLIC_SENTRY_DSN must be a Sentry DSN URL' }).optional(),
+    ),
   })
   .transform((raw) => ({
     apiUrl: raw.EXPO_PUBLIC_API_URL.replace(/\/+$/, ''),
     apiTimeoutMs: raw.EXPO_PUBLIC_API_TIMEOUT_MS,
+    sentryDsn: raw.EXPO_PUBLIC_SENTRY_DSN,
   }));
 
 export type Env = z.infer<typeof envSchema>;
@@ -29,6 +35,7 @@ export function readRawEnv(): RawEnv {
   return {
     EXPO_PUBLIC_API_URL: process.env.EXPO_PUBLIC_API_URL,
     EXPO_PUBLIC_API_TIMEOUT_MS: process.env.EXPO_PUBLIC_API_TIMEOUT_MS,
+    EXPO_PUBLIC_SENTRY_DSN: process.env.EXPO_PUBLIC_SENTRY_DSN,
   };
 }
 

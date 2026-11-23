@@ -2,6 +2,7 @@ import { useEffect, type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import { useLanguageSync } from '../i18n/use-language-sync';
 import { setupAppListeners } from './listeners';
 import { makeStore } from './store';
 
@@ -11,6 +12,11 @@ let appStore: ReturnType<typeof makeStore> | undefined;
 export function getAppStore() {
   appStore ??= makeStore();
   return appStore;
+}
+
+function LanguageSync() {
+  useLanguageSync();
+  return null;
 }
 
 /**
@@ -25,6 +31,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={null}>
+        <LanguageSync />
         {children}
       </PersistGate>
     </Provider>
