@@ -143,6 +143,17 @@ Or build in the cloud: `pnpm dlx eas-cli build --profile development` from `apps
 Sign in with any email and the password `password` — the in-app mock API
 (`EXPO_PUBLIC_API_MOCKS=true` in `apps/*/.env`) answers until a real backend is configured.
 
+## Debugging state (Redux DevTools)
+
+Every action — including each RTK Query request — shows up in Redux DevTools in development:
+
+- **iOS / Android:** start Metro (`pnpm mobile`), open the app in a development build, then in the
+  Expo CLI press **`shift+m`** → **Open devtools plugin - redux-devtools-expo-dev-plugin**. Restart
+  the Expo CLI once after first installing dependencies if it is not listed.
+- **Web:** install the Redux DevTools browser extension; `pnpm web` connects automatically.
+
+Production builds include no DevTools (ADR-0007).
+
 ## Over-the-air updates and push (per project)
 
 Both are wired but inactive until the project is connected to EAS:

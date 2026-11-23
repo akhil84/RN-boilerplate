@@ -20,6 +20,7 @@
     "i18next": "catalog:",
     "react-i18next": "catalog:",
     "react-redux": "catalog:",
+    "redux-devtools-expo-dev-plugin": "catalog:",
     "redux-persist": "catalog:",
     "zod": "catalog:"
   },

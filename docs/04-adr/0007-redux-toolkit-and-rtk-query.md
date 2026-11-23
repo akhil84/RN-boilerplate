@@ -33,3 +33,5 @@ two libraries, two providers and two devtools.
 
 - Implemented as decided. Focus / reconnect refetch uses `setupListeners` with `AppState` and NetInfo.
 - Thunks reject API failures with `rejectWithValue(ApiError)` — a plain `throw` is serialised by `createAsyncThunk` and loses `status` / `code`.
+- **Redux DevTools on every platform:** native dev builds use `redux-devtools-expo-dev-plugin` (Expo CLI `shift+m` → the plugin), wired as a store enhancer with `devTools: false` (`store/devtools.native.ts`); web keeps RTK's built-in browser-extension DevTools (`devtools.web.ts`). Off in production builds and in tests; the plugin is not in the web bundle. Before this, mobile had no DevTools despite the "one devtools timeline" rationale above.
+- Typing note: `enhancers` must come **after** `middleware` in `configureStore` — TypeScript infers the callbacks in order and RTK types the enhancers from the middleware.
