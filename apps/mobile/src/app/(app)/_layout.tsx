@@ -1,6 +1,6 @@
 import { useNotificationDeepLinks } from '@starter/features';
 
-import AppTabs from '@/components/app-tabs';
+import AppTabs from '@/shell/app-tabs';
 
 /** Signed-in area: native bottom tabs (Home, Settings). */
 export default function AppLayout() {

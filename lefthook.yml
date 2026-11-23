@@ -27,12 +27,16 @@ pre-commit:
       root: packages/features/
       glob: '*.{js,jsx,ts,tsx}'
       run: pnpm exec eslint --max-warnings=0 {staged_files}
+    - name: eslint packages/core
+      root: packages/core/
+      glob: '*.{js,jsx,ts,tsx}'
+      run: pnpm exec eslint --max-warnings=0 {staged_files}
     - name: eslint packages/api-client
       root: packages/api-client/
       glob: '*.{js,jsx,ts,tsx}'
       run: pnpm exec eslint --max-warnings=0 {staged_files}
-    - name: eslint packages/config
-      root: packages/config/
+    - name: eslint packages/tooling
+      root: packages/tooling/
       glob: '*.{js,jsx,ts,tsx}'
       run: pnpm exec eslint --max-warnings=0 {staged_files}
 

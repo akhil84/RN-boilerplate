@@ -24,7 +24,7 @@ Platforms: mobile | web | both
 - Performance:
 - Accessibility: screen-reader labels, 44pt touch targets, dynamic type
 - Offline / error states:
-- Analytics events: <!-- name + properties; declared in packages/features/src/analytics-events.ts -->
+- Analytics events: <!-- name + properties; declared in the feature's analytics.ts -->
 
 ## Out of scope
 

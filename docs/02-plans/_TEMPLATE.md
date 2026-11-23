@@ -10,8 +10,8 @@ Status: Draft · Requirement: [REQ-XXX](../01-requirements/REQ-XXX-slug.md)
 
 | Workspace         | Path                                    | Change |
 | ----------------- | --------------------------------------- | ------ |
-| packages/features | `src/<slug>/...`                        |        |
-| packages/features | `src/mocks/handlers.ts` (new endpoints) |        |
+| packages/features | `src/features/<slug>/...`               |        |
+| packages/features | `src/features/<slug>/mocks/handlers.ts` |        |
 | packages/ui       | `src/components/...` (shared UI only)   |        |
 | apps/mobile       | `src/app/(app)/...` (thin route)        |        |
 | apps/web          | `src/app/(app)/...` (thin route)        |        |

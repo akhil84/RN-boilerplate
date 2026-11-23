@@ -627,3 +627,9 @@ Release): launch, sign-in, tabs and sign-out pass; found and fixed a Keychain-su
 session leak. Not yet verified:
 push and OTA end to end (need an EAS project and credentials), Firefox (Playwright's Firefox
 cannot launch on this macOS version).
+
+**Structure v2 (ADR-0026):** `@starter/config` split into `@starter/tooling` (dev) and
+`@starter/core` (runtime); `packages/features` split into `src/app/` (infrastructure) and
+`src/features/<name>/` with feature manifests and a registry; shared navigation and RootNavigator;
+absolute imports via package aliases; layer and feature boundaries enforced by ESLint;
+`pnpm new:feature` scaffold.

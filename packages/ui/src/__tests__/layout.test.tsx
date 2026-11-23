@@ -1,14 +1,14 @@
 import { Text } from 'react-native';
 
-import { Card } from '../components/card';
-import { Screen } from '../components/screen';
-import { Stack } from '../components/stack';
-import { Colors, MaxContentWidth, Spacing } from '../theme';
-import { renderWithProviders, screen } from '../test-utils';
-import { useColorScheme } from '../use-color-scheme';
+import { Card } from '@ui/components/card';
+import { Screen } from '@ui/layout/screen';
+import { Stack } from '@ui/layout/stack';
+import { Colors, MaxContentWidth, Spacing } from '@ui/tokens/theme';
+import { renderWithProviders, screen } from '@ui/testing/render';
+import { useColorScheme } from '@ui/hooks/use-color-scheme';
 
-jest.mock('../use-color-scheme', () => ({
-  ...jest.requireActual('../use-color-scheme'),
+jest.mock('@ui/hooks/use-color-scheme', () => ({
+  ...jest.requireActual('@ui/hooks/use-color-scheme'),
   useColorScheme: jest.fn(() => 'light'),
 }));
 

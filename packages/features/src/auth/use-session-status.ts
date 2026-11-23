@@ -1,7 +1,0 @@
-import { useAppSelector } from '../store/hooks';
-import { selectSessionStatus } from './session-slice';
-
-/** `unknown` until the stored session has been checked; route guards and the splash use this. */
-export function useSessionStatus() {
-  return useAppSelector(selectSessionStatus);
-}

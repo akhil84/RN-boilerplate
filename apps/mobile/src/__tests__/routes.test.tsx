@@ -2,7 +2,7 @@ import { userEvent } from '@testing-library/react-native';
 import { renderRouter, screen } from 'expo-router/testing-library';
 
 import { configureApiClient, createMockFetch } from '@starter/api-client';
-import { DEMO_PASSWORD, mockHandlers } from '@starter/features';
+import { DEMO_PASSWORD, getMockHandlers } from '@starter/features';
 
 // Relative to the workspace root, where Jest runs.
 const appDir = './src/app';
@@ -15,7 +15,7 @@ describe('mobile routes', () => {
   beforeAll(() => {
     configureApiClient({
       retryDelayMs: 0,
-      fetchFn: createMockFetch(mockHandlers, { baseUrl: 'https://api.test', latencyMs: 0 }),
+      fetchFn: createMockFetch(getMockHandlers(), { baseUrl: 'https://api.test', latencyMs: 0 }),
     });
   });
 

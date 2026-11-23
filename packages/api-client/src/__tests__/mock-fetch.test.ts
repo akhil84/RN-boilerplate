@@ -1,4 +1,4 @@
-import { createMockFetch, type MockHandler } from '../mock-fetch';
+import { createMockFetch, type MockHandler } from '@api-client/mock-fetch';
 
 const handlers: MockHandler[] = [
   { method: 'GET', path: '/items', respond: () => ({ status: 200, body: [{ id: '1' }] }) },

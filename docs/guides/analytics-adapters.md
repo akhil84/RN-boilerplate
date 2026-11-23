@@ -1,8 +1,8 @@
 # Analytics: writing a vendor adapter
 
 Features never call an analytics SDK directly (ADR-0014). They call `analytics.track / screen /
-identify / reset` from `@starter/config/observability`, with event names declared in
-`packages/features/src/analytics-events.ts`. A project connects its vendor by writing one small
+identify / reset` from `@starter/core/observability`, with event names declared in
+each feature's `analytics.ts`. A project connects its vendor by writing one small
 adapter and installing it at startup. Until then, development logs to the console and production
 sends nothing.
 
@@ -30,14 +30,14 @@ Screen views are already sent on every route change (`useScreenTracking`), sign-
    ```
 
 2. Add public config (`EXPO_PUBLIC_POSTHOG_KEY`, `EXPO_PUBLIC_POSTHOG_HOST`) to the env schema in
-   `packages/config/src/env.ts` — keys and `readRawEnv` — so a missing value fails fast.
+   `packages/core/src/env.ts` — keys and `readRawEnv` — so a missing value fails fast.
 
-3. Write the adapter, e.g. `packages/features/src/analytics/posthog-adapter.ts`:
+3. Write the adapter, e.g. `packages/features/src/app/analytics/posthog-adapter.ts`:
 
    ```ts
    import PostHog from 'posthog-react-native';
 
-   import type { AnalyticsAdapter } from '@starter/config/observability';
+   import type { AnalyticsAdapter } from '@starter/core/observability';
 
    export function createPostHogAdapter(apiKey: string, host: string): AnalyticsAdapter {
      const client = new PostHog(apiKey, { host });
@@ -54,7 +54,7 @@ Screen views are already sent on every route change (`useScreenTracking`), sign-
    names and options change between major versions.
 
 4. Install it once, before the first screen renders — e.g. in `getAppStore()`
-   (`packages/features/src/store/app-providers.tsx`):
+   (`packages/features/src/app/providers/app-providers.tsx`):
 
    ```ts
    const { posthogKey, posthogHost } = getEnv();

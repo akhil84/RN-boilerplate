@@ -1,0 +1,39 @@
+{
+  "name": "@starter/core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Runtime platform code shared by every package and app: validated env config and observability (error reporting, analytics). No UI.",
+  "exports": {
+    "./env": "./src/env.ts",
+    "./observability": "./src/observability/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "test": "jest"
+  },
+  "dependencies": {
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@sentry/react-native": "catalog:",
+    "@testing-library/react-native": "catalog:",
+    "@types/jest": "catalog:",
+    "@types/react": "catalog:",
+    "eslint": "catalog:",
+    "expo": "catalog:",
+    "expo-constants": "catalog:",
+    "jest": "catalog:",
+    "jest-expo": "catalog:",
+    "react": "catalog:",
+    "react-native": "catalog:",
+    "react-native-safe-area-context": "catalog:",
+    "typescript": "catalog:",
+    "@starter/tooling": "workspace:*"
+  },
+  "peerDependencies": {
+    "@sentry/react-native": "*",
+    "expo-constants": "*",
+    "react": "*"
+  }
+}

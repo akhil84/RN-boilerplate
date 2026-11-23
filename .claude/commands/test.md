@@ -6,7 +6,7 @@ argument-hint: REQ-XXX
 Close the test gaps for $ARGUMENTS.
 
 1. Read the REQ (acceptance criteria, `Platforms:`) and the plan's test table.
-2. Run `pnpm --filter @starter/features test -- --coverage src/<slug>` and add unit/component tests for any AC or branch not covered.
+2. Run `pnpm --filter @starter/features test -- --coverage src/features/<slug>` and add unit/component tests for any AC or branch not covered.
    Follow `node_modules/@testing-library/react-native/docs/guides/llm-guidelines.md` (async `render`, `screen`, `userEvent`, role queries first).
 3. For each user journey, per `Platforms:`:
    - **mobile:** add `e2e/mobile/flows/<area>-<journey>.yaml` following `e2e/mobile/README.md` — start with `- runFlow: ../subflows/launch.yaml` (and `../subflows/sign-in.yaml` for signed-in journeys), select by `id:` (testID), first-line comment `# REQ: REQ-XXX — <journey>`. Tag the critical path `smoke`.

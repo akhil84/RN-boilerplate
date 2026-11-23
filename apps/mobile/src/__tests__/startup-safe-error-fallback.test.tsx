@@ -1,7 +1,7 @@
 import { renderWithProviders, screen } from '@starter/features/test-utils';
 import * as SplashScreen from 'expo-splash-screen';
 
-import { StartupSafeErrorFallback } from '@/components/startup-safe-error-fallback';
+import { StartupSafeErrorFallback } from '@/shell/startup-safe-error-fallback';
 
 jest.mock('expo-splash-screen', () => ({ hide: jest.fn(), preventAutoHideAsync: jest.fn() }));
 
