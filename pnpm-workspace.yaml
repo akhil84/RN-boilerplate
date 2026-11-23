@@ -17,6 +17,12 @@ allowBuilds:
 # Bump Expo-managed versions with `pnpm --filter @starter/mobile exec expo install --fix`, then
 # copy the result here.
 catalog:
+  '@react-native-async-storage/async-storage': 2.2.0
+  '@react-native-community/netinfo': 12.0.1
+  '@reduxjs/toolkit': ^2.15.0
+  react-redux: ^9.3.1
+  redux-persist: ^6.0.0
+  zod: ^4.6.7
   expo: ~58.0.26
   expo-constants: ~58.0.16
   expo-linking: ~58.0.17

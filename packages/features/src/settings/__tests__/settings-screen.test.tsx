@@ -1,4 +1,4 @@
-import { renderWithProviders, screen } from '@starter/ui/test-utils';
+import { renderWithProviders, screen } from '../../test-utils';
 
 import { SettingsScreen } from '..';
 

@@ -8,13 +8,22 @@
   },
   "scripts": {
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "jest"
   },
   "devDependencies": {
-    "@starter/config": "workspace:*",
     "@types/jest": "catalog:",
     "eslint": "catalog:",
     "expo": "catalog:",
+    "expo-constants": "catalog:",
+    "jest": "catalog:",
+    "jest-expo": "catalog:",
+    "react": "catalog:",
+    "react-native": "catalog:",
     "typescript": "catalog:"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "catalog:",
+    "@starter/config": "workspace:*"
   }
 }

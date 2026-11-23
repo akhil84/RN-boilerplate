@@ -8,21 +8,34 @@
     "./tsconfig.base.json": "./tsconfig.base.json",
     "./jest": "./jest/create-jest-config.js",
     "./jest/setup": "./jest/setup.js",
-    "./jest/style-mock": "./jest/style-mock.js"
+    "./jest/style-mock": "./jest/style-mock.js",
+    "./env": "./src/env.ts"
   },
   "scripts": {
-    "lint": "eslint . --max-warnings=0"
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "test": "jest"
   },
   "dependencies": {
     "eslint-config-expo": "catalog:",
-    "eslint-config-prettier": "catalog:"
+    "eslint-config-prettier": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "eslint": "catalog:"
+    "@types/jest": "catalog:",
+    "eslint": "catalog:",
+    "expo": "catalog:",
+    "expo-constants": "catalog:",
+    "jest": "catalog:",
+    "jest-expo": "catalog:",
+    "react": "catalog:",
+    "react-native": "catalog:",
+    "typescript": "catalog:"
   },
   "peerDependencies": {
     "eslint": "*",
     "expo": "*",
+    "expo-constants": "*",
     "jest-expo": "*"
   }
 }

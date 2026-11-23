@@ -1,5 +1,5 @@
 # REQ: app-init — user can switch between Home and Settings tabs.
-appId: ${APP_ID || 'com.example.starterapp'}
+appId: ${APP_ID || 'com.example.starterapp.dev'}
 tags:
   - smoke
 ---

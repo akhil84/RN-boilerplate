@@ -1,5 +1,5 @@
 # REQ: app-init — the app boots and shows the home screen.
-appId: ${APP_ID || 'com.example.starterapp'}
+appId: ${APP_ID || 'com.example.starterapp.dev'}
 tags:
   - smoke
 ---

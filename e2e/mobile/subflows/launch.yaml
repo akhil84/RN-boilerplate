@@ -1,6 +1,6 @@
 # Shared sub-flow: cold-start the app with a clean state and wait for the home screen.
 # Reuse with:  - runFlow: ../subflows/launch.yaml
-appId: ${APP_ID || 'com.example.starterapp'}
+appId: ${APP_ID || 'com.example.starterapp.dev'}
 ---
 - launchApp:
     clearState: true

@@ -4,7 +4,8 @@
   "private": true,
   "description": "Feature screens and logic shared by apps/mobile and apps/web.",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./test-utils": "./src/test-utils.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings=0",
@@ -12,20 +13,30 @@
     "test": "jest"
   },
   "dependencies": {
-    "@starter/ui": "workspace:*"
+    "@reduxjs/toolkit": "catalog:",
+    "@starter/api-client": "workspace:*",
+    "@starter/config": "workspace:*",
+    "@starter/ui": "workspace:*",
+    "react-redux": "catalog:",
+    "redux-persist": "catalog:",
+    "zod": "catalog:"
   },
   "peerDependencies": {
+    "@react-native-async-storage/async-storage": "*",
+    "@react-native-community/netinfo": "*",
     "react": "*",
     "react-native": "*",
     "react-native-safe-area-context": "*"
   },
   "devDependencies": {
-    "@starter/config": "workspace:*",
+    "@react-native-async-storage/async-storage": "catalog:",
+    "@react-native-community/netinfo": "catalog:",
     "@testing-library/react-native": "catalog:",
     "@types/jest": "catalog:",
     "@types/react": "catalog:",
     "eslint": "catalog:",
     "expo": "catalog:",
+    "expo-constants": "catalog:",
     "jest": "catalog:",
     "jest-expo": "catalog:",
     "react": "catalog:",

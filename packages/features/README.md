@@ -23,3 +23,14 @@ Rules
   inside this package (no `@/` alias — the apps' bundler does not apply package-local aliases).
 - Tests run on iOS, Android and web renderers (`jest.config.js`), so platform files
   (`.web.tsx`, `.native.tsx`) are covered.
+
+State (ADR-0007, ADR-0009)
+
+- `src/store/` holds the single Redux store: RTK Query's `api` reducer plus app-wide slices
+  (e.g. `preferences`). Feature-only slices live in their feature and are added to `rootReducer`.
+- Persisted slices are listed in `persistedSlices`. When a persisted slice changes shape, bump
+  `PERSIST_VERSION` and add a migration. Never persist secrets.
+- Use `useAppDispatch` / `useAppSelector`. Server data comes from RTK Query endpoints added with
+  `api.injectEndpoints` — never copy it into a slice.
+- Component tests use `renderWithProviders` from `@starter/features/test-utils` (fresh store per
+  test).

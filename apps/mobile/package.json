@@ -13,6 +13,8 @@
     "expo:doctor": "pnpm dlx expo-doctor"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "catalog:",
+    "@react-native-community/netinfo": "catalog:",
     "@starter/features": "workspace:*",
     "@starter/ui": "workspace:*",
     "expo": "catalog:",

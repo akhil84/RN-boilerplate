@@ -2,3 +2,4 @@
 // only through these entry points, never through internal paths.
 export { HomeScreen } from './home';
 export { SettingsScreen } from './settings';
+export * from './store';
