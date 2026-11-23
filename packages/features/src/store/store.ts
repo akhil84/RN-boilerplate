@@ -16,11 +16,13 @@ import {
 
 import { api } from '@starter/api-client';
 
+import { sessionSlice } from '../auth/session-slice';
 import { initialPreferences, preferencesSlice, type PreferencesState } from './preferences-slice';
 
 const rootReducer = combineReducers({
   [api.reducerPath]: api.reducer,
   [preferencesSlice.name]: preferencesSlice.reducer,
+  [sessionSlice.name]: sessionSlice.reducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
@@ -51,12 +53,25 @@ export const migrations: MigrationManifest = {
   },
 };
 
-export function makeStore({ storage = AsyncStorage as Storage } = {}) {
+export type MakeStoreOptions = {
+  storage?: Storage;
+  /**
+   * Give up waiting for storage after this many ms and start fresh (redux-persist's safety net for
+   * storage that never answers). Tests pass 0 so no timer outlives the test.
+   */
+  persistTimeoutMs?: number;
+};
+
+export function makeStore({
+  storage = AsyncStorage as Storage,
+  persistTimeoutMs = 5000,
+}: MakeStoreOptions = {}) {
   const persistedReducer = persistReducer(
     {
       key: 'root',
       version: PERSIST_VERSION,
       storage,
+      timeout: persistTimeoutMs,
       whitelist: persistedSlices as string[],
       migrate: createMigrate(migrations, { debug: false }),
     },

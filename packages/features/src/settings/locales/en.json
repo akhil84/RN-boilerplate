@@ -1,3 +1,17 @@
 {
-  "title": "Settings"
+  "title": "Settings",
+  "appearance": "Appearance",
+  "language": "Language",
+  "theme": {
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "languages": {
+    "system": "System",
+    "en": "English"
+  },
+  "about": "About",
+  "version": "Version {{version}} · {{variant}}",
+  "signOut": "Sign out"
 }

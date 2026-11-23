@@ -20,14 +20,14 @@ describe('store persistence', () => {
   });
 
   it('starts with the system theme', async () => {
-    const { store, persistor } = makeStore();
+    const { store, persistor } = makeStore({ persistTimeoutMs: 0 });
     await waitForRehydrate(persistor);
 
     expect(selectThemePreference(store.getState())).toBe('system');
   });
 
   it('writes whitelisted slices only — never the API cache', async () => {
-    const { store, persistor } = makeStore();
+    const { store, persistor } = makeStore({ persistTimeoutMs: 0 });
     await waitForRehydrate(persistor);
 
     store.dispatch(themeChanged('dark'));
@@ -47,7 +47,7 @@ describe('store persistence', () => {
       }),
     );
 
-    const { store, persistor } = makeStore();
+    const { store, persistor } = makeStore({ persistTimeoutMs: 0 });
     await waitForRehydrate(persistor);
 
     expect(selectThemePreference(store.getState())).toBe('light');
@@ -68,7 +68,7 @@ describe('persisted state migrations', () => {
       }),
     );
 
-    const { store, persistor } = makeStore();
+    const { store, persistor } = makeStore({ persistTimeoutMs: 0 });
     await waitForRehydrate(persistor);
 
     expect(store.getState().preferences).toEqual({ theme: 'dark', language: 'system' });

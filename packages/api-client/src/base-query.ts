@@ -28,6 +28,8 @@ export type ApiClientConfig = {
   maxRetries?: number;
   retryDelayMs?: number;
   auth?: AuthAdapter;
+  /** Replace the network, e.g. with `createMockFetch` (mock mode) or a test double. */
+  fetchFn?: typeof fetch;
 };
 
 const DEFAULTS = { maxRetries: 2, retryDelayMs: 500 };
@@ -51,14 +53,28 @@ const rawBaseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError
   extraOptions,
 ) =>
   fetchBaseQuery({
-    baseUrl: config.baseUrl ?? getEnv().apiUrl,
+    baseUrl: getApiBaseUrl(),
     timeout: config.timeoutMs ?? getEnv().apiTimeoutMs,
+    fetchFn: (input, init) => (config.fetchFn ?? fetch)(input, init),
     prepareHeaders: async (headers) => {
       const token = await config.auth?.getAccessToken();
       if (token) headers.set('Authorization', `Bearer ${token}`);
       return headers;
     },
   })(args, api, extraOptions);
+
+/** The configured base URL (env by default). */
+export function getApiBaseUrl() {
+  return config.baseUrl ?? getEnv().apiUrl;
+}
+
+/**
+ * A plain request to the API that bypasses auth and retries — for the token refresh call itself,
+ * which must never trigger another refresh. Uses the configured `fetchFn` and base URL.
+ */
+export function apiRequest(path: string, init?: RequestInit): Promise<Response> {
+  return (config.fetchFn ?? fetch)(`${getApiBaseUrl()}${path}`, init);
+}
 
 // One refresh at a time: parallel requests that hit 401 wait for the same refresh.
 let refreshInFlight: Promise<boolean> | null = null;

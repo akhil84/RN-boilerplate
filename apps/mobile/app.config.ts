@@ -28,6 +28,21 @@ function sentryPlugin(): [string, { organization: string; project: string }][] {
   return organization && project ? [['@sentry/react-native/expo', { organization, project }]] : [];
 }
 
+/**
+ * Social sign-in native config (ADR-0016), added only when configured so unconfigured projects
+ * build without Google / Apple setup:
+ * - Google: the plugin registers the reversed iOS client ID as a URL scheme.
+ * - Apple: turns on the Sign in with Apple capability (iOS only).
+ */
+function googleSignInPlugin(): [string, { iosUrlScheme: string }][] {
+  const iosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
+  if (!iosClientId) return [];
+  const iosUrlScheme = `com.googleusercontent.apps.${iosClientId.replace('.apps.googleusercontent.com', '')}`;
+  return [['@react-native-google-signin/google-signin', { iosUrlScheme }]];
+}
+
+const appleSignInEnabled = process.env.EXPO_PUBLIC_APPLE_SIGN_IN === 'true';
+
 function resolveVariant(value: string | undefined): Variant {
   if (value && value in VARIANTS) return value as Variant;
   return 'development';
@@ -51,6 +66,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     ios: {
       icon: './assets/expo.icon',
       bundleIdentifier: bundleId,
+      usesAppleSignIn: appleSignInEnabled,
     },
     android: {
       adaptiveIcon: {
@@ -73,6 +89,9 @@ export default ({ config }: ConfigContext): ExpoConfig => {
         },
       ],
       'expo-localization',
+      'expo-secure-store',
+      ...(appleSignInEnabled ? ['expo-apple-authentication'] : []),
+      ...googleSignInPlugin(),
       ...sentryPlugin(),
     ],
     experiments: {

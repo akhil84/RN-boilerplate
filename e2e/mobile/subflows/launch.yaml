@@ -1,4 +1,4 @@
-# Shared sub-flow: cold-start the app with a clean state and wait for the home screen.
+# Shared sub-flow: cold-start the app with a clean state and wait for the sign-in screen.
 # Reuse with:  - runFlow: ../subflows/launch.yaml
 appId: ${APP_ID || 'com.example.starterapp.dev'}
 ---
@@ -6,5 +6,5 @@ appId: ${APP_ID || 'com.example.starterapp.dev'}
     clearState: true
 - extendedWaitUntil:
     visible:
-      id: 'home-title'
+      id: 'sign-in-title'
     timeout: 20000

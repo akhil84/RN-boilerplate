@@ -19,6 +19,9 @@ allowBuilds:
 # Bump Expo-managed versions with `pnpm --filter @starter/mobile exec expo install --fix`, then
 # copy the result here.
 catalog:
+  '@react-native-google-signin/google-signin': ^17.0.0
+  expo-apple-authentication: ~58.0.3
+  expo-secure-store: ~58.0.3
   '@sentry/react-native': ~8.28.1
   expo-localization: ~58.0.5
   i18next: ^27.2.3

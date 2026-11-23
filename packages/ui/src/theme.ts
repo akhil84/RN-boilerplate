@@ -20,9 +20,12 @@ export const Colors = {
     backgroundSelected: '#2E3135',
     textSecondary: '#B0B4BA',
   },
+  /** Errors and destructive actions; readable on both light and dark backgrounds. */
+  danger: '#E5484D',
 } as const;
 
 export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+export type ColorSchemeName = 'light' | 'dark';
 
 export const Fonts = Platform.select({
   ios: {

@@ -1,4 +1,5 @@
 import type { ThemePreference } from './store/preferences-slice';
+import type { SignInMethod } from './auth/types';
 import type { LanguagePreference } from './i18n/languages';
 
 /**
@@ -9,5 +10,7 @@ declare module '@starter/config/observability' {
   interface AnalyticsEventMap {
     theme_changed: { theme: ThemePreference };
     language_changed: { language: LanguagePreference };
+    sign_in_succeeded: { method: SignInMethod };
+    sign_out: undefined;
   }
 }

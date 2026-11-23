@@ -1,20 +1,40 @@
-import { useSyncExternalStore } from 'react';
+import {
+  createContext,
+  createElement,
+  useContext,
+  useSyncExternalStore,
+  type ReactNode,
+} from 'react';
 import { useColorScheme as useRNColorScheme } from 'react-native';
+
+export type ColorScheme = 'light' | 'dark';
+
+const OverrideContext = createContext<ColorScheme | null>(null);
+
+/** See use-color-scheme.ts. */
+export function ColorSchemeProvider({
+  scheme,
+  children,
+}: {
+  scheme: ColorScheme | null;
+  children: ReactNode;
+}) {
+  return createElement(OverrideContext.Provider, { value: scheme }, children);
+}
 
 const noopSubscribe = () => () => {};
 
 /**
- * To support static rendering, this value needs to be re-calculated on the client side for web.
- * The server snapshot returns `false`, the client snapshot `true`, so we only read the real
- * scheme after hydration without a setState-in-effect.
+ * On web the system scheme is only known after hydration: the server snapshot returns `false`,
+ * the client snapshot `true`, so the real scheme is read without a setState-in-effect.
  */
-export function useColorScheme() {
+export function useColorScheme(): ColorScheme | null | undefined {
+  const override = useContext(OverrideContext);
   const hasHydrated = useSyncExternalStore(
     noopSubscribe,
     () => true,
     () => false,
   );
-  const colorScheme = useRNColorScheme();
-
-  return hasHydrated ? colorScheme : 'light';
+  const system = useRNColorScheme();
+  return override ?? (hasHydrated ? system : 'light');
 }

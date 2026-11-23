@@ -1,9 +1,10 @@
-# REQ: app-init — user can switch between Home and Settings tabs.
+# REQ: app-init — a signed-in user switches between Home and Settings and signs out.
 appId: ${APP_ID || 'com.example.starterapp.dev'}
 tags:
   - smoke
 ---
 - runFlow: ../subflows/launch.yaml
+- runFlow: ../subflows/sign-in.yaml
 - tapOn: 'Settings'
 - extendedWaitUntil:
     visible:
@@ -12,3 +13,10 @@ tags:
 - tapOn: 'Home'
 - assertVisible:
     id: 'home-title'
+- tapOn: 'Settings'
+- tapOn:
+    id: 'settings-sign-out'
+- extendedWaitUntil:
+    visible:
+      id: 'sign-in-title'
+    timeout: 10000

@@ -19,3 +19,32 @@ jest.mock('@sentry/react-native', () => ({
   setUser: jest.fn(),
   wrap: (component) => component,
 }));
+
+// Secure storage: an in-memory Keychain/Keystore per test file.
+jest.mock('expo-secure-store', () => {
+  const store = new Map();
+  return {
+    getItemAsync: jest.fn(async (key) => (store.has(key) ? store.get(key) : null)),
+    setItemAsync: jest.fn(async (key, value) => void store.set(key, value)),
+    deleteItemAsync: jest.fn(async (key) => void store.delete(key)),
+    __reset: () => store.clear(),
+  };
+});
+
+// Social sign-in SDKs talk to native code; tests drive them through these mocks.
+jest.mock('@react-native-google-signin/google-signin', () => ({
+  GoogleSignin: {
+    configure: jest.fn(),
+    hasPlayServices: jest.fn(async () => true),
+    signIn: jest.fn(),
+    signOut: jest.fn(async () => null),
+  },
+  isSuccessResponse: (response) => response?.type === 'success',
+  isErrorWithCode: () => false,
+  statusCodes: {},
+}));
+jest.mock('expo-apple-authentication', () => ({
+  isAvailableAsync: jest.fn(async () => true),
+  signInAsync: jest.fn(),
+  AppleAuthenticationScope: { FULL_NAME: 0, EMAIL: 1 },
+}));

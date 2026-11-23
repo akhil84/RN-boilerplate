@@ -26,8 +26,12 @@
   "peerDependencies": {
     "@react-native-async-storage/async-storage": "*",
     "@react-native-community/netinfo": "*",
+    "@react-native-google-signin/google-signin": "*",
+    "expo-apple-authentication": "*",
+    "expo-constants": "*",
     "expo-localization": "*",
     "expo-router": "*",
+    "expo-secure-store": "*",
     "react": "*",
     "react-native": "*",
     "react-native-safe-area-context": "*"
@@ -35,14 +39,17 @@
   "devDependencies": {
     "@react-native-async-storage/async-storage": "catalog:",
     "@react-native-community/netinfo": "catalog:",
+    "@react-native-google-signin/google-signin": "catalog:",
     "@testing-library/react-native": "catalog:",
     "@types/jest": "catalog:",
     "@types/react": "catalog:",
     "eslint": "catalog:",
     "expo": "catalog:",
+    "expo-apple-authentication": "catalog:",
     "expo-constants": "catalog:",
     "expo-localization": "catalog:",
     "expo-router": "catalog:",
+    "expo-secure-store": "catalog:",
     "jest": "catalog:",
     "jest-expo": "catalog:",
     "react": "catalog:",
@@ -51,5 +58,16 @@
     "react-native-safe-area-context": "catalog:",
     "react-native-web": "catalog:",
     "typescript": "catalog:"
+  },
+  "peerDependenciesMeta": {
+    "@react-native-google-signin/google-signin": {
+      "optional": true
+    },
+    "expo-apple-authentication": {
+      "optional": true
+    },
+    "expo-secure-store": {
+      "optional": true
+    }
   }
 }

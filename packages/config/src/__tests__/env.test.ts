@@ -11,6 +11,10 @@ describe('parseEnv', () => {
       apiUrl: 'https://api.example.com',
       apiTimeoutMs: 5000,
       sentryDsn: undefined,
+      apiMocks: false,
+      webAuthMode: 'local',
+      google: { webClientId: undefined, iosClientId: undefined },
+      apple: { enabled: false, serviceId: undefined, redirectUri: undefined },
     });
   });
 
@@ -57,6 +61,40 @@ describe('parseEnv — Sentry DSN', () => {
     expect(() => parseEnv({ ...base, EXPO_PUBLIC_SENTRY_DSN: 'nope' })).toThrow(
       /EXPO_PUBLIC_SENTRY_DSN/,
     );
+  });
+});
+
+describe('parseEnv — auth and mocks', () => {
+  const base = { EXPO_PUBLIC_API_URL: 'https://api.example.com' };
+
+  it('reads boolean flags', () => {
+    const env = parseEnv({
+      ...base,
+      EXPO_PUBLIC_API_MOCKS: 'true',
+      EXPO_PUBLIC_APPLE_SIGN_IN: 'true',
+    });
+
+    expect(env.apiMocks).toBe(true);
+    expect(env.apple.enabled).toBe(true);
+  });
+
+  it('rejects a flag that is not true/false', () => {
+    expect(() => parseEnv({ ...base, EXPO_PUBLIC_API_MOCKS: 'yes' })).toThrow(
+      /EXPO_PUBLIC_API_MOCKS/,
+    );
+  });
+
+  it('accepts cookie web auth mode and rejects unknown modes', () => {
+    expect(parseEnv({ ...base, EXPO_PUBLIC_WEB_AUTH_MODE: 'cookie' }).webAuthMode).toBe('cookie');
+    expect(() => parseEnv({ ...base, EXPO_PUBLIC_WEB_AUTH_MODE: 'session' })).toThrow(
+      /EXPO_PUBLIC_WEB_AUTH_MODE/,
+    );
+  });
+
+  it('treats empty social client IDs as unset', () => {
+    const env = parseEnv({ ...base, EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID: '' });
+
+    expect(env.google.webClientId).toBeUndefined();
   });
 });
 

@@ -1,3 +1,4 @@
+import authEn from '../auth/locales/en.json';
 import homeEn from '../home/locales/en.json';
 import settingsEn from '../settings/locales/en.json';
 import commonEn from './locales/en/common.json';
@@ -9,6 +10,7 @@ import commonEn from './locales/en/common.json';
 export const resources = {
   en: {
     common: commonEn,
+    auth: authEn,
     home: homeEn,
     settings: settingsEn,
   },

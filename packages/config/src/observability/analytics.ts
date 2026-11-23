@@ -41,7 +41,9 @@ export const consoleAnalyticsAdapter: AnalyticsAdapter = {
   reset: () => console.log('[analytics] reset'),
 };
 
-const defaultAdapter = () => (__DEV__ ? consoleAnalyticsAdapter : noopAnalyticsAdapter);
+// Console in development builds; silent in production and in tests (NODE_ENV=test).
+const defaultAdapter = () =>
+  __DEV__ && process.env.NODE_ENV !== 'test' ? consoleAnalyticsAdapter : noopAnalyticsAdapter;
 
 let adapter: AnalyticsAdapter = defaultAdapter();
 
