@@ -1,0 +1,39 @@
+# ADR-0005: Web app built with Expo web as a single-page app
+
+Status: Accepted · Date: 2026-11-23 · Implemented on `feat/monorepo-starter`
+
+Source: [decision record](../00-product/monorepo-starter-decisions.md) Q9, Q10.
+
+## Context
+
+A future Electron desktop app (Windows, macOS) is possible. Options for `apps/web`:
+
+- **Expo web:** reuses shared React Native screens; renders with `react-dom` and exports plain
+  HTML/JS/CSS that Electron can load.
+- **Vite + React DOM with its own UI:** full web libraries (shadcn, MUI), but every screen is built
+  twice and shares only non-UI code.
+- **Vite + React rendering shared screens via react-native-web:** takes on integration work Expo
+  does today; `expo-router` and many `expo-*` modules would be unusable in shared code.
+
+Rendering modes: `static` (per-route HTML, SEO), `single` (SPA), `server` (needs a Node host).
+
+## Decision
+
+- `apps/web` is an **Expo** app (web only) using shared screens from `@starter/features`.
+- `web.output: "single"` — a classic SPA served from any static host.
+
+## Consequences
+
+- Screens are written once for iOS, Android, web and a future desktop app.
+- Desktop stays open via Electron or React Native for Windows / macOS.
+- One route model (Expo Router) for browser, deep links and Electron.
+- `testID` → `data-testid`, so Maestro and Playwright share selectors.
+- Web UI is built from React Native primitives; web-only needs use `.web.tsx` or Expo DOM
+  components.
+- No per-route HTML: weaker SEO and link previews. Switching to `static` needs an ADR.
+- Best suited to mobile-first products; web-first products would favour a React DOM app.
+
+## Implementation notes (2026-11-23)
+
+- Implemented as decided; the export is one `index.html` plus assets. Web routes are protected the same way as mobile (`Stack.Protected`).
+- Covered by Playwright (`e2e/web`), verified in Chromium and WebKit.

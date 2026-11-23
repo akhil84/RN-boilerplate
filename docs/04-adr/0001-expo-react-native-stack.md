@@ -1,6 +1,6 @@
 # ADR-0001: Expo + React Native + TypeScript as the app stack
 
-Status: Accepted · Date: 2026-11-23
+Status: Accepted, amended by ADR-0003 (layout) and ADR-0020 (testing) · Date: 2026-11-23
 
 ## Context
 
