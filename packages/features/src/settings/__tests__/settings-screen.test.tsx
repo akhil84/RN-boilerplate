@@ -65,3 +65,23 @@ describe('<SettingsScreen />', () => {
     expect(screen.getByTestId('settings-version')).toHaveTextContent(/Version .* · development/);
   });
 });
+
+describe('<SettingsScreen /> notifications', () => {
+  beforeEach(() => setupMockApi());
+
+  it('AC-push-4: asks for permission only when the user taps the button', async () => {
+    const { requestPermissionsAsync } = jest.requireMock('expo-notifications');
+    requestPermissionsAsync.mockClear();
+    const user = userEvent.setup();
+    await renderWithProviders(<SettingsScreen />, { store: makeConnectedStore() });
+
+    const enable = await screen.findByRole('button', { name: 'Turn on notifications' });
+    expect(requestPermissionsAsync).not.toHaveBeenCalled();
+    await user.press(enable);
+
+    expect(await screen.findByTestId('settings-notifications-status')).toHaveTextContent(
+      'Notifications are on.',
+    );
+    expect(requestPermissionsAsync).toHaveBeenCalledTimes(1);
+  });
+});

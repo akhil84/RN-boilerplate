@@ -29,7 +29,9 @@
     "@react-native-google-signin/google-signin": "*",
     "expo-apple-authentication": "*",
     "expo-constants": "*",
+    "expo-device": "*",
     "expo-localization": "*",
+    "expo-notifications": "*",
     "expo-router": "*",
     "expo-secure-store": "*",
     "react": "*",
@@ -47,7 +49,9 @@
     "expo": "catalog:",
     "expo-apple-authentication": "catalog:",
     "expo-constants": "catalog:",
+    "expo-device": "catalog:",
     "expo-localization": "catalog:",
+    "expo-notifications": "catalog:",
     "expo-router": "catalog:",
     "expo-secure-store": "catalog:",
     "jest": "catalog:",
@@ -67,6 +71,12 @@
       "optional": true
     },
     "expo-secure-store": {
+      "optional": true
+    },
+    "expo-device": {
+      "optional": true
+    },
+    "expo-notifications": {
       "optional": true
     }
   }

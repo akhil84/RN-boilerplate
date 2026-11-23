@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { ErrorBoundary, initErrorReporting } from '@starter/config/observability';
 import {
   AppProviders,
+  configureNotificationHandling,
   ErrorFallback,
   useScreenTracking,
   useSessionStatus,
@@ -13,6 +14,7 @@ import { useColorScheme } from '@starter/ui';
 
 SplashScreen.preventAutoHideAsync();
 initErrorReporting(); // no-op unless EXPO_PUBLIC_SENTRY_DSN is set
+configureNotificationHandling(); // show notifications that arrive while the app is open
 
 /**
  * Route guard (ADR-0015): `(app)` needs a session, `sign-in` needs none. The splash screen stays

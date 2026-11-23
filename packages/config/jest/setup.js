@@ -48,3 +48,16 @@ jest.mock('expo-apple-authentication', () => ({
   signInAsync: jest.fn(),
   AppleAuthenticationScope: { FULL_NAME: 0, EMAIL: 1 },
 }));
+
+// Push notifications: permission and token calls resolve to safe defaults; override per test.
+jest.mock('expo-notifications', () => ({
+  setNotificationHandler: jest.fn(),
+  setNotificationChannelAsync: jest.fn(async () => null),
+  getPermissionsAsync: jest.fn(async () => ({ status: 'undetermined', canAskAgain: true })),
+  requestPermissionsAsync: jest.fn(async () => ({ status: 'granted', canAskAgain: true })),
+  getExpoPushTokenAsync: jest.fn(async () => ({ type: 'expo', data: 'ExponentPushToken[test]' })),
+  getDevicePushTokenAsync: jest.fn(async () => ({ type: 'ios', data: 'device-token' })),
+  useLastNotificationResponse: jest.fn(() => undefined),
+  AndroidImportance: { DEFAULT: 5, MAX: 7 },
+}));
+jest.mock('expo-device', () => ({ isDevice: true }));

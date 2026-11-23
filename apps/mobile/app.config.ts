@@ -17,6 +17,12 @@ const APP_NAME = 'Starter App';
 const BUNDLE_ID = 'com.example.starterapp';
 
 /**
+ * EAS project ID — written by `pnpm init:project`, or paste the ID `eas init` prints. Needed for
+ * EAS Update and Expo push tokens; until it is set, OTA updates are switched off (ADR-0018).
+ */
+const EAS_PROJECT_ID = process.env.EAS_PROJECT_ID ?? '';
+
+/**
  * Sentry's config plugin uploads source maps during release builds, which fails without
  * credentials — so it is only added when the project has configured Sentry (ADR-0013).
  * Set SENTRY_ORG and SENTRY_PROJECT (and SENTRY_AUTH_TOKEN as a secret) in EAS environment
@@ -63,6 +69,16 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     scheme: `starterapp${idSuffix.replace('.', '-')}`,
     userInterfaceStyle: 'automatic',
     platforms: ['ios', 'android'],
+    // OTA updates only reach builds whose native code matches (ADR-0018).
+    runtimeVersion: { policy: 'fingerprint' },
+    updates: EAS_PROJECT_ID
+      ? {
+          url: `https://u.expo.dev/${EAS_PROJECT_ID}`,
+          // Check on launch; a downloaded update applies on the next cold start.
+          checkAutomatically: 'ON_LOAD',
+          fallbackToCacheTimeout: 0,
+        }
+      : { enabled: false },
     ios: {
       icon: './assets/expo.icon',
       bundleIdentifier: bundleId,
@@ -77,6 +93,8 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       },
       predictiveBackGestureEnabled: false,
       package: bundleId,
+      // FCM credentials for push (ADR-0019): an EAS file environment variable or a local path.
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
     },
     plugins: [
       'expo-router',
@@ -90,6 +108,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
       ],
       'expo-localization',
       'expo-secure-store',
+      'expo-notifications',
       ...(appleSignInEnabled ? ['expo-apple-authentication'] : []),
       ...googleSignInPlugin(),
       ...sentryPlugin(),
@@ -100,6 +119,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
     },
     extra: {
       appVariant,
+      ...(EAS_PROJECT_ID ? { eas: { projectId: EAS_PROJECT_ID } } : {}),
     },
   };
 };

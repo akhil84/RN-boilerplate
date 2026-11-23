@@ -73,6 +73,7 @@ export const mockHandlers: MockHandler[] = [
     },
   },
   { method: 'POST', path: AUTH_PATHS.logout, respond: () => ({ status: 204 }) },
+  { method: 'POST', path: '/devices', respond: () => ({ status: 204 }) },
   {
     method: 'GET',
     path: '/items',

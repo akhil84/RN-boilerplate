@@ -1,5 +1,5 @@
 import Constants from 'expo-constants';
-import type { ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,6 +10,9 @@ import { Button, MaxContentWidth, Spacing, ThemedText, ThemedView } from '@start
 
 import { signOut } from '../auth/auth-service';
 import { SUPPORTED_LANGUAGES, type LanguagePreference } from '../i18n/languages';
+import { enablePushNotifications } from '../notifications/enable-push';
+import { getPushPermission, isPushSupported } from '../notifications/notifications';
+import type { PushPermission } from '../notifications/types';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import {
   languageChanged,
@@ -76,6 +79,12 @@ export function SettingsScreen() {
             </View>
           </Section>
 
+          {isPushSupported ? (
+            <Section title={t('notifications.title')}>
+              <NotificationsRow />
+            </Section>
+          ) : null}
+
           <Section title={t('about')}>
             <ThemedText type="small" themeColor="textSecondary" testID="settings-version">
               {t('version', {
@@ -94,6 +103,56 @@ export function SettingsScreen() {
         </ScrollView>
       </SafeAreaView>
     </ThemedView>
+  );
+}
+
+/** Permission is only requested here, when the user asks — never cold at launch (ADR-0019). */
+function NotificationsRow() {
+  const { t } = useTranslation('settings');
+  const dispatch = useAppDispatch();
+  const [permission, setPermission] = useState<PushPermission | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    void getPushPermission().then((status) => active && setPermission(status));
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  async function enable() {
+    setBusy(true);
+    try {
+      setPermission(await dispatch(enablePushNotifications()).unwrap());
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  if (permission === 'granted') {
+    return (
+      <ThemedText type="small" themeColor="textSecondary" testID="settings-notifications-status">
+        {t('notifications.on')}
+      </ThemedText>
+    );
+  }
+  if (permission === 'denied') {
+    return (
+      <ThemedText type="small" themeColor="textSecondary" testID="settings-notifications-status">
+        {t('notifications.denied')}
+      </ThemedText>
+    );
+  }
+  return (
+    <Button
+      variant="secondary"
+      label={t('notifications.enable')}
+      onPress={enable}
+      loading={busy}
+      disabled={permission === null}
+      testID="settings-notifications-enable"
+    />
   );
 }
 

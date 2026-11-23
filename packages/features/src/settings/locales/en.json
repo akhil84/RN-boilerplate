@@ -13,5 +13,11 @@
   },
   "about": "About",
   "version": "Version {{version}} · {{variant}}",
-  "signOut": "Sign out"
+  "signOut": "Sign out",
+  "notifications": {
+    "title": "Notifications",
+    "enable": "Turn on notifications",
+    "on": "Notifications are on.",
+    "denied": "Notifications are off. Turn them on in your device settings."
+  }
 }
