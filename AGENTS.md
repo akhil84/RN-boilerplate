@@ -89,6 +89,14 @@ scripts/                 new-feature.mjs (`pnpm new:feature`), init-project.mjs 
   checker. No browser-only APIs (`window`, `document`, `localStorage`) outside `.web.ts` files —
   shared code must stay safe for mobile and a future desktop app (ADR-0024).
 
+### Skills
+
+`.claude/skills/` holds the project skill `feature-development` (how to build a feature here —
+start with it), vendored Expo, Callstack and agent-skills skills, and the Redux Toolkit skills
+that pnpm links from `@reduxjs/toolkit` on install (sources in
+`.claude/skills/THIRD_PARTY_NOTICES.md`). Where generic skill advice conflicts with the stack
+below (Expo Go, React Query, Zustand, NativeWind, npm …), the stack wins.
+
 ### Stack (decided — change only through a new ADR in `docs/04-adr/`)
 
 | Concern      | Use                                                                                                                                          | ADR        |
