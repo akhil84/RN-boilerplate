@@ -30,6 +30,30 @@ describe('validate', () => {
     assert.equal(errors.length, 4);
   });
 
+  it('rejects display names that would break string literals', () => {
+    for (const name of [`Joe's Pizza`, 'Say "Hi"', 'Back\\slash', 'Tick`s']) {
+      assert.ok(validate({ ...identity, name }).length > 0, name);
+    }
+  });
+
+  it('runs when started from a path containing spaces', () => {
+    const dir = mkdtempSync(join(tmpdir(), 'init project with spaces-'));
+    cpSync(join(REPO, 'scripts/init-project.mjs'), join(dir, 'init-project.mjs'));
+    let output = '';
+    try {
+      execFileSync('node', [join(dir, 'init-project.mjs'), '--yes', '--name', ''], {
+        encoding: 'utf8',
+        stdio: 'pipe',
+      });
+    } catch (error) {
+      output = String(error.stderr);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+    // main() ran: it validated the (deliberately empty) name and exited with an error.
+    assert.match(output, /--name is required/);
+  });
+
   it('rejects a malformed Sentry DSN', () => {
     assert.ok(validate({ ...identity, sentryDsn: 'not-a-dsn' }).length > 0);
   });

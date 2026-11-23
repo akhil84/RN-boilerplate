@@ -40,3 +40,4 @@ interface supporting both.
 - `Stack.Protected` confirmed for SDK 58; the splash stays up while the session status is `unknown`.
 - `tokenStorage.refreshTransport` (`body` | `cookie`) tells the refresh call how to send credentials. The README recommends cookie mode wherever the backend supports it.
 - Sign-out is guarded against re-entry (a 401 on the logout call would otherwise loop through a failed refresh into another sign-out).
+- Code review fixes: a session epoch stops a refresh that finishes after sign-out from saving tokens (which would sign the user back in on next launch); sign-out is a no-op without a session; `restoreSession` keeps a rotated refresh token.

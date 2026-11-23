@@ -42,3 +42,4 @@ with Apple (or an equivalent) — wording to be confirmed.
 - **Google on web uses One Tap** (`google.accounts.id.prompt`), which browsers or users can suppress; a project needing a guaranteed entry point should render the Google button (`renderButton`) instead.
 - Buttons appear only when configured for the current platform; the Google and Apple config plugins are added only when their env values are set.
 - Enterprise SSO (OIDC + PKCE) recipe: `docs/guides/enterprise-sso.md`.
+- Code review fix: One Tap's dismissed moment with reason `credential_returned` (a success) is no longer treated as a cancel, and every status method is called defensively (FedCM removed some) — sign-in could be dropped or hang. Tested with a fake `window.google`.

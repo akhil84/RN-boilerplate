@@ -13,8 +13,10 @@
  *
  * A typo in an event name or a missing property is then a type error.
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- augmented by features
-export interface AnalyticsEventMap {}
+export interface AnalyticsEventMap {
+  /** Sent once per app start, before the first screen (see getAppStore in @starter/features). */
+  app_opened: undefined;
+}
 
 export type AnalyticsEventName = keyof AnalyticsEventMap;
 export type AnalyticsProps = Record<string, unknown>;

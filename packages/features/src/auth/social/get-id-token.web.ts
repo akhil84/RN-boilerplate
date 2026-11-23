@@ -9,6 +9,17 @@ import { SocialSignInCancelledError, SocialSignInUnavailableError } from './erro
  * - Sign in with Apple JS (popup) — https://developer.apple.com/documentation/signinwithapplejs
  * Both scripts are loaded on demand, only when the user picks that provider.
  */
+/**
+ * One Tap status callbacks. Under FedCM some methods (e.g. `isNotDisplayed`) no longer exist, so
+ * every one is optional and called defensively.
+ */
+type PromptMomentNotification = {
+  isNotDisplayed?: () => boolean;
+  isSkippedMoment?: () => boolean;
+  isDismissedMoment?: () => boolean;
+  getDismissedReason?: () => string;
+};
+
 type GoogleIdentity = {
   accounts: {
     id: {
@@ -17,13 +28,7 @@ type GoogleIdentity = {
         callback: (response: { credential?: string }) => void;
         cancel_on_tap_outside?: boolean;
       }) => void;
-      prompt: (
-        listener?: (notification: {
-          isNotDisplayed: () => boolean;
-          isSkippedMoment: () => boolean;
-          isDismissedMoment: () => boolean;
-        }) => void,
-      ) => void;
+      prompt: (listener?: (notification: PromptMomentNotification) => void) => void;
     };
   };
 };
@@ -74,7 +79,7 @@ function loadScript(src: string): Promise<void> {
 }
 
 async function googleIdToken(clientId: string): Promise<string> {
-  await loadScript(SCRIPTS.google);
+  if (!window.google) await loadScript(SCRIPTS.google);
   const google = window.google;
   if (!google) throw new SocialSignInUnavailableError('Google');
 
@@ -86,11 +91,12 @@ async function googleIdToken(clientId: string): Promise<string> {
         credential ? resolve(credential) : reject(new SocialSignInCancelledError()),
     });
     google.accounts.id.prompt((notification) => {
-      if (
-        notification.isNotDisplayed() ||
-        notification.isSkippedMoment() ||
-        notification.isDismissedMoment()
-      ) {
+      // A successful sign-in also ends with a "dismissed" moment (reason `credential_returned`),
+      // which must not be treated as a cancel.
+      const dismissedByUser =
+        notification.isDismissedMoment?.() === true &&
+        notification.getDismissedReason?.() !== 'credential_returned';
+      if (notification.isNotDisplayed?.() || notification.isSkippedMoment?.() || dismissedByUser) {
         reject(new SocialSignInCancelledError());
       }
     });
@@ -98,7 +104,7 @@ async function googleIdToken(clientId: string): Promise<string> {
 }
 
 async function appleIdToken(serviceId: string, redirectUri: string): Promise<string> {
-  await loadScript(SCRIPTS.apple);
+  if (!window.AppleID) await loadScript(SCRIPTS.apple);
   const appleId = window.AppleID;
   if (!appleId) throw new SocialSignInUnavailableError('Apple');
 

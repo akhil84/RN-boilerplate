@@ -113,6 +113,18 @@ describe('apiBaseQuery', () => {
     expect(results.map((r) => r.data)).toEqual([1, 2]);
   });
 
+  it('skips refresh and sign-out for requests that opt out (e.g. the login call)', async () => {
+    mockFetch({ status: 401, body: { code: 'INVALID_CREDENTIALS', message: 'Wrong password' } });
+    const auth = authAdapter();
+    configureApiClient({ auth });
+
+    const result = await apiBaseQuery('/auth/login', api(), { skipReauth: true });
+
+    expect(result.error).toMatchObject({ status: 401, code: 'INVALID_CREDENTIALS' });
+    expect(auth.refresh).not.toHaveBeenCalled();
+    expect(auth.onSessionExpired).not.toHaveBeenCalled();
+  });
+
   it('signs out when the refresh fails', async () => {
     mockFetch({ status: 401 });
     const auth = authAdapter({ refresh: jest.fn(async () => false) });

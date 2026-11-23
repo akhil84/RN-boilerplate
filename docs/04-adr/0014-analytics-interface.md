@@ -28,3 +28,4 @@ vendor-neutral interface; wiring a specific vendor (PostHog, Firebase); no analy
 
 - Implemented as decided. Features declare events by augmenting `AnalyticsEventMap` (`packages/features/src/analytics-events.ts`). The default adapter is silent in production and in tests.
 - Vendor adapter guide with PostHog as the worked example: `docs/guides/analytics-adapters.md`.
+- The core event map declares `app_opened` (tracked once at startup) instead of being an empty interface, which removed the only lint suppression in the codebase.

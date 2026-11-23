@@ -1,11 +1,18 @@
 import * as SecureStore from 'expo-secure-store';
 
+import type { MockHandler } from '@starter/api-client';
 import { recordAnalytics, resetAnalyticsAdapter } from '@starter/config/observability';
 import { getIdToken } from '../social/get-id-token';
 
 import { makeConnectedStore, setupMockApi } from '../../test-utils';
-import { DEMO_PASSWORD } from '../../mocks/handlers';
-import { restoreSession, signInWithPassword, signInWithProvider, signOut } from '../auth-service';
+import { DEMO_PASSWORD, mockHandlers } from '../../mocks/handlers';
+import {
+  refreshTokens,
+  restoreSession,
+  signInWithPassword,
+  signInWithProvider,
+  signOut,
+} from '../auth-service';
 import { selectCurrentUser, selectSessionStatus } from '../session-slice';
 import { SocialSignInCancelledError } from '../social/errors';
 import { tokenStorage } from '../token-storage';
@@ -45,6 +52,44 @@ describe('auth service', () => {
       store.dispatch(signInWithPassword({ email: 'a@b.co', password: 'nope' })).unwrap(),
     ).rejects.toMatchObject({ status: 401, message: 'Email or password is incorrect.' });
     expect(selectSessionStatus(store.getState())).toBe('unknown');
+  });
+
+  it('a wrong password does not run the sign-out flow', async () => {
+    const store = makeConnectedStore();
+    await store.dispatch(restoreSession());
+    const calls = recordAnalytics();
+
+    await store.dispatch(signInWithPassword({ email: 'a@b.co', password: 'nope' }));
+
+    expect(calls.map((call) => call.type === 'track' && call.name)).not.toContain('sign_out');
+    expect(selectSessionStatus(store.getState())).toBe('signedOut');
+  });
+
+  it('a refresh that finishes after sign-out does not restore the tokens', async () => {
+    let releaseRefresh: () => void = () => {};
+    const slowRefresh: MockHandler = {
+      method: 'POST',
+      path: '/auth/refresh',
+      respond: () =>
+        new Promise((resolve) => {
+          releaseRefresh = () =>
+            resolve({
+              status: 200,
+              body: { accessToken: 'mock-access-late', refreshToken: 'mock-refresh-late' },
+            });
+        }),
+    };
+    setupMockApi([slowRefresh, ...mockHandlers]);
+    const store = makeConnectedStore();
+    await store.dispatch(signInWithPassword({ email: 'a@b.co', password: DEMO_PASSWORD })).unwrap();
+
+    const refreshing = refreshTokens();
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await store.dispatch(signOut());
+    releaseRefresh();
+
+    expect(await refreshing).toBe(false);
+    expect(await tokenStorage.load()).toBeNull();
   });
 
   it('AC-auth-3: restores a stored session on launch', async () => {

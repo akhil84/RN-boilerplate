@@ -31,6 +31,14 @@ describe('analytics', () => {
     ]);
   });
 
+  it('ships a built-in app_opened event without properties', () => {
+    const calls = recordAnalytics();
+
+    analytics.track('app_opened');
+
+    expect(calls).toEqual([{ type: 'track', name: 'app_opened', props: undefined }]);
+  });
+
   it('forwards screen, identify and reset', () => {
     const calls = recordAnalytics();
 

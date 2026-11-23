@@ -100,11 +100,21 @@ describe('parseEnv — auth and mocks', () => {
 
 describe('getAppVariant', () => {
   it('reads the variant from app config extra', () => {
-    expect(getAppVariant({ appVariant: 'preview' })).toBe('preview');
+    expect(getAppVariant({ appVariant: 'preview' }, false, undefined)).toBe('preview');
   });
 
-  it('defaults to development when unset or unknown', () => {
-    expect(getAppVariant(undefined)).toBe('development');
-    expect(getAppVariant({ appVariant: 'staging' })).toBe('development');
+  it('defaults to development when unset or unknown in a development build', () => {
+    expect(getAppVariant(undefined, true, undefined)).toBe('development');
+    expect(getAppVariant({ appVariant: 'staging' }, true, undefined)).toBe('development');
+  });
+
+  it('prefers EXPO_PUBLIC_APP_VARIANT (the only source available in web exports)', () => {
+    expect(getAppVariant(undefined, false, 'preview')).toBe('preview');
+    expect(getAppVariant({ appVariant: 'development' }, false, 'production')).toBe('production');
+  });
+
+  it('fails closed to production when unset or unknown in a release build', () => {
+    expect(getAppVariant(undefined, false, undefined)).toBe('production');
+    expect(getAppVariant({ appVariant: 'staging' }, false, 'staging')).toBe('production');
   });
 });

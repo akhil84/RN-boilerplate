@@ -67,12 +67,20 @@ export async function getPushRegistration(): Promise<PushRegistration | null> {
   return { type: type === 'ios' ? 'ios' : 'android', token: String(data) };
 }
 
-/** Open the screen named in a tapped notification's `data.url` (internal paths only). */
+// The last response survives remounts of the signed-in area (e.g. sign out, sign back in), so
+// remember which taps were handled — otherwise an old tap would reopen its screen every time.
+const handledResponses = new Set<string>();
+
+/** Open the screen named in a tapped notification's `data.url` (internal paths only), once. */
 export function useNotificationDeepLinks() {
   const response = Notifications.useLastNotificationResponse();
 
   useEffect(() => {
-    const path = getNotificationPath(response?.notification.request.content.data);
+    if (!response) return;
+    const id = `${response.notification.request.identifier}:${response.actionIdentifier}`;
+    if (handledResponses.has(id)) return;
+    handledResponses.add(id);
+    const path = getNotificationPath(response.notification.request.content.data);
     if (path) router.push(path as never);
   }, [response]);
 }

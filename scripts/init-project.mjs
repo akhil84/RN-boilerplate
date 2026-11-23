@@ -8,8 +8,9 @@
 // Replaces every placeholder identity in tracked files, resets the changelogs and product vision,
 // then deletes itself (and its test). Run `pnpm install` afterwards.
 import { execFileSync } from 'node:child_process';
-import { existsSync, lstatSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, lstatSync, readFileSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createInterface } from 'node:readline/promises';
 import { parseArgs } from 'node:util';
 
@@ -32,6 +33,9 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export function validate({ name, slug, bundleId, scope, easProjectId, sentryDsn }) {
   const errors = [];
   if (!name?.trim()) errors.push('--name is required (the display name, e.g. "Acme Field")');
+  // The name is written into TS and JSON string literals; these characters would break them.
+  if (/['"`\\\n]/.test(name ?? ''))
+    errors.push('--name must not contain quotes, backticks or backslashes');
   if (!SLUG.test(slug ?? '')) errors.push('--slug must be kebab-case, e.g. acme-field');
   if (!BUNDLE_ID.test(bundleId ?? ''))
     errors.push('--bundle-id must be reverse-DNS lowercase, e.g. com.acme.field');
@@ -174,8 +178,9 @@ async function ask(questions) {
   const rl = createInterface({ input: process.stdin, output: process.stdout });
   const answers = {};
   for (const [key, prompt, fallback] of questions) {
-    const answer = (await rl.question(`${prompt}${fallback ? ` (${fallback})` : ''}: `)).trim();
-    answers[key] = answer || fallback?.() || '';
+    const suggestion = fallback?.() ?? '';
+    const answer = (await rl.question(`${prompt}${suggestion ? ` (${suggestion})` : ''}: `)).trim();
+    answers[key] = answer || suggestion;
   }
   rl.close();
   return answers;
@@ -232,7 +237,19 @@ async function main() {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+/** True when this file is the script being run (not imported by the test). */
+function isEntryPoint() {
+  if (!process.argv[1]) return false;
+  // Compare real paths: handles spaces / non-ASCII (percent-encoded in URLs) and symlinked
+  // directories such as macOS /var → /private/var.
+  try {
+    return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+}
+
+if (isEntryPoint()) {
   main().catch((error) => {
     console.error(error.message);
     process.exit(1);

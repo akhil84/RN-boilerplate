@@ -25,7 +25,7 @@ export default defineConfig({
   webServer: {
     command: `pnpm --filter @starter/web exec expo export --platform web --output-dir ../../e2e/web/.dist && node serve.mjs .dist ${PORT}`,
     cwd: __dirname,
-    env: { EXPO_PUBLIC_API_MOCKS: 'true', CI: '1' },
+    env: { EXPO_PUBLIC_API_MOCKS: 'true', EXPO_PUBLIC_APP_VARIANT: 'development', CI: '1' },
     url: `http://localhost:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 300_000,

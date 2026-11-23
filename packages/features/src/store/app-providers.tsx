@@ -2,6 +2,7 @@ import { useEffect, type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import { analytics } from '@starter/config/observability';
 import { ColorSchemeProvider } from '@starter/ui';
 
 import { connectApiClientToSession, restoreSession } from '../auth/auth-service';
@@ -20,6 +21,7 @@ export function getAppStore() {
     appStore = makeStore();
     connectApiClientToSession(appStore.store.dispatch);
     enableApiMocks();
+    analytics.track('app_opened');
   }
   return appStore;
 }

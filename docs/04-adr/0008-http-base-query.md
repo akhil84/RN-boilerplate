@@ -30,3 +30,4 @@ layer for little gain).
 
 - Implemented as decided: bearer token, one shared refresh on 401 (sign-out when it fails), retries via RTK Query `retry` with `retryCondition` (idempotent methods, transient failures only) and exponential backoff, normalised `ApiError`.
 - The refresh call uses `apiRequest` (no auth, no retry) so a failing refresh cannot trigger another refresh. `fetchFn` is injectable (mock mode, tests).
+- Endpoints can pass `extraOptions: { skipReauth: true }` (`ApiExtraOptions`); the auth endpoints do, so a 401 from login / social sign-in / logout is a plain error — never a refresh or sign-out (found in code review: a wrong password ran the sign-out flow).

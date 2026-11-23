@@ -28,3 +28,4 @@ Options: plumbing without provider tie-in; not included; a full setup tied to Ex
 
 - Implemented as decided. Registration prefers an Expo push token (needs the EAS project ID) and falls back to the raw APNs / FCM token; simulators register nothing.
 - Notification taps only open **internal paths** (`/…`); external URLs, `//host` and `javascript:` are ignored (tested). Web is a no-op module, and Settings hides the row.
+- Code review fixes: each notification tap is handled once (the last response survived sign-out / sign-in and reopened its screen every time); a failing permission request is reported instead of becoming an unhandled rejection.

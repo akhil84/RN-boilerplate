@@ -9,9 +9,9 @@ import {
 } from '@starter/api-client';
 import { analytics, setErrorReportingUser } from '@starter/config/observability';
 
-import type { AppDispatch } from '../store/store';
+import type { AppDispatch, RootState } from '../store/store';
 import { authApi } from './auth-api';
-import { sessionEnded, sessionStarted } from './session-slice';
+import { selectSessionStatus, sessionEnded, sessionStarted } from './session-slice';
 import { SocialSignInCancelledError } from './social/errors';
 import { getIdToken } from './social/get-id-token';
 import { tokenStorage } from './token-storage';
@@ -26,10 +26,17 @@ import {
 let refreshTokenInMemory: string | null = null;
 
 /**
+ * Bumped on every sign-in and sign-out. A refresh that started in an older session must not save
+ * its tokens — otherwise a refresh finishing after sign-out would quietly sign the user back in.
+ */
+let sessionEpoch = 0;
+
+/**
  * Exchange the refresh token for new tokens (called by the API client on 401, ADR-0008).
  * Uses a plain request so a failing refresh can never trigger another refresh.
  */
 export async function refreshTokens(): Promise<boolean> {
+  const epoch = sessionEpoch;
   const stored = await tokenStorage.load();
   if (!stored) return false;
 
@@ -46,6 +53,7 @@ export async function refreshTokens(): Promise<boolean> {
     });
     if (!response.ok) return false;
     const tokens = refreshResponseSchema.parse(await response.json());
+    if (epoch !== sessionEpoch) return false; // signed out (or in again) meanwhile
     refreshTokenInMemory = tokens.refreshToken ?? refreshToken;
     await tokenStorage.save({
       accessToken: tokens.accessToken,
@@ -59,6 +67,7 @@ export async function refreshTokens(): Promise<boolean> {
 }
 
 async function startSession(dispatch: AppDispatch, auth: AuthResponse, method: SignInMethod) {
+  sessionEpoch += 1;
   refreshTokenInMemory = auth.refreshToken ?? null;
   await tokenStorage.save({
     accessToken: auth.accessToken,
@@ -76,9 +85,12 @@ export const restoreSession = createAsyncThunk<void, void, { dispatch: AppDispat
   'session/restore',
   async (_, { dispatch }) => {
     const stored = await tokenStorage.load().catch(() => null);
+    if (stored?.accessToken) {
+      refreshTokenInMemory = stored.refreshToken;
+    }
+    // Without an access token, refresh first; refreshTokens() keeps the rotated refresh token.
     const valid = stored && (stored.accessToken || (await refreshTokens()));
     if (stored && valid) {
-      refreshTokenInMemory = stored.refreshToken;
       dispatch(sessionStarted(stored.user));
       setErrorReportingUser(stored.user.id);
     } else {
@@ -140,12 +152,13 @@ export const signInWithProvider = createAsyncThunk<boolean, SocialProvider, Thun
  */
 let signingOut = false;
 
-export const signOut = createAsyncThunk<void, void, { dispatch: AppDispatch }>(
+export const signOut = createAsyncThunk<void, void, { dispatch: AppDispatch; state: RootState }>(
   'session/signOut',
-  async (_, { dispatch }) => {
-    // The logout call can itself get a 401 → failed refresh → onSessionExpired → signOut again.
-    if (signingOut) return;
+  async (_, { dispatch, getState }) => {
+    // Nothing to end (e.g. a stray 401 while signed out), or already ending.
+    if (signingOut || selectSessionStatus(getState()) === 'signedOut') return;
     signingOut = true;
+    sessionEpoch += 1; // any refresh still in flight must not save its tokens
     try {
       analytics.track('sign_out');
       await dispatch(authApi.endpoints.logout.initiate());

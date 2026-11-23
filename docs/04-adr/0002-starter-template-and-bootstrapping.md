@@ -40,3 +40,4 @@ drift), or a manual checklist (identifiers get missed and fail only at store sub
 - Implemented as decided. `pnpm init:project` also takes an optional EAS project ID (written to `apps/mobile/app.config.ts`) and Sentry DSN (written to both apps' `.env`); it skips tracked symlinks (`.claude/skills/*`).
 - Verified by initialising a copy as "Acme Field": all workspaces typecheck and tests pass under `@acme/*`.
 - Manual step: enable **Template repository** in the GitHub repo settings.
+- Code review fixes: the script detects that it is the entry point by comparing real paths (it silently did nothing from paths with spaces or symlinked folders such as macOS `/var`); display names with quotes, backticks or backslashes are rejected (they would break the generated TS/JSON); prompts show suggested values.

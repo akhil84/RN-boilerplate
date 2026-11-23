@@ -5,7 +5,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { getAppVariant } from '@starter/config/env';
-import { analytics } from '@starter/config/observability';
+import { analytics, reportError } from '@starter/config/observability';
 import { Button, MaxContentWidth, Spacing, ThemedText, ThemedView } from '@starter/ui';
 
 import { signOut } from '../auth/auth-service';
@@ -125,6 +125,8 @@ function NotificationsRow() {
     setBusy(true);
     try {
       setPermission(await dispatch(enablePushNotifications()).unwrap());
+    } catch (error) {
+      reportError(error, { flow: 'push-permission' });
     } finally {
       setBusy(false);
     }

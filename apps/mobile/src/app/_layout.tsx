@@ -6,11 +6,12 @@ import { ErrorBoundary, initErrorReporting } from '@starter/config/observability
 import {
   AppProviders,
   configureNotificationHandling,
-  ErrorFallback,
   useScreenTracking,
   useSessionStatus,
 } from '@starter/features';
 import { useColorScheme } from '@starter/ui';
+
+import { StartupSafeErrorFallback } from '@/components/startup-safe-error-fallback';
 
 SplashScreen.preventAutoHideAsync();
 initErrorReporting(); // no-op unless EXPO_PUBLIC_SENTRY_DSN is set
@@ -48,7 +49,7 @@ function RootNavigator() {
 
 export default function RootLayout() {
   return (
-    <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
+    <ErrorBoundary fallback={(props) => <StartupSafeErrorFallback {...props} />}>
       <AppProviders>
         <RootNavigator />
       </AppProviders>

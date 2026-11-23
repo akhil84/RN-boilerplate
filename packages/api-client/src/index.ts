@@ -8,6 +8,7 @@ export {
   getApiBaseUrl,
   resetApiClient,
   type ApiClientConfig,
+  type ApiExtraOptions,
   type AuthAdapter,
 } from './base-query';
 export {

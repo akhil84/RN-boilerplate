@@ -80,7 +80,13 @@ describe('enablePushNotifications', () => {
 });
 
 describe('useNotificationDeepLinks', () => {
-  const tapped = (data: unknown) => ({ notification: { request: { content: { data } } } }) as never;
+  // Each tap gets its own notification id, like real notifications do.
+  let nextId = 0;
+  const tapped = (data: unknown) =>
+    ({
+      actionIdentifier: 'expo.modules.notifications.actions.DEFAULT',
+      notification: { request: { identifier: `n-${(nextId += 1)}`, content: { data } } },
+    }) as never;
 
   beforeEach(() => jest.mocked(router.push).mockClear());
 
@@ -92,6 +98,18 @@ describe('useNotificationDeepLinks', () => {
     await renderHook(() => useNotificationDeepLinks());
 
     expect(router.push).toHaveBeenCalledWith('/settings');
+  });
+
+  it('handles each tap once, even when the signed-in area remounts', async () => {
+    jest
+      .mocked(Notifications.useLastNotificationResponse)
+      .mockReturnValue(tapped({ url: '/settings' }));
+
+    const first = await renderHook(() => useNotificationDeepLinks());
+    await first.unmount();
+    await renderHook(() => useNotificationDeepLinks());
+
+    expect(router.push).toHaveBeenCalledTimes(1);
   });
 
   it('ignores external URLs', async () => {

@@ -614,6 +614,10 @@ Added beyond this record: an in-app mock API (runs without a backend; never in p
 dependency-free static server for Playwright, `pnpm init:project` options for the EAS project ID
 and Sentry DSN, and guides for CI, Electron, analytics adapters and enterprise SSO.
 
-Verified: `pnpm verify` (199 Jest + 10 script tests), Playwright in Chromium and WebKit, Maestro
+A high-effort code review of the branch found 13 issues (auth/session races, mocks reachable in
+production, notification and One Tap edge cases, init-script robustness); all were fixed with
+tests.
+
+Verified: `pnpm verify` (218 Jest + 12 script tests), Playwright in Chromium and WebKit, Maestro
 smoke flows on an Android 17 emulator (release build). Not yet verified: iOS (needs full Xcode),
 push and OTA end to end (need an EAS project and credentials), Firefox (sandbox limitation).

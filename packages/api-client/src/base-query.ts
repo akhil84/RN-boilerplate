@@ -34,6 +34,12 @@ export type ApiClientConfig = {
 
 const DEFAULTS = { maxRetries: 2, retryDelayMs: 500 };
 
+/** Per-endpoint options, passed as `extraOptions` in an endpoint definition. */
+export type ApiExtraOptions = {
+  /** Treat a 401 as a plain error: no token refresh, no session-expired sign-out. */
+  skipReauth?: boolean;
+};
+
 let config: ApiClientConfig = {};
 
 /** Merge settings into the client config. Unset values fall back to env / defaults. */
@@ -93,8 +99,11 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 ) => {
   let result = await rawBaseQuery(args, api, extraOptions);
   const auth = config.auth;
+  // Auth endpoints (login, social sign-in, logout) opt out: their 401 means "wrong credentials",
+  // not "session expired", and must never trigger a refresh or a sign-out.
+  const skipReauth = (extraOptions as ApiExtraOptions | undefined)?.skipReauth === true;
 
-  if (result.error?.status === 401 && auth) {
+  if (result.error?.status === 401 && auth && !skipReauth) {
     const refreshed = await refreshOnce(auth).catch(() => false);
     if (refreshed) {
       result = await rawBaseQuery(args, api, extraOptions);

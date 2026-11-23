@@ -62,8 +62,9 @@ Both are wired but inactive until the project is connected to EAS:
 3. Point `DEVICES_PATH` (`packages/features/src/notifications/devices-api.ts`) at your backend.
    Users opt in from Settings; notification taps open `data.url` (internal paths only).
 
-Publishing an update: `pnpm dlx eas-cli update --channel <development|preview|production>` from
-`apps/mobile`, then `pnpm sentry:upload-update` if Sentry is set up (builds upload their source maps
+Publishing an update, from `apps/mobile` — always set the variant and environment to match the
+channel, or the update is built with development config (dev bundle ID, mocks on):
+`APP_VARIANT=<variant> EXPO_PUBLIC_APP_VARIANT=<variant> pnpm dlx eas-cli update --channel <variant> --environment <variant>`, then `pnpm sentry:upload-update` if Sentry is set up (builds upload their source maps
 automatically; updates need this step). Agents print these commands; they never run them.
 
 ## Error reporting (Sentry, optional)

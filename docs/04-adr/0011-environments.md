@@ -37,3 +37,4 @@ environment switch (ships non-production URLs in production, no side-by-side ins
 
 - Implemented as decided. Public defaults are committed in `apps/*/.env` (mock mode on); `.env.local` overrides; variant via `APP_VARIANT` → `extra.appVariant`. URL schemes are per variant (`starterapp`, `starterapp-dev`, `starterapp-preview`).
 - Since SDK 58 only `.env`, `.env.local`, `.env.<NODE_ENV>` and `.env.<NODE_ENV>.local` are loaded, so variants are not driven by env file names.
+- **Variant detection fixed (code review):** `extra.appVariant` is not embedded in web exports, so web builds always reported `development` — production web would have run with mocks on. The variant now comes from `EXPO_PUBLIC_APP_VARIANT` (inlined at build; set by the web `export` script, the EAS profiles and the OTA command), then `extra.appVariant`, and **fails closed to `production`** in non-development builds.

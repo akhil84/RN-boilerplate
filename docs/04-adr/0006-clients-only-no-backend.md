@@ -25,3 +25,4 @@ environment variables, which each project points at its own backend.
 ## Implementation notes (2026-11-23)
 
 - Added an in-app **mock API** (`createMockFetch` in `@starter/api-client`, handlers in `packages/features/src/mocks`) so the starter, tests and E2E run without a backend. Enabled by `EXPO_PUBLIC_API_MOCKS` (committed default `true`), always ignored in production builds. Demo login: any email, password `password`.
+- Mocks can no longer reach production: the variant check fails closed (see ADR-0011), the web `export` script defaults to production, and the OTA command sets the variant explicitly (ADR-0018).

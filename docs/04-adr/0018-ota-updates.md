@@ -30,3 +30,4 @@ minimum version).
 
 - Implemented as decided. Updates stay **disabled until `EAS_PROJECT_ID` is set** (`updates.enabled: false`), since a starter has no EAS project.
 - After `eas update`, upload the update's source maps with `pnpm sentry:upload-update` (ADR-0013).
+- The OTA command must set the variant: `APP_VARIANT=production EXPO_PUBLIC_APP_VARIANT=production pnpm dlx eas-cli update --channel production --environment production` — without it the update is built with development config (code review).

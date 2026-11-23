@@ -85,3 +85,26 @@ describe('<SettingsScreen /> notifications', () => {
     expect(requestPermissionsAsync).toHaveBeenCalledTimes(1);
   });
 });
+
+describe('<SettingsScreen /> notifications errors', () => {
+  beforeEach(() => setupMockApi());
+
+  it('reports a failing permission request instead of leaving it unhandled', async () => {
+    const { requestPermissionsAsync } = jest.requireMock('expo-notifications');
+    requestPermissionsAsync.mockRejectedValueOnce(new Error('native module unavailable'));
+    const { captureException } = jest.requireMock('@sentry/react-native');
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    const user = userEvent.setup();
+    await renderWithProviders(<SettingsScreen />, { store: makeConnectedStore() });
+
+    await user.press(await screen.findByRole('button', { name: 'Turn on notifications' }));
+
+    expect(await screen.findByRole('button', { name: 'Turn on notifications' })).toBeEnabled();
+    expect(console.error).toHaveBeenCalledWith(
+      '[reportError]',
+      expect.objectContaining({ message: 'native module unavailable' }),
+      { flow: 'push-permission' },
+    );
+    expect(captureException).not.toHaveBeenCalled(); // Sentry is off without a DSN
+  });
+});

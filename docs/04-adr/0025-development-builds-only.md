@@ -27,3 +27,4 @@ and Expo Go differs from what ships).
 
 - Implemented as decided (`expo-dev-client`, `development` and `development-simulator` EAS profiles, `ios` / `android` scripts run `expo run:*`).
 - First local Android release build ≈ 12 min; with `ORG_GRADLE_PROJECT_reactNativeArchitectures=arm64-v8a` incremental builds take seconds to ~2 min (README).
+- The mobile root error fallback hides the splash screen, so an error during startup is visible instead of a splash that never goes away (code review).

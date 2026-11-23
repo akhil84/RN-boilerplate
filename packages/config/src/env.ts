@@ -110,11 +110,20 @@ export const APP_VARIANTS = ['development', 'preview', 'production'] as const;
 export type AppVariant = (typeof APP_VARIANTS)[number];
 
 /**
- * The build variant, set by `APP_VARIANT` in app.config.ts and exposed through `extra.appVariant`.
+ * The build variant (development | preview | production).
+ *
+ * Read from `EXPO_PUBLIC_APP_VARIANT` (inlined at build time — the only source that reaches web
+ * exports), then from `extra.appVariant` set by app.config.ts (native builds and updates).
+ * Fails closed: when neither gives a known variant outside a development build, assume production,
+ * so production-only safety switches (e.g. mocks off) cannot be skipped by a misconfigured build.
  */
 export function getAppVariant(
   extra: Record<string, unknown> | undefined = Constants.expoConfig?.extra,
+  isDevBuild: boolean = __DEV__,
+  envVariant: string | undefined = process.env.EXPO_PUBLIC_APP_VARIANT,
 ): AppVariant {
-  const value = extra?.appVariant;
-  return APP_VARIANTS.find((variant) => variant === value) ?? 'development';
+  const known = (value: unknown) => APP_VARIANTS.find((variant) => variant === value);
+  return (
+    known(envVariant) ?? known(extra?.appVariant) ?? (isDevBuild ? 'development' : 'production')
+  );
 }
