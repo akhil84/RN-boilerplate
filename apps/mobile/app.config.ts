@@ -1,0 +1,125 @@
+import type { ConfigContext, ExpoConfig } from 'expo/config';
+
+/**
+ * App variants (ADR-0011): development, preview and production install side by side, each with
+ * its own bundle ID and name. `APP_VARIANT` comes from the EAS build profile (eas.json) or the
+ * shell (`APP_VARIANT=preview pnpm mobile`); it defaults to development.
+ */
+const VARIANTS = {
+  development: { idSuffix: '.dev', nameSuffix: ' (Dev)' },
+  preview: { idSuffix: '.preview', nameSuffix: ' (Preview)' },
+  production: { idSuffix: '', nameSuffix: '' },
+} as const;
+
+type Variant = keyof typeof VARIANTS;
+
+const APP_NAME = 'Starter App';
+const BUNDLE_ID = 'com.example.starterapp';
+
+/**
+ * EAS project ID — written by `pnpm init:project`, or paste the ID `eas init` prints. Needed for
+ * EAS Update and Expo push tokens; until it is set, OTA updates are switched off (ADR-0018).
+ */
+const EAS_PROJECT_ID = process.env.EAS_PROJECT_ID ?? '';
+
+/**
+ * Sentry's config plugin uploads source maps during release builds, which fails without
+ * credentials — so it is only added when the project has configured Sentry (ADR-0013).
+ * Set SENTRY_ORG and SENTRY_PROJECT (and SENTRY_AUTH_TOKEN as a secret) in EAS environment
+ * variables to enable it.
+ */
+function sentryPlugin(): [string, { organization: string; project: string }][] {
+  const organization = process.env.SENTRY_ORG;
+  const project = process.env.SENTRY_PROJECT;
+  return organization && project ? [['@sentry/react-native/expo', { organization, project }]] : [];
+}
+
+/**
+ * Social sign-in native config (ADR-0016), added only when configured so unconfigured projects
+ * build without Google / Apple setup:
+ * - Google: the plugin registers the reversed iOS client ID as a URL scheme.
+ * - Apple: turns on the Sign in with Apple capability (iOS only).
+ */
+function googleSignInPlugin(): [string, { iosUrlScheme: string }][] {
+  const iosClientId = process.env.EXPO_PUBLIC_GOOGLE_IOS_CLIENT_ID;
+  if (!iosClientId) return [];
+  const iosUrlScheme = `com.googleusercontent.apps.${iosClientId.replace('.apps.googleusercontent.com', '')}`;
+  return [['@react-native-google-signin/google-signin', { iosUrlScheme }]];
+}
+
+const appleSignInEnabled = process.env.EXPO_PUBLIC_APPLE_SIGN_IN === 'true';
+
+function resolveVariant(value: string | undefined): Variant {
+  if (value && value in VARIANTS) return value as Variant;
+  return 'development';
+}
+
+export default ({ config }: ConfigContext): ExpoConfig => {
+  const appVariant = resolveVariant(process.env.APP_VARIANT);
+  const { idSuffix, nameSuffix } = VARIANTS[appVariant];
+  const bundleId = `${BUNDLE_ID}${idSuffix}`;
+
+  return {
+    ...config,
+    name: `${APP_NAME}${nameSuffix}`,
+    slug: 'starter-app',
+    version: '1.0.0',
+    orientation: 'portrait',
+    icon: './assets/images/icon.png',
+    scheme: `starterapp${idSuffix.replace('.', '-')}`,
+    userInterfaceStyle: 'automatic',
+    platforms: ['ios', 'android'],
+    // OTA updates only reach builds whose native code matches (ADR-0018).
+    runtimeVersion: { policy: 'fingerprint' },
+    updates: EAS_PROJECT_ID
+      ? {
+          url: `https://u.expo.dev/${EAS_PROJECT_ID}`,
+          // Check on launch; a downloaded update applies on the next cold start.
+          checkAutomatically: 'ON_LOAD',
+          fallbackToCacheTimeout: 0,
+        }
+      : { enabled: false },
+    ios: {
+      icon: './assets/expo.icon',
+      bundleIdentifier: bundleId,
+      usesAppleSignIn: appleSignInEnabled,
+    },
+    android: {
+      adaptiveIcon: {
+        backgroundColor: '#E6F4FE',
+        foregroundImage: './assets/images/android-icon-foreground.png',
+        backgroundImage: './assets/images/android-icon-background.png',
+        monochromeImage: './assets/images/android-icon-monochrome.png',
+      },
+      predictiveBackGestureEnabled: false,
+      package: bundleId,
+      // FCM credentials for push (ADR-0019): an EAS file environment variable or a local path.
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
+    },
+    plugins: [
+      'expo-router',
+      [
+        'expo-splash-screen',
+        {
+          backgroundColor: '#208AEF',
+          image: './assets/images/splash-icon.png',
+          imageWidth: 76,
+        },
+      ],
+      'expo-localization',
+      'expo-secure-store',
+      'expo-notifications',
+      ...(appleSignInEnabled ? ['expo-apple-authentication'] : []),
+      ...googleSignInPlugin(),
+      ...sentryPlugin(),
+    ],
+    experiments: {
+      typedRoutes: true,
+      reactCompiler: true,
+    },
+    extra: {
+      appVariant,
+      ...(EAS_PROJECT_ID ? { eas: { projectId: EAS_PROJECT_ID } } : {}),
+    },
+  };
+};

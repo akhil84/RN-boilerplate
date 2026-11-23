@@ -1,0 +1,48 @@
+{
+  "name": "@starter/web",
+  "version": "1.0.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start --web",
+    "export": "APP_VARIANT=${APP_VARIANT:-production} EXPO_PUBLIC_APP_VARIANT=${APP_VARIANT:-production} expo export --platform web",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "expo:doctor": "pnpm dlx expo-doctor"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "catalog:",
+    "@react-native-community/netinfo": "catalog:",
+    "@sentry/react-native": "catalog:",
+    "@starter/features": "workspace:*",
+    "@starter/ui": "workspace:*",
+    "expo": "catalog:",
+    "expo-constants": "catalog:",
+    "expo-linking": "catalog:",
+    "expo-localization": "catalog:",
+    "expo-router": "catalog:",
+    "expo-status-bar": "catalog:",
+    "i18next": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-i18next": "catalog:",
+    "react-native": "catalog:",
+    "react-native-gesture-handler": "catalog:",
+    "react-native-reanimated": "catalog:",
+    "react-native-safe-area-context": "catalog:",
+    "react-native-screens": "catalog:",
+    "react-native-web": "catalog:",
+    "react-native-worklets": "catalog:"
+  },
+  "devDependencies": {
+    "@starter/config": "workspace:*",
+    "@testing-library/react-native": "catalog:",
+    "@types/jest": "catalog:",
+    "@types/react": "catalog:",
+    "eslint": "catalog:",
+    "jest": "catalog:",
+    "jest-expo": "catalog:",
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,68 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Flat node_modules: the safest layout for Metro, autolinking and native build scripts (ADR-0004).
+nodeLinker: hoisted
+
+# pnpm runs dependency build scripts only when listed here. @parcel/watcher ships prebuilt
+# binaries; its script is a from-source fallback we do not need.
+allowBuilds:
+  '@parcel/watcher': false
+  # lefthook's postinstall only runs `lefthook install`; the root `prepare` script does that.
+  lefthook: false
+  # Installs the sentry-cli binary used to upload source maps during builds (ADR-0013).
+  '@sentry/cli': true
+
+# Required peers of react-native-drawer-layout (used by expo-router) are pinned here and declared by
+# both apps, so pnpm does not auto-install newer, SDK-incompatible native versions.
+# Single source of truth for versions shared across workspaces. Expo does not support more than
+# one React Native version per monorepo, and duplicate React versions break the app at runtime.
+# Bump Expo-managed versions with `pnpm --filter @starter/mobile exec expo install --fix`, then
+# copy the result here.
+catalog:
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-worklets: 0.13.0
+  expo-symbols: ~58.0.5
+  '@playwright/test': ^1.65.1
+  expo-dev-client: ~58.0.21
+  expo-device: ~58.0.5
+  expo-notifications: ~58.1.9
+  expo-updates: ~58.0.22
+  '@react-native-google-signin/google-signin': ^17.0.0
+  expo-apple-authentication: ~58.0.3
+  expo-secure-store: ~58.0.3
+  '@sentry/react-native': ~8.28.1
+  expo-localization: ~58.0.5
+  i18next: ^27.2.3
+  react-i18next: ^18.0.3
+  '@react-native-async-storage/async-storage': 2.2.0
+  '@react-native-community/netinfo': 12.0.1
+  '@reduxjs/toolkit': ^2.15.0
+  react-redux: ^9.3.1
+  redux-persist: ^6.0.0
+  zod: ^4.6.7
+  expo: ~58.0.26
+  expo-constants: ~58.0.16
+  expo-linking: ~58.0.17
+  expo-router: ~58.0.32
+  expo-splash-screen: ~58.0.14
+  expo-status-bar: ~58.0.5
+  expo-system-ui: ~58.0.7
+  react: 19.3.0
+  react-dom: 19.3.0
+  react-native: 0.88.1
+  react-native-safe-area-context: ~5.11.1
+  react-native-screens: ~4.30.1
+  react-native-web: ~0.21.4
+  '@types/react': ~19.3.0
+  '@types/jest': 30.0.0
+  '@testing-library/react-native': ^14.1.0
+  eslint: ^9.39.5
+  eslint-config-expo: ~58.0.4
+  eslint-config-prettier: ^10.1.8
+  jest: ~30.5.2
+  jest-expo: ~58.0.15
+  prettier: ^3.10.1
+  typescript: ~6.0.3

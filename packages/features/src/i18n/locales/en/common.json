@@ -1,0 +1,13 @@
+{
+  "appName": "Starter App",
+  "tabs": {
+    "home": "Home",
+    "settings": "Settings"
+  },
+  "errors": {
+    "title": "Something went wrong",
+    "body": "The error has been reported. Try again, and if it keeps happening, restart the app.",
+    "retry": "Try again"
+  },
+  "menu": "Menu"
+}

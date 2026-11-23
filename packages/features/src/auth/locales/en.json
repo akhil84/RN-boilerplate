@@ -1,0 +1,17 @@
+{
+  "title": "Sign in",
+  "subtitle": "Welcome back. Sign in to continue.",
+  "email": "Email",
+  "password": "Password",
+  "submit": "Sign in",
+  "orContinueWith": "or",
+  "continueWithGoogle": "Continue with Google",
+  "continueWithApple": "Continue with Apple",
+  "demoHint": "Demo mode: use any email with the password “password”.",
+  "errors": {
+    "emailInvalid": "Enter a valid email address.",
+    "passwordRequired": "Enter your password.",
+    "generic": "Sign-in failed. Check your connection and try again.",
+    "socialFailed": "Couldn’t sign in with {{provider}}. Try again."
+  }
+}

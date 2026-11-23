@@ -23,12 +23,16 @@ flowchart LR
 
 ## Components
 
-<!-- Reuse from src/components first. New shared components go in src/components/ui. -->
+<!-- Reuse @starter/ui (Button, TextField, ThemedText/View, tokens) first. New shared components go in packages/ui/src/components. -->
+
+## Web layout
+
+<!-- Platforms web/both: how the screen sits in the web shell (sidebar ≥ 768px, menu below). Same testIDs. -->
 
 ## Copy
 
-| Key | Text |
-| --- | ---- |
+| i18n key (`<feature>:<key>`) | Text |
+| ---------------------------- | ---- |
 
 ## Accessibility
 

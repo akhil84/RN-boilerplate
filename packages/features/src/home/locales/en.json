@@ -1,0 +1,8 @@
+{
+  "title": "Starter App",
+  "greeting": "Hi {{name}}",
+  "loading": "Loading items…",
+  "empty": "Nothing here yet.",
+  "error": "Couldn’t load items.",
+  "retry": "Try again"
+}

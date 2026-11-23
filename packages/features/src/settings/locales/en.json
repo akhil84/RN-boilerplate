@@ -1,0 +1,23 @@
+{
+  "title": "Settings",
+  "appearance": "Appearance",
+  "language": "Language",
+  "theme": {
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "languages": {
+    "system": "System",
+    "en": "English"
+  },
+  "about": "About",
+  "version": "Version {{version}} · {{variant}}",
+  "signOut": "Sign out",
+  "notifications": {
+    "title": "Notifications",
+    "enable": "Turn on notifications",
+    "on": "Notifications are on.",
+    "denied": "Notifications are off. Turn them on in your device settings."
+  }
+}

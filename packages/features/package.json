@@ -1,0 +1,83 @@
+{
+  "name": "@starter/features",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Feature screens and logic shared by apps/mobile and apps/web.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./test-utils": "./src/test-utils.tsx"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "catalog:",
+    "@starter/api-client": "workspace:*",
+    "@starter/config": "workspace:*",
+    "@starter/ui": "workspace:*",
+    "i18next": "catalog:",
+    "react-i18next": "catalog:",
+    "react-redux": "catalog:",
+    "redux-persist": "catalog:",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@react-native-async-storage/async-storage": "*",
+    "@react-native-community/netinfo": "*",
+    "@react-native-google-signin/google-signin": "*",
+    "expo-apple-authentication": "*",
+    "expo-constants": "*",
+    "expo-device": "*",
+    "expo-localization": "*",
+    "expo-notifications": "*",
+    "expo-router": "*",
+    "expo-secure-store": "*",
+    "react": "*",
+    "react-native": "*",
+    "react-native-safe-area-context": "*"
+  },
+  "devDependencies": {
+    "@react-native-async-storage/async-storage": "catalog:",
+    "@react-native-community/netinfo": "catalog:",
+    "@react-native-google-signin/google-signin": "catalog:",
+    "@testing-library/react-native": "catalog:",
+    "@types/jest": "catalog:",
+    "@types/react": "catalog:",
+    "eslint": "catalog:",
+    "expo": "catalog:",
+    "expo-apple-authentication": "catalog:",
+    "expo-constants": "catalog:",
+    "expo-device": "catalog:",
+    "expo-localization": "catalog:",
+    "expo-notifications": "catalog:",
+    "expo-router": "catalog:",
+    "expo-secure-store": "catalog:",
+    "jest": "catalog:",
+    "jest-expo": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-native": "catalog:",
+    "react-native-safe-area-context": "catalog:",
+    "react-native-web": "catalog:",
+    "typescript": "catalog:"
+  },
+  "peerDependenciesMeta": {
+    "@react-native-google-signin/google-signin": {
+      "optional": true
+    },
+    "expo-apple-authentication": {
+      "optional": true
+    },
+    "expo-secure-store": {
+      "optional": true
+    },
+    "expo-device": {
+      "optional": true
+    },
+    "expo-notifications": {
+      "optional": true
+    }
+  }
+}

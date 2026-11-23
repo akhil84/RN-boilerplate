@@ -1,0 +1,18 @@
+# Shared sub-flow: sign in with the mock backend's demo credentials and wait for Home.
+# Needs a build with EXPO_PUBLIC_API_MOCKS=true (the committed .env default).
+appId: ${APP_ID || 'com.example.starterapp.dev'}
+---
+- tapOn:
+    id: 'sign-in-email'
+- inputText: 'demo@example.com'
+- tapOn:
+    id: 'sign-in-password'
+- inputText: 'password'
+# The keyboard can cover the submit button on small screens.
+- hideKeyboard
+- tapOn:
+    id: 'sign-in-submit'
+- extendedWaitUntil:
+    visible:
+      id: 'home-title'
+    timeout: 10000
