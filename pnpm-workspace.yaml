@@ -21,6 +21,7 @@ allowBuilds:
 # Bump Expo-managed versions with `pnpm --filter @starter/mobile exec expo install --fix`, then
 # copy the result here.
 catalog:
+  redux-devtools-expo-dev-plugin: ^2.0.0
   react-native-gesture-handler: ~3.3.0
   react-native-reanimated: 4.7.1
   react-native-worklets: 0.13.0

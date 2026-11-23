@@ -61,3 +61,10 @@ jest.mock('expo-notifications', () => ({
   AndroidImportance: { DEFAULT: 5, MAX: 7 },
 }));
 jest.mock('expo-device', () => ({ isDevice: true }));
+
+// Redux DevTools (Expo dev plugin): never connect from tests.
+jest.mock('redux-devtools-expo-dev-plugin', () => ({
+  __esModule: true,
+  default: () => (next) => next,
+  composeWithDevTools: (...funcs) => funcs[0],
+}));

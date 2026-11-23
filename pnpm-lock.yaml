@@ -344,6 +344,9 @@ catalogs:
     react-redux:
       specifier: ^9.3.1
       version: 9.3.1
+    redux-devtools-expo-dev-plugin:
+      specifier: ^2.0.0
+      version: 2.0.0
     redux-persist:
       specifier: ^6.0.0
       version: 6.0.0
@@ -692,6 +695,9 @@ importers:
       react-redux:
         specifier: 'catalog:'
         version: 9.3.1(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1)
+      redux-devtools-expo-dev-plugin:
+        specifier: 'catalog:'
+        version: 2.0.0(@expo/dom-webview@58.0.2)(@expo/log-box@58.0.15)(@expo/metro-runtime@58.0.17)(@redux-devtools/core@4.1.1(react-redux@9.3.1(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1))(react@19.3.0)(redux@5.0.1))(expo-constants@58.0.16)(expo-font@58.0.12)(expo-linking@58.0.17)(expo-router@58.0.32)(expo-symbols@58.0.5)(expo@58.0.26)(immutable@4.3.9)(react-native-worklets@0.13.0(@babel/core@7.29.13(supports-color@8.1.1))(@react-native/metro-config@0.88.1(@babel/core@7.29.13(supports-color@8.1.1))(supports-color@8.1.1))(react-native@0.88.1(@babel/core@7.29.13(supports-color@8.1.1))(@react-native/metro-config@0.88.1(@babel/core@7.29.13(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)(supports-color@8.1.1))(redux@5.0.1)
       redux-persist:
         specifier: 'catalog:'
         version: 6.0.0(react@19.3.0)(redux@5.0.1)
@@ -2160,6 +2166,30 @@ packages:
       '@types/react':
         optional: true
 
+  '@redux-devtools/core@4.1.1':
+    resolution: {integrity: sha512-ZyyJwiHX4DFDU0llk45tYSFPoIMekdoKLz0Q7soowpNOtchvTxruQx4Xy//Cohkwsw+DH8W1amdo4C/NYT6ARA==}
+    peerDependencies:
+      react: ^16.8.4 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-redux: ^7.0.0 || ^8.0.0 || ^9.0.0
+      redux: ^3.5.2 || ^4.0.0 || ^5.0.0
+
+  '@redux-devtools/instrument@2.2.0':
+    resolution: {integrity: sha512-HKaL+ghBQ4ZQkM/kEQIKx8dNwz4E1oeiCDfdQlpPXxEi/BrisyrFFncAXb1y2HIJsLV9zSvQUR2jRtMDWgfi8w==}
+    peerDependencies:
+      redux: ^3.4.0 || ^4.0.0 || ^5.0.0
+
+  '@redux-devtools/serialize@0.4.2':
+    resolution: {integrity: sha512-YVqZCChJld5l3Ni2psEZ5loe9x5xpf9J4ckz+7OJdzCNsplC7vzjnkQbFxE6+ULZbywRVp+nSBslTXmaXqAw4A==}
+    peerDependencies:
+      immutable: ^4.0.0
+
+  '@redux-devtools/utils@3.1.1':
+    resolution: {integrity: sha512-l+m3/8a7lcxULInBADIqE/3Tt2DkTJm5MAGVA/4czMCXW0VE+gdjkoRFqgZhTBoDJW1fi1z8pdL+4G/+R1rDJw==}
+    peerDependencies:
+      '@redux-devtools/core': ^4.1.1
+      immutable: ^4.3.7
+      redux: ^4.0.0 || ^5.0.0
+
   '@reduxjs/toolkit@2.15.0':
     resolution: {integrity: sha512-tHrFdR/AAbhhnL0/D3Abu60mAeyRqMAaq3pMeIKWRFWpzZek9LbGKk9J2U+Cl43FixzEDaYKk3zUoK7sFl98FA==}
     peerDependencies:
@@ -2437,6 +2467,9 @@ packages:
 
   '@types/estree@1.0.10':
     resolution: {integrity: sha512-lTyOMnOcmRBzdCv6/4zUZCrEhV0xrqQiUZBZtVcbmLHBXKLnN8q89v/wKRF/Q0HbwVsqbIG3o5HDoFl9sduM+g==}
+
+  '@types/get-params@0.1.2':
+    resolution: {integrity: sha512-ujqPyr1UDsOTDngJPV+WFbR0iHT5AfZKlNPMX6XOCnQcMhEqR+r64dVC/nwYCitqjR3DcpWofnOEAInUQmI/eA==}
 
   '@types/graceful-fs@4.1.9':
     resolution: {integrity: sha512-olP3sd1qOEe5dXTSaFvQG+02VdRXcdytWLAZsAq1PecU8uqQAhkrnbli7DagjtXKW/Bl7YJbUsa8MPcuc8LHEQ==}
@@ -3870,6 +3903,9 @@ packages:
     resolution: {integrity: sha512-pjzuKtY64GYfWizNAJ0fr9VqttZkNiK2iS430LtIHzjBEr6bX8Am2zm4sW4Ro5wjWW5cAlRL1qAMTcXbjNAO2Q==}
     engines: {node: '>=8.0.0'}
 
+  get-params@0.1.2:
+    resolution: {integrity: sha512-41eOxtlGgHQRbFyA8KTH+w+32Em3cRdfBud7j67ulzmIfmaHX9doq47s0fa4P5o9H64BZX9nrYI6sJvk46Op+Q==}
+
   get-proto@1.0.1:
     resolution: {integrity: sha512-sTSfBjoXBp89JvIKIefqw7U2CCebsc74kiY6awiGogKtoSGbgjYE/G/+l9sF3MWFPNc9IcoOC4ODfKHfxFmp0g==}
     engines: {node: '>= 0.4'}
@@ -4027,6 +4063,9 @@ packages:
 
   immer@11.2.10:
     resolution: {integrity: sha512-pzANBj+0A9u+prdhBJ14DVi44vCvVUQzBa8DKt6I0AMCokPHtt722BK9IX5bFC70xUSU9TnzLRIJLTGqIzjEFw==}
+
+  immutable@4.3.9:
+    resolution: {integrity: sha512-ObHy4YN7ycwZOUCLI1/6svfyAFu7vL8RhAvVu/bh/RZW9EPlOyDaQ9jDQWCtdqzaXUjgXZCW1migtHE7YI7UGQ==}
 
   import-fresh@3.3.1:
     resolution: {integrity: sha512-TR3KfrTZTYLPB6jUjfx6MF9WcWrHL9su5TObK4ZkYgBdWKPOFoSoQIdEuTuR82pmtxH2spWG9h6etwfr1pLBqQ==}
@@ -4438,6 +4477,9 @@ packages:
   js-yaml@4.3.2:
     resolution: {integrity: sha512-SFNOvSJ+Dgf/9An904Yx+CgSlIPCkIpao4qo51lpee25TIRejdH3rhR4EZMGoNx3/TP3O+wzWuiTFl4sqbltzA==}
     hasBin: true
+
+  jsan@3.1.14:
+    resolution: {integrity: sha512-wStfgOJqMv4QKktuH273f5fyi3D3vy2pHOiSDGPvpcS/q+wb/M7AK3vkCcaHbkZxDOlDU/lDJgccygKSG2OhtA==}
 
   jsc-safe-url@0.2.4:
     resolution: {integrity: sha512-0wM3YBWtYePOjfyXQH5MWQ8H7sdk5EXSwZvmSLKk2RboVQ2Bu239jycHDz5J/8Blf3K0Qnoy2b6xD+z10MFB+Q==}
@@ -4890,6 +4932,11 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  nanoid@5.1.16:
+    resolution: {integrity: sha512-kVrnsrJqMR8+oLJnGEmSWw9BivK5mt7H3FZatVRjrc5wGqFYuBxX1yG7+A7Gi5AefkX6t/oCkizcQgpu0cY1dQ==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+
   napi-postinstall@0.3.8:
     resolution: {integrity: sha512-dHbDC5V1g/EI8OLEtL4Iuwbu0fgzmyykxenn2KnlsX9XdhTXL3gWnfbbP+ab+oUcgV6CFpb8QGyQt/ZXA0UXig==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
@@ -5336,6 +5383,12 @@ packages:
   redent@3.0.0:
     resolution: {integrity: sha512-6tDA8g98We0zd0GvVeMT9arEOnTw9qM03L9cJXaCjrip1OO764RDBLBfrB4cwzNGDj5OA5ioymC9GkizgWJDUg==}
     engines: {node: '>=8'}
+
+  redux-devtools-expo-dev-plugin@2.0.0:
+    resolution: {integrity: sha512-Oipyxpsb6GibKu+VWWrArS+FF+oltUjf2ZW6lETs5h6jIXSqAEKzkgEHqkrauKGmeSyjbo2w3vedJJUbebCsqQ==}
+    peerDependencies:
+      expo: '>=53'
+      redux: '*'
 
   redux-persist@6.0.0:
     resolution: {integrity: sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==}
@@ -7857,6 +7910,38 @@ snapshots:
     optionalDependencies:
       '@types/react': 19.3.0
 
+  '@redux-devtools/core@4.1.1(react-redux@9.3.1(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1))(react@19.3.0)(redux@5.0.1)':
+    dependencies:
+      '@babel/runtime': 7.29.15
+      '@redux-devtools/instrument': 2.2.0(redux@5.0.1)
+      react: 19.3.0
+      react-redux: 9.3.1(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1)
+      redux: 5.0.1
+
+  '@redux-devtools/instrument@2.2.0(redux@5.0.1)':
+    dependencies:
+      '@babel/runtime': 7.29.15
+      lodash: 4.18.1
+      redux: 5.0.1
+
+  '@redux-devtools/serialize@0.4.2(immutable@4.3.9)':
+    dependencies:
+      '@babel/runtime': 7.29.15
+      immutable: 4.3.9
+      jsan: 3.1.14
+
+  '@redux-devtools/utils@3.1.1(@redux-devtools/core@4.1.1(react-redux@9.3.1(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1))(react@19.3.0)(redux@5.0.1))(immutable@4.3.9)(redux@5.0.1)':
+    dependencies:
+      '@babel/runtime': 7.29.15
+      '@redux-devtools/core': 4.1.1(react-redux@9.3.1(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1))(react@19.3.0)(redux@5.0.1)
+      '@redux-devtools/serialize': 0.4.2(immutable@4.3.9)
+      '@types/get-params': 0.1.2
+      get-params: 0.1.2
+      immutable: 4.3.9
+      jsan: 3.1.14
+      nanoid: 5.1.16
+      redux: 5.0.1
+
   '@reduxjs/toolkit@2.15.0(@types/react@19.3.0)(react-redux@9.3.1(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1))(react@19.3.0)':
     dependencies:
       '@standard-schema/spec': 1.1.0
@@ -8109,6 +8194,8 @@ snapshots:
       '@babel/types': 7.29.15
 
   '@types/estree@1.0.10': {}
+
+  '@types/get-params@0.1.2': {}
 
   '@types/graceful-fs@4.1.9':
     dependencies:
@@ -10045,6 +10132,8 @@ snapshots:
 
   get-package-type@0.1.0: {}
 
+  get-params@0.1.2: {}
+
   get-proto@1.0.1:
     dependencies:
       dunder-proto: 1.0.1
@@ -10199,6 +10288,8 @@ snapshots:
   ignore@7.0.16: {}
 
   immer@11.2.10: {}
+
+  immutable@4.3.9: {}
 
   import-fresh@3.3.1:
     dependencies:
@@ -10889,6 +10980,8 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
+  jsan@3.1.14: {}
+
   jsc-safe-url@0.2.4: {}
 
   jsdom@26.1.0(supports-color@8.1.1):
@@ -11498,6 +11591,8 @@ snapshots:
 
   nanoid@3.3.20: {}
 
+  nanoid@5.1.16: {}
+
   napi-postinstall@0.3.8: {}
 
   natural-compare@1.4.0: {}
@@ -11984,6 +12079,26 @@ snapshots:
     dependencies:
       indent-string: 4.0.0
       strip-indent: 3.0.0
+
+  redux-devtools-expo-dev-plugin@2.0.0(@expo/dom-webview@58.0.2)(@expo/log-box@58.0.15)(@expo/metro-runtime@58.0.17)(@redux-devtools/core@4.1.1(react-redux@9.3.1(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1))(react@19.3.0)(redux@5.0.1))(expo-constants@58.0.16)(expo-font@58.0.12)(expo-linking@58.0.17)(expo-router@58.0.32)(expo-symbols@58.0.5)(expo@58.0.26)(immutable@4.3.9)(react-native-worklets@0.13.0(@babel/core@7.29.13(supports-color@8.1.1))(@react-native/metro-config@0.88.1(@babel/core@7.29.13(supports-color@8.1.1))(supports-color@8.1.1))(react-native@0.88.1(@babel/core@7.29.13(supports-color@8.1.1))(@react-native/metro-config@0.88.1(@babel/core@7.29.13(supports-color@8.1.1))(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)(supports-color@8.1.1))(redux@5.0.1):
+    dependencies:
+      '@redux-devtools/instrument': 2.2.0(redux@5.0.1)
+      '@redux-devtools/utils': 3.1.1(@redux-devtools/core@4.1.1(react-redux@9.3.1(@types/react@19.3.0)(react@19.3.0)(redux@5.0.1))(react@19.3.0)(redux@5.0.1))(immutable@4.3.9)(redux@5.0.1)
+      expo: 58.0.26(e43b9c0ffb79d61d0b937feff78097cd)
+      jsan: 3.1.14
+      redux: 5.0.1
+    transitivePeerDependencies:
+      - '@expo/dom-webview'
+      - '@expo/log-box'
+      - '@expo/metro-runtime'
+      - '@redux-devtools/core'
+      - expo-constants
+      - expo-font
+      - expo-linking
+      - expo-router
+      - expo-symbols
+      - immutable
+      - react-native-worklets
 
   redux-persist@6.0.0(react@19.3.0)(redux@5.0.1):
     dependencies:

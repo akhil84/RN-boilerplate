@@ -17,6 +17,7 @@ import {
 import { api } from '@starter/api-client';
 
 import { sessionSlice } from '../auth/session-slice';
+import { devToolsEnhancers, useBuiltInDevTools } from './devtools';
 import { initialPreferences, preferencesSlice, type PreferencesState } from './preferences-slice';
 
 const rootReducer = combineReducers({
@@ -80,11 +81,15 @@ export function makeStore({
 
   const store = configureStore({
     reducer: persistedReducer,
+    devTools: useBuiltInDevTools,
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         // redux-persist dispatches actions carrying functions; they are expected.
         serializableCheck: { ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER] },
       }).concat(api.middleware),
+    // After `middleware`: TypeScript infers these callbacks in order, and RTK types the enhancers
+    // from the middleware. DevTools enhancer last, as the plugin requires (see devtools.*.ts).
+    enhancers: (getDefaultEnhancers) => getDefaultEnhancers().concat(devToolsEnhancers()),
   });
 
   const persistor = persistStore(store);
