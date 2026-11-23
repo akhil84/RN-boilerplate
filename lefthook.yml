@@ -1,0 +1,43 @@
+# Local git hooks (ADR-0021) — the replacement for CI while the starter has none.
+# Installed automatically by `pnpm install` (root `prepare` script). Skip in an emergency with
+# `git commit --no-verify` / `git push --no-verify`; the hooks are a safety net, not a gate.
+# Docs: https://lefthook.dev
+
+pre-commit:
+  parallel: true
+  jobs:
+    # Formats staged files and re-stages them.
+    - name: prettier
+      run: pnpm exec prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true
+    # ESLint runs inside each workspace so its own config and `@/` path aliases resolve.
+    - name: eslint apps/mobile
+      root: apps/mobile/
+      glob: '*.{js,jsx,ts,tsx}'
+      run: pnpm exec eslint --max-warnings=0 {staged_files}
+    - name: eslint apps/web
+      root: apps/web/
+      glob: '*.{js,jsx,ts,tsx}'
+      run: pnpm exec eslint --max-warnings=0 {staged_files}
+    - name: eslint packages/ui
+      root: packages/ui/
+      glob: '*.{js,jsx,ts,tsx}'
+      run: pnpm exec eslint --max-warnings=0 {staged_files}
+    - name: eslint packages/features
+      root: packages/features/
+      glob: '*.{js,jsx,ts,tsx}'
+      run: pnpm exec eslint --max-warnings=0 {staged_files}
+    - name: eslint packages/api-client
+      root: packages/api-client/
+      glob: '*.{js,jsx,ts,tsx}'
+      run: pnpm exec eslint --max-warnings=0 {staged_files}
+    - name: eslint packages/config
+      root: packages/config/
+      glob: '*.{js,jsx,ts,tsx}'
+      run: pnpm exec eslint --max-warnings=0 {staged_files}
+
+pre-push:
+  jobs:
+    # Lint, typecheck and test the workspaces changed since origin/main (and their dependents).
+    - name: verify changed workspaces
+      run: pnpm verify:changed

@@ -8,7 +8,7 @@
     "./test-utils": "./src/test-utils.tsx"
   },
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "jest"
   },

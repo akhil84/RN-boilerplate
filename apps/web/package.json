@@ -6,7 +6,7 @@
   "scripts": {
     "start": "expo start --web",
     "export": "expo export --platform web",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "expo:doctor": "pnpm dlx expo-doctor"

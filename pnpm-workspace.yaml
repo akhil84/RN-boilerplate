@@ -9,6 +9,8 @@ nodeLinker: hoisted
 # binaries; its script is a from-source fallback we do not need.
 allowBuilds:
   '@parcel/watcher': false
+  # lefthook's postinstall only runs `lefthook install`; the root `prepare` script does that.
+  lefthook: false
 
 # Single source of truth for versions shared across workspaces. Expo does not support more than
 # one React Native version per monorepo, and duplicate React versions break the app at runtime.

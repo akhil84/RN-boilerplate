@@ -55,12 +55,22 @@ Details: [docs/README.md](docs/README.md) · agent rules: [AGENTS.md](AGENTS.md)
 
 ## Testing layers
 
-| Layer      | Tool                            | Location                         | Runs in CI               |
-| ---------- | ------------------------------- | -------------------------------- | ------------------------ |
-| Unit       | Jest (`jest-expo`)              | `**/src/**/__tests__`            | every PR                 |
-| Component  | React Native Testing Library 14 | `**/src/**/__tests__/*.test.tsx` | every PR                 |
-| End-to-end | Maestro                         | `e2e/mobile/flows/*.yaml`        | manual / `run-e2e` label |
+| Layer      | Tool                            | Location                         | When          |
+| ---------- | ------------------------------- | -------------------------------- | ------------- |
+| Unit       | Jest (`jest-expo`)              | `**/src/**/__tests__`            | pre-push hook |
+| Component  | React Native Testing Library 14 | `**/src/**/__tests__/*.test.tsx` | pre-push hook |
+| End-to-end | Maestro                         | `e2e/mobile/flows/*.yaml`        | manual        |
 
 ## Stack decisions
 
 See [docs/04-adr](docs/04-adr).
+
+## Git hooks (no CI)
+
+There is no CI yet (ADR-0021). `pnpm install` installs [lefthook](https://lefthook.dev) hooks:
+
+- **pre-commit:** Prettier (auto-fixes and re-stages) + ESLint on staged files, per workspace.
+- **pre-push:** `pnpm verify:changed` — lint, typecheck and tests for workspaces changed since
+  `origin/main`.
+
+To add CI later, see [docs/guides/adding-ci.md](docs/guides/adding-ci.md).

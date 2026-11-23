@@ -27,4 +27,4 @@ Override the app id with `maestro test -e APP_ID=com.other.id e2e/mobile/flows`.
 - First line comment links the requirement: `# REQ: <requirement-id> — <journey>`.
 - Select by `id:` (React Native `testID`) first, visible text second. Never by coordinates.
 - Every new screen gets a `testID` on its title, and every feature ships at least one flow.
-- Tag critical-path flows `smoke`; CI runs those on every PR that reaches the E2E job.
+- Tag critical-path flows `smoke` and run them (`pnpm test:e2e:mobile:smoke`) before a release. There is no CI (ADR-0021).

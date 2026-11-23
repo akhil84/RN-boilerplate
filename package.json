@@ -7,6 +7,7 @@
     "node": ">=24"
   },
   "scripts": {
+    "prepare": "lefthook install",
     "mobile": "pnpm --filter @starter/mobile start",
     "web": "pnpm --filter @starter/web start",
     "lint": "pnpm -r lint",
@@ -16,12 +17,13 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "verify": "pnpm lint && pnpm typecheck && pnpm format:check && pnpm -r test --ci",
-    "verify:changed": "pnpm --filter \"...[origin/main]\" lint && pnpm --filter \"...[origin/main]\" typecheck && pnpm format:check && pnpm --filter \"...[origin/main]\" test --ci",
+    "verify:changed": "pnpm --filter \"...[origin/main]\" --filter \"!starter-app\" lint && pnpm --filter \"...[origin/main]\" --filter \"!starter-app\" typecheck && pnpm format:check && pnpm --filter \"...[origin/main]\" --filter \"!starter-app\" test --ci",
     "test:e2e:mobile": "maestro test e2e/mobile",
     "test:e2e:mobile:smoke": "maestro test --include-tags=smoke e2e/mobile",
     "expo:doctor": "pnpm --filter \"./apps/*\" expo:doctor"
   },
   "devDependencies": {
+    "lefthook": "^2.2.2",
     "prettier": "catalog:"
   }
 }
