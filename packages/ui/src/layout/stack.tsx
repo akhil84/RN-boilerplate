@@ -1,6 +1,6 @@
 import { View, type ViewProps, type ViewStyle } from 'react-native';
 
-import { Spacing } from '../tokens/theme';
+import { Spacing } from '@ui/tokens/theme';
 
 export type StackProps = ViewProps & {
   direction?: 'row' | 'column';

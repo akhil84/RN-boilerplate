@@ -8,7 +8,9 @@
     "./tsconfig.base.json": "./tsconfig.base.json",
     "./jest": "./jest/create-jest-config.js",
     "./jest/setup": "./jest/setup.js",
-    "./jest/style-mock": "./jest/style-mock.js"
+    "./jest/style-mock": "./jest/style-mock.js",
+    "./aliases": "./aliases.js",
+    "./eslint-boundaries": "./eslint-boundaries.js"
   },
   "scripts": {
     "lint": "eslint . --max-warnings=0"

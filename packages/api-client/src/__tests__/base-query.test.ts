@@ -1,6 +1,11 @@
 import type { BaseQueryApi } from '@reduxjs/toolkit/query';
 
-import { apiBaseQuery, configureApiClient, resetApiClient, type AuthAdapter } from '../base-query';
+import {
+  apiBaseQuery,
+  configureApiClient,
+  resetApiClient,
+  type AuthAdapter,
+} from '@api-client/base-query';
 
 type Reply = { status: number; body?: unknown };
 

@@ -1,4 +1,4 @@
-import { getAppVariant, parseEnv } from '../env';
+import { getAppVariant, parseEnv } from '@core/env';
 
 describe('parseEnv', () => {
   it('returns typed config for valid values', () => {

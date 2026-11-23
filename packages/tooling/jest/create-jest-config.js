@@ -20,6 +20,8 @@ const shared = {
   testPathIgnorePatterns: ['/node_modules/', '/e2e/'],
 };
 
+const { jestModuleNameMapper: aliasMapper } = require('../aliases');
+
 const styleMapper = { '\\.(css)$': require.resolve('./style-mock.js') };
 
 // ESM-only packages that Jest must transform. Under the `react-native` export condition, Redux
@@ -49,7 +51,12 @@ function withShared(preset, moduleNameMapper) {
     transformIgnorePatterns: withTransformedPackages(preset.transformIgnorePatterns),
     // Jest uses the first matching pattern, so the CSS stub must come before path aliases such as
     // `^@/(.*)$`, or `@/global.css` would be resolved and parsed as JavaScript.
-    moduleNameMapper: { ...styleMapper, ...preset.moduleNameMapper, ...moduleNameMapper },
+    moduleNameMapper: {
+      ...styleMapper,
+      ...aliasMapper,
+      ...preset.moduleNameMapper,
+      ...moduleNameMapper,
+    },
   };
 }
 

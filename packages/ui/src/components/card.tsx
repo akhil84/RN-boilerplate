@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
-import { Spacing } from '../tokens/theme';
-import { ThemedView, type ThemedViewProps } from '../primitives/themed-view';
+import { Spacing } from '@ui/tokens/theme';
+import { ThemedView, type ThemedViewProps } from '@ui/primitives/themed-view';
 
 export type CardProps = ThemedViewProps & {
   /** Inner padding as a spacing token. */

@@ -4,6 +4,13 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
-    "types": ["jest", "expo/types"]
+    "types": ["jest", "expo/types"],
+    "paths": {
+      "@app/*": ["../features/src/app/*"],
+      "@features/*": ["../features/src/features/*"],
+      "@ui/*": ["../ui/src/*"],
+      "@core/*": ["../core/src/*"],
+      "@api-client/*": ["../api-client/src/*"]
+    }
   }
 }

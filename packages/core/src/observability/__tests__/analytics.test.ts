@@ -4,7 +4,7 @@ import {
   recordAnalytics,
   resetAnalyticsAdapter,
   setAnalyticsAdapter,
-} from '../analytics';
+} from '@core/observability/analytics';
 
 declare module '../analytics' {
   interface AnalyticsEventMap {

@@ -2,14 +2,14 @@ import * as Sentry from '@sentry/react-native';
 import { render, screen } from '@testing-library/react-native';
 import { Text } from 'react-native';
 
-import { ErrorBoundary } from '../error-boundary';
+import { ErrorBoundary } from '@core/observability/error-boundary';
 import {
   errorReportingReady,
   initErrorReporting,
   reportError,
   resetErrorReporting,
   setErrorReportingUser,
-} from '../errors';
+} from '@core/observability/errors';
 
 jest.mock('@sentry/react-native', () => ({
   init: jest.fn(),

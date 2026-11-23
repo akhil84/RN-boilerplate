@@ -11,6 +11,18 @@ module.exports = defineConfig([
     ignores: ['dist/*', '.expo/*', 'coverage/*', 'ios/*', 'android/*', 'expo-env.d.ts'],
   },
   {
+    // Node-side tooling files (this package's presets).
+    files: ['aliases.js', 'eslint-boundaries.js', 'jest/**'],
+    languageOptions: {
+      globals: {
+        __dirname: 'readonly',
+        require: 'readonly',
+        module: 'writable',
+        process: 'readonly',
+      },
+    },
+  },
+  {
     files: ['**/__tests__/**', '**/*.test.{ts,tsx}', 'jest/**'],
     languageOptions: { globals: { jest: 'readonly' } },
   },

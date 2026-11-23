@@ -5,7 +5,7 @@
   "description": "Feature screens and logic shared by apps/mobile and apps/web.",
   "exports": {
     ".": "./src/index.ts",
-    "./test-utils": "./src/test-utils.tsx"
+    "./test-utils": "./src/app/testing/test-utils.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings=0",

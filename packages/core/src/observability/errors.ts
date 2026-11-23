@@ -1,4 +1,4 @@
-import { getAppVariant, getEnv } from '../env';
+import { getAppVariant, getEnv } from '@core/env';
 import { createErrorReporter } from './error-reporter';
 import { loadErrorReportingSdk } from './sentry-loader';
 

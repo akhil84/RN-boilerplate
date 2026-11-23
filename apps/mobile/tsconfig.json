@@ -3,7 +3,12 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"],
-      "@/assets/*": ["./assets/*"]
+      "@/assets/*": ["./assets/*"],
+      "@app/*": ["../../packages/features/src/app/*"],
+      "@features/*": ["../../packages/features/src/features/*"],
+      "@ui/*": ["../../packages/ui/src/*"],
+      "@core/*": ["../../packages/core/src/*"],
+      "@api-client/*": ["../../packages/api-client/src/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
