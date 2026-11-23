@@ -69,7 +69,7 @@ Configuration only — no starter code changes:
 | What                               | Where                                                                                                               |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | Backend URL                        | `EXPO_PUBLIC_API_URL` in `apps/*/.env`, then `EXPO_PUBLIC_API_MOCKS=false`                                          |
-| Auth endpoints and response shapes | `AUTH_PATHS` and the Zod schemas in `packages/features/src/auth/types.ts`                                           |
+| Auth endpoints and response shapes | `AUTH_PATHS` and the Zod schemas in `packages/features/src/features/auth/types.ts`                                  |
 | EAS (builds, OTA, push tokens)     | `pnpm dlx eas-cli init` in `apps/mobile` → `EAS_PROJECT_ID` ([details](#over-the-air-updates-and-push-per-project)) |
 | Per-environment values             | EAS environment variables for development / preview / production                                                    |
 | Error reporting                    | `EXPO_PUBLIC_SENTRY_DSN` + Sentry EAS variables ([details](#error-reporting-sentry-optional))                       |
@@ -87,7 +87,7 @@ Fill in [`docs/00-product/vision.md`](docs/00-product/vision.md) and
 
 Follow the delivery workflow in [How we build features](#how-we-build-features-with-ai): each stage
 writes one doc and a human approves it before the next. Feature code goes in
-`packages/features/src/<feature>/`, shared UI in `packages/ui`, and apps only get thin route files
+`packages/features/src/features/<feature>/` (scaffold with `pnpm new:feature <name>`), shared UI in `packages/ui`, and apps only get thin route files
 ([AGENTS.md](AGENTS.md) has the rules agents follow). Record any departure from the decided stack
 with `/adr`.
 
@@ -205,13 +205,20 @@ The web app stores tokens per `EXPO_PUBLIC_WEB_AUTH_MODE` in `apps/web/.env` (AD
 ## Layout
 
 ```
-apps/mobile          Expo app — iOS + Android
-apps/web             Expo app — web (single-page app)
-packages/features    feature screens + logic (shared)
-packages/ui          theme tokens, themed primitives, test-utils
-packages/api-client  networking (RTK Query base API)
-packages/config      shared eslint / tsconfig / jest presets
+apps/mobile          Expo app — iOS + Android: routes (src/app) + native shell (src/shell)
+apps/web             Expo app — web: routes + responsive shell
+packages/features    src/app/ (store, providers, navigation, i18n, mocks, registry)
+                     src/features/<name>/ (one folder per feature, standard layout)
+packages/ui          tokens, hooks, primitives, components, layout, testing
+packages/api-client  RTK Query base API, baseQuery, mock fetch
+packages/core        runtime platform code: env (Zod), observability (errors, analytics)
+packages/tooling     dev-only eslint / tsconfig / jest presets, path aliases, boundary rules
 ```
+
+Layers (an arrow means "may import"): `apps → features → api-client → core`, and `features → ui`.
+ESLint enforces them (`pnpm lint`). Inside a package, use its absolute alias (`@app/…`,
+`@features/<name>`, `@ui/…`, `@core/…`, `@api-client/…`); across packages, use `@starter/…`.
+Details and rationale: [ADR-0026](docs/04-adr/0026-folder-structure-v2.md).
 
 ## Scripts
 
@@ -225,6 +232,7 @@ packages/config      shared eslint / tsconfig / jest presets
 | `pnpm typecheck`           | `tsc --noEmit` in every workspace                       |
 | `pnpm expo:doctor`         | expo-doctor for both apps                               |
 | `pnpm verify`              | lint + typecheck + format check + tests — run before PR |
+| `pnpm new:feature <name>`  | Scaffold a feature (standard layout) and register it    |
 
 ## How we build features (with AI)
 
@@ -232,7 +240,7 @@ packages/config      shared eslint / tsconfig / jest presets
 /requirement <idea>  →  docs/01-requirements/REQ-001-*.md   (human approves)
 /plan REQ-001        →  docs/02-plans/PLAN-001-*.md         (human approves)
 /design REQ-001      →  docs/03-design/DES-001-*.md         (human approves)
-/implement REQ-001   →  packages/features/src/<slug>/ + tests        (test-first)
+/implement REQ-001   →  packages/features/src/features/<slug>/ + tests (test-first)
 /test REQ-001        →  e2e/mobile/flows/*.yaml + coverage gaps
 /ship mobile minor   →  version bump, per-app changelog, release notes
 ```

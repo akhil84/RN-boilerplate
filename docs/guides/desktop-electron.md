@@ -25,7 +25,7 @@ instead of the web build. Compare both in the ADR.
    a strict Content-Security-Policy, and a `preload` script that exposes only the few functions the
    app needs through `contextBridge`.
 4. **Store tokens with `safeStorage`**: add a desktop `TokenStorage` strategy in
-   `packages/features/src/auth/token-storage/` that calls the preload bridge, which encrypts with
+   `packages/features/src/features/auth/services/token-storage/` that calls the preload bridge, which encrypts with
    Electron's `safeStorage` (OS keychain) in the main process.
 5. **OAuth / social sign-in**: popups and redirects need a loopback (`http://127.0.0.1:<port>`) or
    custom-protocol redirect handled in the main process. Google and Apple must allow that redirect.

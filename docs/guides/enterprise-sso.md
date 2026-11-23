@@ -20,7 +20,7 @@ single-page apps; no client secret ships in the app. It works on iOS, Android an
    (`useAuthRequest`), then **send the authorization code (and PKCE verifier) to your backend**,
    which exchanges it and returns the app's own tokens — the same shape as `/auth/login`. Treat it
    like social sign-in: a `signInWithSso` thunk that ends in `startSession`
-   (`packages/features/src/auth/auth-service.ts`), so token storage, refresh on 401 and sign-out
+   (`packages/features/src/features/auth/services/auth-service.ts`), so token storage, refresh on 401 and sign-out
    work unchanged.
 5. UI: a "Continue with SSO" button on the sign-in screen, shown only when the issuer is
    configured — like the social buttons (`getAvailableProviders`).

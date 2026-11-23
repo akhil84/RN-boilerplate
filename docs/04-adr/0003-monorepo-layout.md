@@ -1,6 +1,6 @@
 # ADR-0003: Two Expo apps over four source-only shared packages
 
-Status: Accepted · Date: 2026-11-23 · Implemented on `feat/monorepo-starter`
+Status: Accepted, layout amended by ADR-0026 · Date: 2026-11-23
 
 Source: [decision record](../00-product/monorepo-starter-decisions.md) Q3, Q4, Q5, Q13.
 Amends the folder layout in ADR-0001 (`src/app`, `src/features`).

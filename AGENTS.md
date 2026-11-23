@@ -20,6 +20,7 @@ pnpm lint | pnpm typecheck | pnpm test                  # every workspace
 pnpm --filter <workspace> test                          # one workspace
 pnpm expo:doctor                                        # expo-doctor for both apps
 pnpm verify                                             # lint + typecheck + format + tests
+pnpm new:feature <name>                                 # scaffold + register a feature
 pnpm test:e2e:web                                       # Playwright (starts its own server)
 pnpm test:e2e:mobile                                    # Maestro (needs a booted device + dev build)
 ```
@@ -52,23 +53,38 @@ Docs: https://docs.expo.dev/eas/index.md
 ### Where things go
 
 ```
-docs/                  requirements → plans → design → ADRs (see docs/README.md)
-apps/mobile/           Expo app, iOS + Android — routes (src/app), native tabs, app.config.ts, eas.json, CHANGELOG.md
-apps/web/              Expo app, web single-page app — routes, responsive shell, CHANGELOG.md
-packages/features/     feature screens + logic + __tests__, store, i18n, mocks (see packages/features/README.md)
-packages/ui/           design system: tokens, ThemedText/View, Button, TextField, useBreakpoint, test-utils
-packages/api-client/   RTK Query `api`, baseQuery (auth, refresh, retry, ApiError), mock fetch — no UI
-packages/config/       eslint / tsconfig / jest presets, env (Zod), observability (errors, analytics)
-e2e/mobile/            Maestro flows (flows/) and reusable steps (subflows/)
-e2e/web/               Playwright specs (tests/) against the exported web app
-scripts/               one-time `pnpm init:project` (removes itself)
-.claude/commands/      /requirement /plan /design /implement /test /ship /adr
+docs/                    requirements → plans → design → ADRs (see docs/README.md)
+apps/mobile/             Expo app, iOS + Android — routes (src/app), shell (src/shell), app.config.ts, eas.json
+apps/web/                Expo app, web single-page app — routes (src/app), responsive shell (src/shell)
+packages/features/
+  src/app/               infrastructure: store, providers (AppProviders, RootNavigator), navigation
+                         (destinations), i18n, mocks, testing, registry.ts (the list of features)
+  src/features/<name>/   one feature: screens/ components/ hooks/ api/ model/ services/ locales/
+                         mocks/ analytics.ts types.ts feature.ts (manifest) index.ts (public API)
+packages/ui/             tokens/ hooks/ primitives/ components/ layout/ testing/
+packages/api-client/     RTK Query `api`, baseQuery (auth, refresh, retry, ApiError), mock fetch — no UI
+packages/core/           runtime platform code: env (Zod), observability (errors, analytics) — no UI
+packages/tooling/        dev-only: eslint / tsconfig / jest presets, path aliases, boundary rules
+e2e/mobile/  e2e/web/    Maestro flows · Playwright specs
+scripts/                 new-feature.mjs (`pnpm new:feature`), init-project.mjs (one-time)
+.claude/commands/        /requirement /plan /design /implement /test /ship /adr
 ```
 
-- Features live in `packages/features`, never in `apps/`. Route files only render a screen from
-  `@starter/features`; `(app)` routes are protected by the session (`Stack.Protected`).
-- Inside `packages/*`, use relative imports (no `@/` alias). Import other packages by name
-  (`@starter/ui`), only through their public entry points.
+- **New feature:** `pnpm new:feature <name>` — scaffolds the folder and registers it. Never put
+  feature code in `apps/`; route files only render a screen from `@starter/features`.
+- **Layers** (enforced by ESLint, ADR-0026): `apps → features → api-client → core`, `features → ui`.
+  `ui`, `core` and `api-client` never import `features`; `core` imports no other package.
+- **Imports:** absolute, no `../`. Inside a package use its alias — `@app/…` and `@features/<name>`
+  (features), `@ui/…`, `@core/…`, `@api-client/…`. Across packages use `@starter/<pkg>` entry
+  points only. Same-folder `./x` imports are fine. Aliases live in `packages/tooling/aliases.js`
+  (mirrored in tooling/tsconfig.base.json and apps/*/tsconfig.json).
+- **Between features:** only through the other feature's public entry `@features/<name>` (its
+  `index.ts`). `app/registry.ts` is the only file that imports `@features/<name>/feature`.
+- **Registry, not edits:** a feature's reducers (`slices`), translations and mock handlers go in its
+  `feature.ts`; the store, i18n and mock API pick them up from `app/registry.ts`. Top-level screens
+  go in `app/navigation/destinations.ts` (drives both mobile tabs and the web sidebar).
+- **Shared code:** generic UI → `@starter/ui`; non-UI platform code → `@starter/core`; networking →
+  `@starter/api-client`. Don't duplicate a helper in two features — move it down a layer.
 - Platform-specific code uses `.native.ts` / `.web.ts` plus a plain `.ts` entry for the type
   checker. No browser-only APIs (`window`, `document`, `localStorage`) outside `.web.ts` files —
   shared code must stay safe for mobile and a future desktop app (ADR-0024).
@@ -85,11 +101,11 @@ scripts/               one-time `pnpm init:project` (removes itself)
 | Config       | `getEnv()` from `@starter/core/env`; add new `EXPO_PUBLIC_*` keys to its Zod schema and `readRawEnv` (static access only)                    | 0011       |
 | Copy         | i18next: strings in `<feature>/locales/en.json`, `useTranslation('<feature>')`; no hard-coded UI text                                        | 0012       |
 | Errors       | `reportError` / `ErrorBoundary` from `@starter/core/observability`; never import Sentry directly                                             | 0013       |
-| Analytics    | `analytics.track` with events declared in `packages/features/src/analytics-events.ts`                                                        | 0014       |
+| Analytics    | `analytics.track` with events declared in the feature's `analytics.ts`                                                                       | 0014       |
 | Auth         | session slice + `tokenStorage`; tokens never in Redux or AsyncStorage                                                                        | 0015, 0016 |
 | Styling      | `StyleSheet` + tokens from `@starter/ui`; 44pt targets; light and dark                                                                       | 0017       |
 
-New endpoints get a handler in `packages/features/src/mocks/handlers.ts` so the app, tests and E2E
+New endpoints get a handler in the feature's `mocks/handlers.ts` (listed in its `feature.ts`) so the app, tests and E2E
 run without a backend (`EXPO_PUBLIC_API_MOCKS`; ignored in production builds).
 
 ### Workflow

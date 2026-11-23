@@ -8,6 +8,7 @@
   },
   "scripts": {
     "init:project": "node scripts/init-project.mjs",
+    "new:feature": "node scripts/new-feature.mjs",
     "prepare": "lefthook install",
     "mobile": "pnpm --filter @starter/mobile start",
     "web": "pnpm --filter @starter/web start",
