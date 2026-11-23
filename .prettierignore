@@ -6,3 +6,6 @@ ios
 android
 pnpm-lock.yaml
 assets
+e2e/web/.dist
+e2e/web/test-results
+e2e/web/playwright-report

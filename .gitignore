@@ -48,3 +48,8 @@ e2e/.maestro-output/
 
 # personal Claude Code settings
 .claude/settings.local.json
+
+# Playwright
+e2e/web/.dist/
+e2e/web/test-results/
+e2e/web/playwright-report/

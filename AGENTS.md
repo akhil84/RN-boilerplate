@@ -20,6 +20,8 @@ pnpm lint | pnpm typecheck | pnpm test                  # every workspace
 pnpm --filter <workspace> test                          # one workspace
 pnpm expo:doctor                                        # expo-doctor for both apps
 pnpm verify                                             # lint + typecheck + format + tests
+pnpm test:e2e:web                                       # Playwright (starts its own server)
+pnpm test:e2e:mobile                                    # Maestro (needs a booted device + dev build)
 ```
 
 Versions shared across workspaces (react, react-native, expo, …) live once in the `catalog:` of
@@ -42,7 +44,7 @@ Docs: https://docs.expo.dev/eas/index.md
 ## Rules
 
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `apps/mobile/app.json` and config plugins.
-- Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `pnpm --filter @starter/mobile exec expo run:ios|android` locally, or `eas build --profile development`.
+- Expo Go is **not supported** (ADR-0025): the mobile app runs in a development build (`pnpm --filter @starter/mobile ios|android`, or `eas build --profile development`). Rebuild it after adding a library with native code.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
 
 ## Project rules
@@ -50,38 +52,71 @@ Docs: https://docs.expo.dev/eas/index.md
 ### Where things go
 
 ```
-docs/                  requirements → plans → design → ADRs → releases (see docs/README.md)
-apps/mobile/           Expo app, iOS + Android — routes (src/app) and native navigation only
-apps/web/              Expo app, web only (single-page app) — routes and web layout only
-packages/features/     feature screens + logic + __tests__ (see packages/features/README.md)
-packages/ui/           design system: theme tokens, themed primitives, test-utils
-packages/api-client/   RTK Query base API (networking, no UI)
-packages/config/       shared eslint / tsconfig / jest presets
+docs/                  requirements → plans → design → ADRs (see docs/README.md)
+apps/mobile/           Expo app, iOS + Android — routes (src/app), native tabs, app.config.ts, eas.json, CHANGELOG.md
+apps/web/              Expo app, web single-page app — routes, responsive shell, CHANGELOG.md
+packages/features/     feature screens + logic + __tests__, store, i18n, mocks (see packages/features/README.md)
+packages/ui/           design system: tokens, ThemedText/View, Button, TextField, useBreakpoint, test-utils
+packages/api-client/   RTK Query `api`, baseQuery (auth, refresh, retry, ApiError), mock fetch — no UI
+packages/config/       eslint / tsconfig / jest presets, env (Zod), observability (errors, analytics)
 e2e/mobile/            Maestro flows (flows/) and reusable steps (subflows/)
+e2e/web/               Playwright specs (tests/) against the exported web app
+scripts/               one-time `pnpm init:project` (removes itself)
 .claude/commands/      /requirement /plan /design /implement /test /ship /adr
 ```
 
-- Features live in `packages/features`, never in `apps/`.
+- Features live in `packages/features`, never in `apps/`. Route files only render a screen from
+  `@starter/features`; `(app)` routes are protected by the session (`Stack.Protected`).
 - Inside `packages/*`, use relative imports (no `@/` alias). Import other packages by name
   (`@starter/ui`), only through their public entry points.
+- Platform-specific code uses `.native.ts` / `.web.ts` plus a plain `.ts` entry for the type
+  checker. No browser-only APIs (`window`, `document`, `localStorage`) outside `.web.ts` files —
+  shared code must stay safe for mobile and a future desktop app (ADR-0024).
+
+### Stack (decided — change only through a new ADR in `docs/04-adr/`)
+
+| Concern      | Use                                                                                                                                          | ADR        |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| Client state | Redux Toolkit; typed `useAppDispatch` / `useAppSelector`                                                                                     | 0007       |
+| Server data  | RTK Query endpoints via `api.injectEndpoints` in the feature; never copy server data into a slice                                            | 0007       |
+| HTTP         | `apiBaseQuery` (bearer auth, refresh on 401, retries idempotent requests only); errors are `ApiError`                                        | 0008       |
+| Persistence  | redux-persist on AsyncStorage — list slices in `persistedSlices`, bump `PERSIST_VERSION` + migration on shape changes; never persist secrets | 0009       |
+| Forms        | No form library: controlled inputs + Zod + `TextField`                                                                                       | 0010       |
+| Config       | `getEnv()` from `@starter/config/env`; add new `EXPO_PUBLIC_*` keys to its Zod schema and `readRawEnv` (static access only)                  | 0011       |
+| Copy         | i18next: strings in `<feature>/locales/en.json`, `useTranslation('<feature>')`; no hard-coded UI text                                        | 0012       |
+| Errors       | `reportError` / `ErrorBoundary` from `@starter/config/observability`; never import Sentry directly                                           | 0013       |
+| Analytics    | `analytics.track` with events declared in `packages/features/src/analytics-events.ts`                                                        | 0014       |
+| Auth         | session slice + `tokenStorage`; tokens never in Redux or AsyncStorage                                                                        | 0015, 0016 |
+| Styling      | `StyleSheet` + tokens from `@starter/ui`; 44pt targets; light and dark                                                                       | 0017       |
+
+New endpoints get a handler in `packages/features/src/mocks/handlers.ts` so the app, tests and E2E
+run without a backend (`EXPO_PUBLIC_API_MOCKS`; ignored in production builds).
 
 ### Workflow
 
 Requirement → Plan → Design → Implement → Test → Ship. Each stage is one doc in `docs/`; a human sets
 `Status: Approved` before the next stage starts. Never approve your own output, never build from a `Draft`.
+Requirements state `Platforms: mobile | web | both`, which decides the apps, layouts and E2E specs
+every later stage must cover.
 
 ### Testing rules
 
 - Test-first. Every acceptance criterion (`AC-n`) maps to at least one Jest test named `AC-n: ...`.
-- Component tests use `renderWithProviders` from `@starter/ui/test-utils`. RNTL v14 is async:
-  `await render(...)`, `await user.press(...)`. Follow `node_modules/@testing-library/react-native/docs/guides/llm-guidelines.md`.
-- Every screen title has a `testID` (`<screen>-title`); every user journey has a Maestro flow in `e2e/mobile/flows/`.
+- Feature tests use `renderWithProviders` from `@starter/features/test-utils` (fresh store) and
+  `setupMockApi(handlers?)` for network responses; generic UI tests use `@starter/ui/test-utils`.
+  RNTL v14 is async: `await render(...)`, `await user.press(...)`. Follow
+  `node_modules/@testing-library/react-native/docs/guides/llm-guidelines.md`.
 - Shared packages run Jest on the iOS and Android renderers; RNTL cannot render react-native-web,
-  so web rendering is covered by end-to-end tests.
-- `pnpm verify` (lint + typecheck + format + unit tests) must pass before a task is done.
-  Do not skip, delete, or `.only` tests, and do not disable lint rules, to get green.
+  so web rendering is covered by Playwright.
+- Every screen title has a `testID` (`<screen>-title`). Every user journey has a Maestro flow
+  (`e2e/mobile/flows/`) and/or a Playwright spec (`e2e/web/tests/`) per its `Platforms:`.
+- `pnpm verify` (lint + typecheck + format + unit tests + script tests) must pass before a task is
+  done; run `pnpm test:e2e:web` when web behaviour changed. There is no CI — lefthook runs checks
+  on commit and push (ADR-0021). Do not skip, delete, or `.only` tests, disable lint rules, or use
+  `--no-verify` to get green.
 
 ### Safety
 
-- Never commit secrets; use `.env*.local` (git-ignored) and EAS secrets.
+- Never commit secrets; use `.env*.local` (git-ignored) and EAS environment variables.
+  `EXPO_PUBLIC_*` values are public — they ship inside the app.
 - Do not run `eas build`, `eas submit`, `eas update`, or push to `main` unless explicitly asked.

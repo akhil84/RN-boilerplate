@@ -7,5 +7,6 @@ tags:
 - assertVisible:
     id: 'sign-in-title'
 - runFlow: ../subflows/sign-in.yaml
-- assertVisible: 'Example item 1'
+- assertVisible:
+    id: 'home-item-1'
 - takeScreenshot: home-screen

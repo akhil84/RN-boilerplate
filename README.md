@@ -7,6 +7,15 @@ from `packages/*`. Set up for AI-assisted delivery from requirement to release.
 Decisions behind this layout: [docs/00-product/monorepo-starter-decisions.md](docs/00-product/monorepo-starter-decisions.md)
 and [docs/04-adr](docs/04-adr).
 
+## Start a new project from this template
+
+1. On GitHub, **Use this template** → create the project repo, then clone it.
+2. `corepack enable && pnpm install`
+3. `pnpm init:project` — asks for the app name, slug, bundle ID and npm scope (and optionally the
+   EAS project ID), replaces every `Starter App` placeholder, resets the changelogs and vision,
+   then removes itself.
+4. `pnpm install && pnpm verify`, then commit.
+
 ## Quick start
 
 ```bash
@@ -80,10 +89,10 @@ packages/config      shared eslint / tsconfig / jest presets
 /design REQ-001      →  docs/03-design/DES-001-*.md         (human approves)
 /implement REQ-001   →  packages/features/src/<slug>/ + tests        (test-first)
 /test REQ-001        →  e2e/mobile/flows/*.yaml + coverage gaps
-/ship minor          →  version bump, changelog, release notes
+/ship mobile minor   →  version bump, per-app changelog, release notes
 ```
 
-Details: [docs/README.md](docs/README.md) · agent rules: [AGENTS.md](AGENTS.md) · E2E: [e2e/mobile/README.md](e2e/mobile/README.md).
+Details: [docs/README.md](docs/README.md) · agent rules: [AGENTS.md](AGENTS.md) · E2E: [mobile](e2e/mobile/README.md), [web](e2e/web/README.md).
 
 ## Testing layers
 

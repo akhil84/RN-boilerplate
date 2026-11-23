@@ -2,6 +2,8 @@
 
 Status: Draft · Owner: <name> · Created: <YYYY-MM-DD>
 
+Platforms: mobile | web | both
+
 ## Problem
 
 <!-- What user problem does this solve? Who is affected? -->
@@ -22,7 +24,7 @@ Status: Draft · Owner: <name> · Created: <YYYY-MM-DD>
 - Performance:
 - Accessibility: screen-reader labels, 44pt touch targets, dynamic type
 - Offline / error states:
-- Analytics events:
+- Analytics events: <!-- name + properties; declared in packages/features/src/analytics-events.ts -->
 
 ## Out of scope
 

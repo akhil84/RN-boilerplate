@@ -12,7 +12,7 @@ curl -fsSL "https://get.maestro.mobile.dev" | bash   # installs the `maestro` CL
 
 ```bash
 # 1. Install a build on a booted device (local builds default to the dev variant, com.example.starterapp.dev)
-cd apps/mobile && npx expo run:android --variant release   # or: npx expo run:ios --configuration Release
+pnpm --filter @starter/mobile exec expo run:android --variant release   # or: … expo run:ios --configuration Release
 # 2. Run flows
 pnpm test:e2e:mobile          # all flows
 pnpm test:e2e:mobile:smoke    # only flows tagged `smoke`

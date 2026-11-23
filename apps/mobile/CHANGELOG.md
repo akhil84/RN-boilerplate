@@ -1,6 +1,7 @@
-# Changelog
+# Changelog — Starter App mobile
 
-Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: SemVer (`app.json` → `expo.version`).
+Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: SemVer
+(`version` in this app's app.config.ts). Released independently of the web app (ADR-0023).
 
 ## [Unreleased]
 
