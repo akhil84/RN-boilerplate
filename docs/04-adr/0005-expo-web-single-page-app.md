@@ -37,3 +37,4 @@ Rendering modes: `static` (per-route HTML, SEO), `single` (SPA), `server` (needs
 
 - Implemented as decided; the export is one `index.html` plus assets. Web routes are protected the same way as mobile (`Stack.Protected`).
 - Covered by Playwright (`e2e/web`), verified in Chromium and WebKit.
+- Bundle baseline (2026-11-23, production export): web 3.6 MB JS raw / **880 KB gzip** in 8 files (largest shared chunk 2.5 MB raw); Android Hermes bundle 5.8 MB; arm64 release APK 34 MB. Likely biggest web contributor: the Sentry browser SDK, loaded even when Sentry is off — candidate follow-up: load it only when a DSN is configured.

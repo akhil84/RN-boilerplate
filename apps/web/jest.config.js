@@ -3,5 +3,6 @@
 const { createJestConfig } = require('@starter/config/jest');
 
 module.exports = createJestConfig({
+  coverageThreshold: { statements: 65, branches: 70, functions: 40, lines: 70 },
   collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/app/**/_layout.tsx'],
 });

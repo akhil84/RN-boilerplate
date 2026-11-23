@@ -14,11 +14,16 @@ allowBuilds:
   # Installs the sentry-cli binary used to upload source maps during builds (ADR-0013).
   '@sentry/cli': true
 
+# Required peers of react-native-drawer-layout (used by expo-router) are pinned here and declared by
+# both apps, so pnpm does not auto-install newer, SDK-incompatible native versions.
 # Single source of truth for versions shared across workspaces. Expo does not support more than
 # one React Native version per monorepo, and duplicate React versions break the app at runtime.
 # Bump Expo-managed versions with `pnpm --filter @starter/mobile exec expo install --fix`, then
 # copy the result here.
 catalog:
+  react-native-gesture-handler: ~3.3.0
+  react-native-reanimated: 4.7.1
+  react-native-worklets: 0.13.0
   expo-symbols: ~58.0.5
   '@playwright/test': ^1.65.1
   expo-dev-client: ~58.0.21

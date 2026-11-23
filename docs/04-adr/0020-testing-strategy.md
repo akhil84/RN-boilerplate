@@ -40,3 +40,5 @@ Web E2E: Playwright; Maestro for web (newer, Chrome-only); none.
 - Playwright projects for Chromium, Firefox and WebKit; `pnpm test:e2e:web` runs Chromium. Verified in Chromium and WebKit (Firefox could not launch in the agent's sandbox).
 - Maestro smoke flows verified on an Android 17 emulator (release build). The sign-in subflow hides the keyboard before tapping submit.
 - Running on a device found a bug Jest cannot: NativeTabs `md` icons need `expo-symbols` on Android. Keep a device run in the release checklist.
+- Coverage ratchet: each workspace's `jest.config.js` sets `coverageThreshold` just below its current coverage, and `pnpm verify` / `verify:changed` run with `--coverage`. Raise thresholds as coverage improves; never lower them to get green.
+- Playwright Firefox cannot launch on this development Mac (macOS 27: "Could not find profile folder", also after a forced reinstall and outside the sandbox) — an environment incompatibility with Playwright's Firefox build. Chromium and WebKit pass 14/14.

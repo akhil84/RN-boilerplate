@@ -110,7 +110,9 @@ every later stage must cover.
   so web rendering is covered by Playwright.
 - Every screen title has a `testID` (`<screen>-title`). Every user journey has a Maestro flow
   (`e2e/mobile/flows/`) and/or a Playwright spec (`e2e/web/tests/`) per its `Platforms:`.
-- `pnpm verify` (lint + typecheck + format + unit tests + script tests) must pass before a task is
+- Coverage is a ratchet: each workspace's `coverageThreshold` sits just below current coverage.
+  Raise it when you add tests; never lower it.
+- `pnpm verify` (lint + typecheck + format + unit tests with coverage + script tests) must pass before a task is
   done; run `pnpm test:e2e:web` when web behaviour changed. There is no CI — lefthook runs checks
   on commit and push (ADR-0021). Do not skip, delete, or `.only` tests, disable lint rules, or use
   `--no-verify` to get green.

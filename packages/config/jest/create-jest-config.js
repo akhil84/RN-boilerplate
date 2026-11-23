@@ -54,11 +54,30 @@ function withShared(preset, moduleNameMapper) {
 }
 
 /**
- * @param {{ platforms?: Array<'ios' | 'android' | 'web'>, moduleNameMapper?: Record<string, string>, collectCoverageFrom?: string[] }} [options]
+ * @param {{
+ *   platforms?: Array<'ios' | 'android' | 'web'>,
+ *   moduleNameMapper?: Record<string, string>,
+ *   collectCoverageFrom?: string[],
+ *   coverageThreshold?: { statements?: number, branches?: number, functions?: number, lines?: number },
+ * }} [options]
+ *
+ * `coverageThreshold` is a ratchet (ADR-0020): set just below the workspace's current coverage so it
+ * can only go up. Raise it when coverage improves; never lower it to get green.
  */
-function createJestConfig({ platforms, moduleNameMapper = {}, collectCoverageFrom } = {}) {
+function createJestConfig({
+  platforms,
+  moduleNameMapper = {},
+  collectCoverageFrom,
+  coverageThreshold,
+} = {}) {
   const coverage = {
-    collectCoverageFrom: collectCoverageFrom ?? ['src/**/*.{ts,tsx}', '!src/**/*.d.ts'],
+    collectCoverageFrom: collectCoverageFrom ?? [
+      'src/**/*.{ts,tsx}',
+      '!src/**/*.d.ts',
+      '!src/**/__tests__/**',
+    ],
+    coverageReporters: ['text-summary', 'lcov'],
+    ...(coverageThreshold ? { coverageThreshold: { global: coverageThreshold } } : {}),
   };
 
   if (!platforms) {
