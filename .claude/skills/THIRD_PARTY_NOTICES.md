@@ -9,6 +9,12 @@ takes precedence over their generic advice; see the table in `feature-developmen
 | react-native-best-practices, react-native-testing                                                                                                         | [callstackincubator/agent-skills](https://github.com/callstackincubator/agent-skills) @ `59e9d17446a248b21d86f078fcd0bd2d36db1ca4` | MIT     |
 | incremental-implementation, test-driven-development, debugging-and-error-recovery, source-driven-development, context-engineering, security-and-hardening | [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) @ `8c99fa36d90068c82d547f7c12a9d67a3e95f4ee`                 | MIT     |
 
+Not vendored: the Redux Toolkit skills (adopt-rtk-query, build-slices-and-selectors,
+debug-redux-toolkit-apps, design-state-ownership, handle-side-effects, migrate-to-modern-redux,
+modern-redux, redux-dataflow) ship inside `@reduxjs/toolkit` (MIT). pnpm links them into
+`.claude/skills/` and `.agents/skills/` on install because `pnpm-workspace.yaml` approves them
+(`permissions`); the links are git-ignored and always match the installed RTK version.
+
 Local changes: the Codex-only `agents/openai.yaml` files are not copied; the security skill's
 checklist link points at its own `references/` copy.
 

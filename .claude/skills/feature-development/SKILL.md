@@ -13,18 +13,20 @@ the order of work for a feature. Code templates for each step: [references/recip
 Other installed skills (Expo, Callstack, agent-skills) give general advice. Where it conflicts
 with a decision below, follow the decision — changing one needs a new ADR (`/adr`).
 
-| Generic advice                          | Here                                                                   |
-| --------------------------------------- | ---------------------------------------------------------------------- |
-| "Try Expo Go first"                     | Development builds only (ADR-0025)                                     |
-| React Query / SWR / fetch in components | RTK Query endpoints in the feature's `api/` (ADR-0007, 0008)           |
-| Zustand / Jotai / Context for state     | Redux Toolkit slices, typed `useAppSelector` / `useAppDispatch`        |
-| NativeWind / Tamagui / Unistyles        | `StyleSheet` + tokens from `@starter/ui` (ADR-0017)                    |
-| `@expo/ui`, new UI libraries            | `@starter/ui` components first; a new library needs an ADR             |
-| react-hook-form / Formik                | Controlled inputs + Zod + `TextField` (ADR-0010)                       |
-| `npm` / `npx` / `yarn`                  | `pnpm` / `pnpm dlx`; `pnpm --filter @starter/mobile exec expo install` |
-| Import Sentry / an analytics SDK        | `reportError` / `analytics.track` from `@starter/core/observability`   |
-| Tokens in AsyncStorage / Redux          | `tokenStorage` (SecureStore / web storage) only (ADR-0015, 0016)       |
-| Edit `ios/` / `android/`                | Never — `app.config.ts` + config plugins (CNG)                         |
+| Generic advice                           | Here                                                                           |
+| ---------------------------------------- | ------------------------------------------------------------------------------ |
+| "Try Expo Go first"                      | Development builds only (ADR-0025)                                             |
+| React Query / SWR / fetch in components  | RTK Query endpoints in the feature's `api/` (ADR-0007, 0008)                   |
+| Zustand / Jotai / Context for state      | Redux Toolkit slices, typed `useAppSelector` / `useAppDispatch`                |
+| `combineSlices` / lazy reducer injection | List slices in the feature's `feature.ts`; the registry mounts them (ADR-0026) |
+| A second `createApi`                     | `api.injectEndpoints` on the one shared `api` from `@starter/api-client`       |
+| NativeWind / Tamagui / Unistyles         | `StyleSheet` + tokens from `@starter/ui` (ADR-0017)                            |
+| `@expo/ui`, new UI libraries             | `@starter/ui` components first; a new library needs an ADR                     |
+| react-hook-form / Formik                 | Controlled inputs + Zod + `TextField` (ADR-0010)                               |
+| `npm` / `npx` / `yarn`                   | `pnpm` / `pnpm dlx`; `pnpm --filter @starter/mobile exec expo install`         |
+| Import Sentry / an analytics SDK         | `reportError` / `analytics.track` from `@starter/core/observability`           |
+| Tokens in AsyncStorage / Redux           | `tokenStorage` (SecureStore / web storage) only (ADR-0015, 0016)               |
+| Edit `ios/` / `android/`                 | Never — `app.config.ts` + config plugins (CNG)                                 |
 
 ## Before you start
 

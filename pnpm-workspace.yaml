@@ -67,3 +67,7 @@ catalog:
   jest-expo: ~58.0.15
   prettier: ^3.10.1
   typescript: ~6.0.3
+
+permissions:
+  '@reduxjs/toolkit':
+    skills: true
