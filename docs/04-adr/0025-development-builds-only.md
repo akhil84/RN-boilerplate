@@ -28,3 +28,5 @@ and Expo Go differs from what ships).
 - Implemented as decided (`expo-dev-client`, `development` and `development-simulator` EAS profiles, `ios` / `android` scripts run `expo run:*`).
 - First local Android release build ≈ 12 min; with `ORG_GRADLE_PROJECT_reactNativeArchitectures=arm64-v8a` incremental builds take seconds to ~2 min (README).
 - The mobile root error fallback hides the splash screen, so an error during startup is visible instead of a splash that never goes away (code review).
+- iOS simulator builds: `expo run:ios` misidentified the simulator as a physical device on this setup ("No code signing certificates"). Building with `xcodebuild … -sdk iphonesimulator CODE_SIGN_IDENTITY=-` (ad-hoc, no certificate) works; an **unsigned** build (`CODE_SIGNING_ALLOWED=NO`) must not be used — it has no Keychain entitlement, so secure storage fails (-34018) and sign-in hangs. See README.
+- First iOS build ≈ 30 min here, dominated by downloading React Native's prebuilt iOS artifacts (~170 MB from repo.reactnative.dev at erratic speeds); later builds reuse them and take minutes.

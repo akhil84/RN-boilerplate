@@ -137,6 +137,20 @@ native compile; EAS store builds still include all of them:
 ORG_GRADLE_PROJECT_reactNativeArchitectures=arm64-v8a pnpm --filter @starter/mobile android
 ```
 
+**iOS simulator without Expo CLI** (e.g. if `expo run:ios` reports "No code signing
+certificates" for a simulator): after `npx expo prebuild --platform ios` in `apps/mobile`,
+
+```bash
+cd apps/mobile/ios && xcodebuild -workspace StarterAppDev.xcworkspace -scheme StarterAppDev \
+  -configuration Release -sdk iphonesimulator -derivedDataPath build CODE_SIGN_IDENTITY=-
+xcrun simctl install booted build/Build/Products/Release-iphonesimulator/StarterAppDev.app
+```
+
+Keep the ad-hoc signature (`CODE_SIGN_IDENTITY=-`): an unsigned build has no Keychain entitlement,
+so secure storage — and sign-in — fail. If `xcode-select -p` shows CommandLineTools, run
+`sudo xcode-select -s /Applications/Xcode.app/Contents/Developer` (or prefix commands with
+`DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`).
+
 Or build in the cloud: `pnpm dlx eas-cli build --profile development` from `apps/mobile`
 (`development-simulator` for an iOS simulator build). Web needs no native build: `pnpm web`.
 
