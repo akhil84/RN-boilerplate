@@ -1,0 +1,20 @@
+{
+  "name": "@starter/api-client",
+  "version": "0.0.0",
+  "private": true,
+  "description": "RTK Query base API and baseQuery (filled in by the stack phase, ADR-0007 / ADR-0008).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@starter/config": "workspace:*",
+    "@types/jest": "catalog:",
+    "eslint": "catalog:",
+    "expo": "catalog:",
+    "typescript": "catalog:"
+  }
+}

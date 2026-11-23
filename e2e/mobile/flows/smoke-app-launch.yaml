@@ -1,0 +1,10 @@
+# REQ: app-init — the app boots and shows the home screen.
+appId: ${APP_ID || 'com.example.starterapp'}
+tags:
+  - smoke
+---
+- runFlow: ../subflows/launch.yaml
+- assertVisible:
+    id: 'home-title'
+- assertVisible: 'Starter App'
+- takeScreenshot: home-screen

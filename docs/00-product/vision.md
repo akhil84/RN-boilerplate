@@ -1,4 +1,4 @@
-# Katon — product vision
+# <Project name> — product vision
 
 Status: Draft
 
@@ -14,7 +14,7 @@ Status: Draft
 
 ## Product promise
 
-<!-- One sentence: Katon helps <who> <do what> so that <outcome>. -->
+<!-- One sentence: <Project name> helps <who> <do what> so that <outcome>. -->
 
 ## Success metrics
 

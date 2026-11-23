@@ -1,0 +1,14 @@
+# REQ: app-init — user can switch between Home and Settings tabs.
+appId: ${APP_ID || 'com.example.starterapp'}
+tags:
+  - smoke
+---
+- runFlow: ../subflows/launch.yaml
+- tapOn: 'Settings'
+- extendedWaitUntil:
+    visible:
+      id: 'settings-title'
+    timeout: 10000
+- tapOn: 'Home'
+- assertVisible:
+    id: 'home-title'

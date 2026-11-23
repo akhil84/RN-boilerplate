@@ -1,0 +1,28 @@
+{
+  "name": "@starter/config",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared ESLint, TypeScript and Jest presets for every workspace.",
+  "exports": {
+    "./eslint": "./eslint.config.js",
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./jest": "./jest/create-jest-config.js",
+    "./jest/setup": "./jest/setup.js",
+    "./jest/style-mock": "./jest/style-mock.js"
+  },
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "eslint-config-expo": "catalog:",
+    "eslint-config-prettier": "catalog:"
+  },
+  "devDependencies": {
+    "eslint": "catalog:"
+  },
+  "peerDependencies": {
+    "eslint": "*",
+    "expo": "*",
+    "jest-expo": "*"
+  }
+}

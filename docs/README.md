@@ -1,4 +1,4 @@
-# Katon delivery docs
+# Starter App delivery docs
 
 Every feature moves through the same pipeline. Each stage writes one file that the next stage reads,
 so a human or an AI agent can pick up work at any point with full context.
