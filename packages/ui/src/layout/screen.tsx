@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import { SafeAreaView, type Edge } from 'react-native-safe-area-context';
 
-import { MaxContentWidth, Spacing } from '../theme';
-import { ThemedView } from '../themed-view';
+import { MaxContentWidth, Spacing } from '../tokens/theme';
+import { ThemedView } from '../primitives/themed-view';
 
 export type ScreenProps = {
   children?: ReactNode;

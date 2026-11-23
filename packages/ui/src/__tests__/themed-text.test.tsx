@@ -1,9 +1,9 @@
-import { Colors } from '../theme';
-import { ThemedText } from '../themed-text';
-import { renderWithProviders, screen } from '../test-utils';
-import { useColorScheme } from '../use-color-scheme';
+import { Colors } from '../tokens/theme';
+import { ThemedText } from '../primitives/themed-text';
+import { renderWithProviders, screen } from '../testing/render';
+import { useColorScheme } from '../hooks/use-color-scheme';
 
-jest.mock('../use-color-scheme', () => ({ useColorScheme: jest.fn() }));
+jest.mock('../hooks/use-color-scheme', () => ({ useColorScheme: jest.fn() }));
 
 const mockedUseColorScheme = jest.mocked(useColorScheme);
 

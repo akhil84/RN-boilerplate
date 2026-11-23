@@ -2,10 +2,10 @@ import { Text } from 'react-native';
 
 import { Button } from '../components/button';
 import { TextField } from '../components/text-field';
-import { Colors } from '../theme';
-import { renderWithProviders, screen, userEvent } from '../test-utils';
-import { breakpointForWidth } from '../use-breakpoint';
-import { ColorSchemeProvider, useColorScheme } from '../use-color-scheme';
+import { Colors } from '../tokens/theme';
+import { renderWithProviders, screen, userEvent } from '../testing/render';
+import { breakpointForWidth } from '../hooks/use-breakpoint';
+import { ColorSchemeProvider, useColorScheme } from '../hooks/use-color-scheme';
 
 describe('<Button />', () => {
   it('is an accessible button that fires onPress', async () => {

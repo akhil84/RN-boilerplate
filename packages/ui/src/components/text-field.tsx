@@ -1,9 +1,9 @@
 import { useId } from 'react';
 import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
 
-import { Colors, Spacing } from '../theme';
-import { ThemedText } from '../themed-text';
-import { useColorScheme } from '../use-color-scheme';
+import { Colors, Spacing } from '../tokens/theme';
+import { ThemedText } from '../primitives/themed-text';
+import { useColorScheme } from '../hooks/use-color-scheme';
 
 export type TextFieldProps = Omit<TextInputProps, 'style'> & {
   label: string;
