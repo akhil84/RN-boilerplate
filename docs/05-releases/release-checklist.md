@@ -14,8 +14,13 @@ Each app is released on its own (ADR-0023). Run the list for the app you are shi
 8. [ ] `pnpm dlx eas-cli submit --platform all`
 9. [ ] Tag the commit `mobile-vX.Y.Z`
 
-JS-only fixes may ship as an OTA update instead: `pnpm dlx eas-cli update --channel production`
-(fingerprint runtime versions keep it away from builds with different native code).
+JS-only fixes may ship as an OTA update instead (fingerprint runtime versions keep it away from
+builds with different native code). From `apps/mobile`:
+
+1. [ ] `pnpm dlx eas-cli update --channel production`
+2. [ ] If Sentry is set up: `pnpm sentry:upload-update` (uploads the `dist/` source maps the update
+       produced, so crashes in the update have readable stack traces; needs `SENTRY_AUTH_TOKEN`,
+       `SENTRY_ORG`, `SENTRY_PROJECT`)
 
 ## Web (`apps/web`)
 

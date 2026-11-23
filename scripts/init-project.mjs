@@ -3,7 +3,7 @@
 //
 //   pnpm init:project                                  # asks for each value
 //   pnpm init:project --name "Acme Field" --slug acme-field \
-//     --bundle-id com.acme.field --scope acme [--eas-project-id <uuid>] [--yes]
+//     --bundle-id com.acme.field --scope acme [--eas-project-id <uuid>] [--sentry-dsn <dsn>] [--yes]
 //
 // Replaces every placeholder identity in tracked files, resets the changelogs and product vision,
 // then deletes itself (and its test). Run `pnpm install` afterwards.
@@ -29,7 +29,7 @@ const BUNDLE_ID = /^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*){2,}$/;
 const SCOPE = /^[a-z][a-z0-9-]*$/;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-export function validate({ name, slug, bundleId, scope, easProjectId }) {
+export function validate({ name, slug, bundleId, scope, easProjectId, sentryDsn }) {
   const errors = [];
   if (!name?.trim()) errors.push('--name is required (the display name, e.g. "Acme Field")');
   if (!SLUG.test(slug ?? '')) errors.push('--slug must be kebab-case, e.g. acme-field');
@@ -38,6 +38,8 @@ export function validate({ name, slug, bundleId, scope, easProjectId }) {
   if (!SCOPE.test(scope ?? '')) errors.push('--scope must be lowercase without @, e.g. acme');
   if (bundleId?.startsWith('com.example.')) errors.push('--bundle-id must not use com.example');
   if (easProjectId && !UUID.test(easProjectId)) errors.push('--eas-project-id must be a UUID');
+  if (sentryDsn && !/^https:\/\/[^@\s]+@[^/\s]+\/\S+$/.test(sentryDsn))
+    errors.push('--sentry-dsn must look like https://<key>@<host>/<project-id>');
   return errors;
 }
 
@@ -137,6 +139,18 @@ export function initProject(root, identity) {
     );
   }
 
+  // Error reporting is off until a DSN is set (ADR-0013). The DSN is public, so .env is fine.
+  if (identity.sentryDsn) {
+    for (const app of ['apps/mobile/.env', 'apps/web/.env']) {
+      const envPath = join(root, app);
+      const env = readFileSync(envPath, 'utf8');
+      writeFileSync(
+        envPath,
+        env.replace(/^EXPO_PUBLIC_SENTRY_DSN=.*$/m, `EXPO_PUBLIC_SENTRY_DSN=${identity.sentryDsn}`),
+      );
+    }
+  }
+
   writeFileSync(
     join(root, 'docs/00-product/vision.md'),
     VISION.replace(/<Project name>/g, identity.name),
@@ -175,6 +189,7 @@ async function main() {
       'bundle-id': { type: 'string' },
       scope: { type: 'string' },
       'eas-project-id': { type: 'string' },
+      'sentry-dsn': { type: 'string' },
       yes: { type: 'boolean', default: false },
     },
   });
@@ -185,6 +200,7 @@ async function main() {
     bundleId: values['bundle-id'],
     scope: values.scope,
     easProjectId: values['eas-project-id'],
+    sentryDsn: values['sentry-dsn'],
   };
 
   if (!values.yes) {
@@ -200,6 +216,7 @@ async function main() {
         ['bundleId', 'iOS bundle ID / Android package (e.g. com.acme.field)'],
         ['scope', 'npm scope for packages, without @ (e.g. acme)'],
         ['easProjectId', 'EAS project ID (optional — from `eas init`)', () => ''],
+        ['sentryDsn', 'Sentry DSN (optional — leave empty to keep error reporting off)', () => ''],
       ].filter(([key]) => !identity[key]),
     );
     identity = { ...identity, ...asked };

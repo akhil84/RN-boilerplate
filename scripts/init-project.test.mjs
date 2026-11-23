@@ -17,6 +17,7 @@ const identity = {
   bundleId: 'com.acme.field',
   scope: 'acme',
   easProjectId: '11111111-2222-3333-4444-555555555555',
+  sentryDsn: 'https://abc123@o42.ingest.sentry.io/7',
 };
 
 describe('validate', () => {
@@ -27,6 +28,10 @@ describe('validate', () => {
   it('rejects bad values with a message per field', () => {
     const errors = validate({ name: '', slug: 'Bad Slug', bundleId: 'acme', scope: '@acme' });
     assert.equal(errors.length, 4);
+  });
+
+  it('rejects a malformed Sentry DSN', () => {
+    assert.ok(validate({ ...identity, sentryDsn: 'not-a-dsn' }).length > 0);
   });
 
   it('refuses the placeholder bundle ID namespace', () => {
@@ -85,6 +90,15 @@ describe('initProject on a copy of the repo', () => {
 
     const ui = JSON.parse(readFileSync(join(copy, 'packages/ui/package.json'), 'utf8'));
     assert.equal(ui.name, '@acme/ui');
+  });
+
+  it('writes the Sentry DSN into both apps when given', () => {
+    for (const app of ['apps/mobile/.env', 'apps/web/.env']) {
+      assert.match(
+        readFileSync(join(copy, app), 'utf8'),
+        /^EXPO_PUBLIC_SENTRY_DSN=https:\/\/abc123@o42\.ingest\.sentry\.io\/7$/m,
+      );
+    }
   });
 
   it('removes itself and its package.json scripts', () => {

@@ -10,7 +10,8 @@
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "jest",
-    "expo:doctor": "pnpm dlx expo-doctor"
+    "expo:doctor": "pnpm dlx expo-doctor",
+    "sentry:upload-update": "sentry-expo-upload-sourcemaps dist"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "catalog:",

@@ -63,7 +63,25 @@ Both are wired but inactive until the project is connected to EAS:
    Users opt in from Settings; notification taps open `data.url` (internal paths only).
 
 Publishing an update: `pnpm dlx eas-cli update --channel <development|preview|production>` from
-`apps/mobile`. Agents print this command; they never run it.
+`apps/mobile`, then `pnpm sentry:upload-update` if Sentry is set up (builds upload their source maps
+automatically; updates need this step). Agents print these commands; they never run them.
+
+## Error reporting (Sentry, optional)
+
+Off until configured (ADR-0013). Set `EXPO_PUBLIC_SENTRY_DSN` in `apps/*/.env` (or answer the DSN
+question in `pnpm init:project`), and `SENTRY_ORG`, `SENTRY_PROJECT` plus a secret
+`SENTRY_AUTH_TOKEN` in the EAS environment to upload source maps from builds.
+
+## Web sign-in tokens
+
+The web app stores tokens per `EXPO_PUBLIC_WEB_AUTH_MODE` in `apps/web/.env` (ADR-0015):
+
+- `local` (default) — localStorage. Works with any backend, but any XSS or compromised third-party
+  script can read the tokens.
+- `cookie` — **recommended whenever your backend supports it**: the refresh token lives in an
+  httpOnly cookie JavaScript cannot read, and the access token only in memory. The backend must set
+  the cookie on `/auth/login` and `/auth/refresh`, allow credentialed CORS from the web origin, and
+  protect against CSRF.
 
 ## Layout
 
