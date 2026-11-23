@@ -19,6 +19,7 @@ allowBuilds:
 # Bump Expo-managed versions with `pnpm --filter @starter/mobile exec expo install --fix`, then
 # copy the result here.
 catalog:
+  expo-symbols: ~58.0.5
   '@playwright/test': ^1.65.1
   expo-dev-client: ~58.0.21
   expo-device: ~58.0.5

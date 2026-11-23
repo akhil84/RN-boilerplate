@@ -36,6 +36,14 @@ pnpm --filter @starter/mobile android    # same for Android (Android Studio / SD
 pnpm mobile                              # then start Metro; the dev build connects to it
 ```
 
+The first local Android build takes 10–20 minutes (release builds compile native code for four
+CPU architectures). For local testing, build only your emulator's architecture — roughly 3× faster
+native compile; EAS store builds still include all of them:
+
+```bash
+ORG_GRADLE_PROJECT_reactNativeArchitectures=arm64-v8a pnpm --filter @starter/mobile android
+```
+
 Or build in the cloud: `pnpm dlx eas-cli build --profile development` from `apps/mobile`
 (`development-simulator` for an iOS simulator build). Web needs no native build: `pnpm web`.
 

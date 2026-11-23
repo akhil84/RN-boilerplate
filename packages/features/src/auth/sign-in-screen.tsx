@@ -78,8 +78,10 @@ export function SignInScreen() {
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
+        {/* Android 15+ draws edge-to-edge, so the window no longer resizes for the keyboard:
+            pad on every native platform or the submit button ends up behind the keyboard. */}
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          behavior={Platform.OS === 'web' ? undefined : 'padding'}
           style={styles.flex}>
           <ScrollView contentContainerStyle={styles.content} keyboardShouldPersistTaps="handled">
             <View style={styles.header}>

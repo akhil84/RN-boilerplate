@@ -8,6 +8,8 @@ appId: ${APP_ID || 'com.example.starterapp.dev'}
 - tapOn:
     id: 'sign-in-password'
 - inputText: 'password'
+# The keyboard can cover the submit button on small screens.
+- hideKeyboard
 - tapOn:
     id: 'sign-in-submit'
 - extendedWaitUntil:
