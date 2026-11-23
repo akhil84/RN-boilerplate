@@ -13,13 +13,42 @@ and [docs/04-adr](docs/04-adr).
 
 - **Template repo** (maintainers): with the starter merged to `main`, enable **Settings → Template
   repository** on GitHub.
-- **Each developer machine:** Node 24 (`.nvmrc`), `corepack enable` (pnpm), Xcode for iOS and/or
-  Android Studio for Android, optionally [Maestro](e2e/mobile/README.md) for mobile E2E.
+- **Each developer machine:** Node 24 and pnpm (below), Xcode for iOS and/or Android Studio for
+  Android, optionally [Maestro](e2e/mobile/README.md) for mobile E2E.
+
+#### Install Node and pnpm
+
+The repo pins **Node 24** (`.nvmrc`) and **pnpm 12.21.0** (`packageManager` in `package.json`).
+
+1. **Node 24** — pick one:
+
+   ```bash
+   nvm install && nvm use          # nvm: reads .nvmrc (run inside the repo)
+   brew install node@24 && brew link --force --overwrite node@24   # Homebrew (macOS)
+   ```
+
+   or the Node 24 LTS installer from [nodejs.org](https://nodejs.org). Check with `node -v` (→ v24.x).
+
+2. **pnpm via Corepack** (recommended — Corepack ships with Node 24 and installs exactly the pnpm
+   version the repo pins, so everyone uses the same one):
+
+   ```bash
+   corepack enable
+   pnpm -v                         # inside the repo → 12.21.0 (downloaded on first use)
+   ```
+
+   If `corepack` is missing (e.g. a Node build without it): `npm install -g corepack`, then
+   `corepack enable`. Without Corepack, install the pinned version directly:
+   `npm install -g pnpm@12.21.0` (or `brew install pnpm` and check `pnpm -v`).
+
+   If `corepack enable` fails with a permissions error (Node installed system-wide), run it with
+   `sudo` or use a Node version manager such as nvm.
 
 ### 1. Create the project
 
 1. On GitHub, **Use this template** → name the new repo → clone it.
-2. `corepack enable && pnpm install` (also installs the git hooks).
+2. `pnpm install` (also installs the git hooks) — needs Node 24 and pnpm, see
+   [Install Node and pnpm](#install-node-and-pnpm).
 3. **`pnpm init:project`** — asks for the display name, slug, bundle ID, npm scope and, optionally,
    the EAS project ID and Sentry DSN; replaces every `Starter App` placeholder, resets the
    changelogs and product vision, then deletes itself.
@@ -82,6 +111,7 @@ There is no CI by default — git hooks run the checks on commit and push
 ## Quick start
 
 ```bash
+# Prerequisites: Node 24 + pnpm — see "Install Node and pnpm" above
 corepack enable      # once per machine — uses the pnpm version pinned in package.json
 pnpm install
 pnpm mobile          # Expo dev server for iOS / Android — press i or a
