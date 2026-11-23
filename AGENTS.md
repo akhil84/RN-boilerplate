@@ -111,8 +111,9 @@ every later stage must cover.
 - Every screen title has a `testID` (`<screen>-title`). Every user journey has a Maestro flow
   (`e2e/mobile/flows/`) and/or a Playwright spec (`e2e/web/tests/`) per its `Platforms:`.
 - Coverage is a ratchet: each workspace's `coverageThreshold` sits just below current coverage.
-  Raise it when you add tests; never lower it.
-- `pnpm verify` (lint + typecheck + format + unit tests with coverage + script tests) must pass before a task is
+  Raise it when you add tests; never lower it. **Paused** during framework setup: `pnpm verify` runs
+  tests without `--coverage` (ADR-0020); `pnpm test:coverage` still enforces the thresholds.
+- `pnpm verify` (lint + typecheck + format + unit tests + script tests) must pass before a task is
   done; run `pnpm test:e2e:web` when web behaviour changed. There is no CI — lefthook runs checks
   on commit and push (ADR-0021). Do not skip, delete, or `.only` tests, disable lint rules, or use
   `--no-verify` to get green.

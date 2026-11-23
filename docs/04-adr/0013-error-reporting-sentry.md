@@ -32,3 +32,4 @@ integration work themselves).
 - `@sentry/react-native` with `getSentryExpoConfig` in `apps/mobile/metro.config.js`.
 - OTA updates: run `pnpm sentry:upload-update` (in `apps/mobile`) after `eas update` to upload that update's source maps — builds upload theirs through the config plugin.
 - Sentry is mocked globally in Jest.
+- The SDK is supplied by a loader (`error-reporter.ts`): native bundles Sentry statically (`sentry-loader.ts`); web `import()`s it on demand (`sentry-loader.web.ts`). Calls made while it loads are queued (max 50) and replayed in order; a failed load leaves reporting off without throwing. `errorReportingReady()` resolves once the SDK has loaded.

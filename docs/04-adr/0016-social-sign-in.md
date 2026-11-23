@@ -43,3 +43,4 @@ with Apple (or an equivalent) — wording to be confirmed.
 - Buttons appear only when configured for the current platform; the Google and Apple config plugins are added only when their env values are set.
 - Enterprise SSO (OIDC + PKCE) recipe: `docs/guides/enterprise-sso.md`.
 - Code review fix: One Tap's dismissed moment with reason `credential_returned` (a success) is no longer treated as a cancel, and every status method is called defensively (FedCM removed some) — sign-in could be dropped or hang. Tested with a fake `window.google`.
+- Deferred: a rendered Google button on web (instead of One Tap only) needs a web-specific element inside the sign-in screen — UI work, postponed with the screen migration (ADR-0017) while the focus is framework setup.

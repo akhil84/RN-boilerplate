@@ -620,7 +620,8 @@ tests.
 
 Verified: `pnpm verify` (218 Jest + 12 script tests), Playwright in Chromium and WebKit, Maestro
 smoke flows on an Android 17 emulator (release build). Hardening: native peers pinned to SDK versions, `pnpm audit` reviewed (2 moderate, tooling only),
-coverage ratchet in `pnpm verify`, bundle baseline recorded (web 880 KB gzip). Maestro re-verified
+coverage ratchet in `pnpm verify`, bundle baseline recorded (web 880 KB gzip; 498 KB at startup
+after Sentry became a lazy chunk on web). Maestro re-verified
 on Android after the review fixes. Not yet verified: iOS (needs full Xcode),
 push and OTA end to end (need an EAS project and credentials), Firefox (Playwright's Firefox
 cannot launch on this macOS version).

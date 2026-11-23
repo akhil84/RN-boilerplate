@@ -13,6 +13,7 @@ export {
 } from './analytics';
 export { ErrorBoundary, type ErrorFallbackProps } from './error-boundary';
 export {
+  errorReportingReady,
   initErrorReporting,
   isErrorReportingEnabled,
   reportError,
