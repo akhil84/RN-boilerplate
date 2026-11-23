@@ -4,7 +4,7 @@
  * Event names and their properties are declared by the features that send them, by augmenting
  * `AnalyticsEventMap`:
  *
- *   declare module '@starter/config/observability' {
+ *   declare module '@starter/core/observability' {
  *     interface AnalyticsEventMap {
  *       order_submitted: { orderId: string; total: number };
  *       onboarding_skipped: undefined; // no properties

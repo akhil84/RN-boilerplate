@@ -12,6 +12,7 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@starter/tooling": "workspace:*",
     "@types/jest": "catalog:",
     "eslint": "catalog:",
     "expo": "catalog:",
@@ -24,6 +25,6 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "catalog:",
-    "@starter/config": "workspace:*"
+    "@starter/core": "workspace:*"
   }
 }

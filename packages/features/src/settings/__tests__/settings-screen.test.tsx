@@ -1,4 +1,4 @@
-import { recordAnalytics, resetAnalyticsAdapter } from '@starter/config/observability';
+import { recordAnalytics, resetAnalyticsAdapter } from '@starter/core/observability';
 
 import { DEMO_PASSWORD } from '../../mocks/handlers';
 import { signInWithPassword } from '../../auth/auth-service';

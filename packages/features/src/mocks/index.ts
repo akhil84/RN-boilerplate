@@ -4,7 +4,7 @@ import {
   getApiBaseUrl,
   type MockHandler,
 } from '@starter/api-client';
-import { getAppVariant, getEnv } from '@starter/config/env';
+import { getAppVariant, getEnv } from '@starter/core/env';
 
 import { mockHandlers } from './handlers';
 

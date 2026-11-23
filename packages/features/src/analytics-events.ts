@@ -7,7 +7,7 @@ import type { PushPermission } from './notifications/types';
  * Analytics events sent by @starter/features (ADR-0014). Add an event here before tracking it;
  * `analytics.track` only accepts names and properties declared in this map.
  */
-declare module '@starter/config/observability' {
+declare module '@starter/core/observability' {
   interface AnalyticsEventMap {
     theme_changed: { theme: ThemePreference };
     language_changed: { language: LanguagePreference };

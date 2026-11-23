@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 
-import type { Env } from '@starter/config/env';
+import type { Env } from '@starter/core/env';
 
 import type { SocialProvider } from '../types';
 

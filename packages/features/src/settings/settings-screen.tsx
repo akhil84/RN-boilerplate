@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { getAppVariant } from '@starter/config/env';
-import { analytics, reportError } from '@starter/config/observability';
+import { getAppVariant } from '@starter/core/env';
+import { analytics, reportError } from '@starter/core/observability';
 import { Button, MaxContentWidth, Spacing, ThemedText, ThemedView } from '@starter/ui';
 
 import { signOut } from '../auth/auth-service';

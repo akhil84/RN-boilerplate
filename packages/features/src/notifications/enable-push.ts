@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { analytics, reportError } from '@starter/config/observability';
+import { analytics, reportError } from '@starter/core/observability';
 
 import type { AppDispatch } from '../store/store';
 import { devicesApi } from './devices-api';

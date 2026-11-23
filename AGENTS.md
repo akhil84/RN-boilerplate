@@ -82,9 +82,9 @@ scripts/               one-time `pnpm init:project` (removes itself)
 | HTTP         | `apiBaseQuery` (bearer auth, refresh on 401, retries idempotent requests only); errors are `ApiError`                                        | 0008       |
 | Persistence  | redux-persist on AsyncStorage — list slices in `persistedSlices`, bump `PERSIST_VERSION` + migration on shape changes; never persist secrets | 0009       |
 | Forms        | No form library: controlled inputs + Zod + `TextField`                                                                                       | 0010       |
-| Config       | `getEnv()` from `@starter/config/env`; add new `EXPO_PUBLIC_*` keys to its Zod schema and `readRawEnv` (static access only)                  | 0011       |
+| Config       | `getEnv()` from `@starter/core/env`; add new `EXPO_PUBLIC_*` keys to its Zod schema and `readRawEnv` (static access only)                    | 0011       |
 | Copy         | i18next: strings in `<feature>/locales/en.json`, `useTranslation('<feature>')`; no hard-coded UI text                                        | 0012       |
-| Errors       | `reportError` / `ErrorBoundary` from `@starter/config/observability`; never import Sentry directly                                           | 0013       |
+| Errors       | `reportError` / `ErrorBoundary` from `@starter/core/observability`; never import Sentry directly                                             | 0013       |
 | Analytics    | `analytics.track` with events declared in `packages/features/src/analytics-events.ts`                                                        | 0014       |
 | Auth         | session slice + `tokenStorage`; tokens never in Redux or AsyncStorage                                                                        | 0015, 0016 |
 | Styling      | `StyleSheet` + tokens from `@starter/ui`; 44pt targets; light and dark                                                                       | 0017       |

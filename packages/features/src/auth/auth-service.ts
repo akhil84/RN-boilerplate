@@ -7,7 +7,7 @@ import {
   isApiError,
   type ApiError,
 } from '@starter/api-client';
-import { analytics, setErrorReportingUser } from '@starter/config/observability';
+import { analytics, setErrorReportingUser } from '@starter/core/observability';
 
 import type { AppDispatch, RootState } from '../store/store';
 import { authApi } from './auth-api';

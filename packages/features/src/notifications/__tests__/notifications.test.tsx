@@ -2,7 +2,7 @@ import * as Notifications from 'expo-notifications';
 import { router } from 'expo-router';
 
 import type { MockHandler } from '@starter/api-client';
-import { recordAnalytics, resetAnalyticsAdapter } from '@starter/config/observability';
+import { recordAnalytics, resetAnalyticsAdapter } from '@starter/core/observability';
 
 import { mockHandlers } from '../../mocks/handlers';
 import { makeConnectedStore, renderHook, setupMockApi } from '../../test-utils';

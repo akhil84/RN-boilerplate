@@ -1,14 +1,9 @@
 {
-  "name": "@starter/config",
+  "name": "@starter/core",
   "version": "0.0.0",
   "private": true,
-  "description": "Shared ESLint, TypeScript and Jest presets for every workspace.",
+  "description": "Runtime platform code shared by every package and app: validated env config and observability (error reporting, analytics). No UI.",
   "exports": {
-    "./eslint": "./eslint.config.js",
-    "./tsconfig.base.json": "./tsconfig.base.json",
-    "./jest": "./jest/create-jest-config.js",
-    "./jest/setup": "./jest/setup.js",
-    "./jest/style-mock": "./jest/style-mock.js",
     "./env": "./src/env.ts",
     "./observability": "./src/observability/index.ts"
   },
@@ -18,8 +13,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "eslint-config-expo": "catalog:",
-    "eslint-config-prettier": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -35,14 +28,12 @@
     "react": "catalog:",
     "react-native": "catalog:",
     "react-native-safe-area-context": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@starter/tooling": "workspace:*"
   },
   "peerDependencies": {
     "@sentry/react-native": "*",
-    "eslint": "*",
-    "expo": "*",
     "expo-constants": "*",
-    "jest-expo": "*",
     "react": "*"
   }
 }

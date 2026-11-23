@@ -2,7 +2,7 @@ import { Pressable, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
-import type { ErrorFallbackProps } from '@starter/config/observability';
+import type { ErrorFallbackProps } from '@starter/core/observability';
 import { MaxContentWidth, Spacing, ThemedText, ThemedView } from '@starter/ui';
 
 /** Shown by the root ErrorBoundary after a render error (the error is already reported). */

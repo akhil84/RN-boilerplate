@@ -2,7 +2,7 @@ import '@/global.css';
 
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 
-import { ErrorBoundary, initErrorReporting } from '@starter/config/observability';
+import { ErrorBoundary, initErrorReporting } from '@starter/core/observability';
 import {
   AppProviders,
   ErrorFallback,

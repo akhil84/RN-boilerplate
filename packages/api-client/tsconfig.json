@@ -1,4 +1,4 @@
 {
-  "extends": "@starter/config/tsconfig.base.json",
+  "extends": "@starter/tooling/tsconfig.base.json",
   "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

@@ -1,0 +1,28 @@
+{
+  "name": "@starter/tooling",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Dev-only tooling presets for every workspace: ESLint, TypeScript and Jest. Never imported by app code.",
+  "exports": {
+    "./eslint": "./eslint.config.js",
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./jest": "./jest/create-jest-config.js",
+    "./jest/setup": "./jest/setup.js",
+    "./jest/style-mock": "./jest/style-mock.js"
+  },
+  "scripts": {
+    "lint": "eslint . --max-warnings=0"
+  },
+  "dependencies": {
+    "eslint-config-expo": "catalog:",
+    "eslint-config-prettier": "catalog:"
+  },
+  "devDependencies": {
+    "eslint": "catalog:"
+  },
+  "peerDependencies": {
+    "eslint": "*",
+    "expo": "*",
+    "jest-expo": "*"
+  }
+}

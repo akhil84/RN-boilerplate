@@ -1,7 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 
 import type { MockHandler } from '@starter/api-client';
-import { recordAnalytics, resetAnalyticsAdapter } from '@starter/config/observability';
+import { recordAnalytics, resetAnalyticsAdapter } from '@starter/core/observability';
 import { getIdToken } from '../social/get-id-token';
 
 import { makeConnectedStore, setupMockApi } from '../../test-utils';

@@ -1,7 +1,7 @@
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
-import type { ErrorFallbackProps } from '@starter/config/observability';
+import type { ErrorFallbackProps } from '@starter/core/observability';
 import { ErrorFallback } from '@starter/features';
 
 /**

@@ -26,7 +26,7 @@ Rules
 - User-facing strings go in `<feature>/locales/en.json` (registered in `src/i18n/resources.ts`)
   and are read with `useTranslation('<feature>')` — keys are type-checked (ADR-0012).
 - Analytics events are declared in `src/analytics-events.ts` before being tracked (ADR-0014).
-  Report handled errors with `reportError` from `@starter/config/observability` (ADR-0013).
+  Report handled errors with `reportError` from `@starter/core/observability` (ADR-0013).
 
 State (ADR-0007, ADR-0009)
 

@@ -1,4 +1,4 @@
-const { createJestConfig } = require('@starter/config/jest');
+const { createJestConfig } = require('@starter/tooling/jest');
 
 module.exports = createJestConfig({
   coverageThreshold: { statements: 90, branches: 50, functions: 90, lines: 90 },

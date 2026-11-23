@@ -1,4 +1,4 @@
-import { getEnv } from '@starter/config/env';
+import { getEnv } from '@starter/core/env';
 
 import type { SocialProvider } from '../types';
 import { SocialSignInCancelledError, SocialSignInUnavailableError } from './errors';

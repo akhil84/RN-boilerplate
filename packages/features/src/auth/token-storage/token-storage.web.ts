@@ -1,4 +1,4 @@
-import { getEnv } from '@starter/config/env';
+import { getEnv } from '@starter/core/env';
 
 import { userSchema } from '../types';
 import type { StoredSession, TokenStorage } from './types';

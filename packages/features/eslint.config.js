@@ -1,1 +1,1 @@
-module.exports = require('@starter/config/eslint');
+module.exports = require('@starter/tooling/eslint');

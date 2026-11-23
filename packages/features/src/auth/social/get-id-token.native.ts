@@ -2,7 +2,7 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import { GoogleSignin, isSuccessResponse } from '@react-native-google-signin/google-signin';
 import { Platform } from 'react-native';
 
-import { getEnv } from '@starter/config/env';
+import { getEnv } from '@starter/core/env';
 
 import type { SocialProvider } from '../types';
 import { SocialSignInCancelledError, SocialSignInUnavailableError } from './errors';

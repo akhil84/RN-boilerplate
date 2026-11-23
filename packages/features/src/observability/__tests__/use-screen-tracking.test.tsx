@@ -1,6 +1,6 @@
 import { usePathname } from 'expo-router';
 
-import { recordAnalytics, resetAnalyticsAdapter } from '@starter/config/observability';
+import { recordAnalytics, resetAnalyticsAdapter } from '@starter/core/observability';
 
 import { renderHook } from '../../test-utils';
 import { useScreenTracking } from '../use-screen-tracking';

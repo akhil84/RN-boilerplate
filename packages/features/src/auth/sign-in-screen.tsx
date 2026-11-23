@@ -5,8 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { z } from 'zod';
 
 import { isApiError } from '@starter/api-client';
-import { getEnv } from '@starter/config/env';
-import { reportError } from '@starter/config/observability';
+import { getEnv } from '@starter/core/env';
+import { reportError } from '@starter/core/observability';
 import { Button, Colors, Spacing, TextField, ThemedText, ThemedView } from '@starter/ui';
 
 import { areMocksEnabled } from '../mocks';

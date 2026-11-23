@@ -6,7 +6,7 @@ import {
   type FetchBaseQueryError,
 } from '@reduxjs/toolkit/query';
 
-import { getEnv } from '@starter/config/env';
+import { getEnv } from '@starter/core/env';
 
 import { toApiError, type ApiError } from './api-error';
 

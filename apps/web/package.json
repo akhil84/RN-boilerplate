@@ -15,6 +15,7 @@
     "@react-native-async-storage/async-storage": "catalog:",
     "@react-native-community/netinfo": "catalog:",
     "@sentry/react-native": "catalog:",
+    "@starter/core": "workspace:*",
     "@starter/features": "workspace:*",
     "@starter/ui": "workspace:*",
     "expo": "catalog:",
@@ -36,7 +37,7 @@
     "react-native-worklets": "catalog:"
   },
   "devDependencies": {
-    "@starter/config": "workspace:*",
+    "@starter/tooling": "workspace:*",
     "@testing-library/react-native": "catalog:",
     "@types/jest": "catalog:",
     "@types/react": "catalog:",

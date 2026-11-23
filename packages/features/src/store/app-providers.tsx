@@ -2,7 +2,7 @@ import { useEffect, type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { analytics } from '@starter/config/observability';
+import { analytics } from '@starter/core/observability';
 import { ColorSchemeProvider } from '@starter/ui';
 
 import { connectApiClientToSession, restoreSession } from '../auth/auth-service';
