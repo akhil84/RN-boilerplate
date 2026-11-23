@@ -1,0 +1,14 @@
+# REQ: app-init — user can switch between Home and Explore tabs.
+appId: ${APP_ID || 'com.katon.app'}
+tags:
+  - smoke
+---
+- runFlow: ../subflows/launch.yaml
+- tapOn: 'Explore'
+- extendedWaitUntil:
+    visible:
+      id: 'explore-title'
+    timeout: 10000
+- tapOn: 'Home'
+- assertVisible:
+    id: 'home-title'
