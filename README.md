@@ -7,14 +7,77 @@ from `packages/*`. Set up for AI-assisted delivery from requirement to release.
 Decisions behind this layout: [docs/00-product/monorepo-starter-decisions.md](docs/00-product/monorepo-starter-decisions.md)
 and [docs/04-adr](docs/04-adr).
 
-## Start a new project from this template
+## Using this starter
 
-1. On GitHub, **Use this template** → create the project repo, then clone it.
-2. `corepack enable && pnpm install`
-3. `pnpm init:project` — asks for the app name, slug, bundle ID and npm scope (and optionally the
-   EAS project ID), replaces every `Starter App` placeholder, resets the changelogs and vision,
-   then removes itself.
-4. `pnpm install && pnpm verify`, then commit.
+### 0. One-time setup
+
+- **Template repo** (maintainers): with the starter merged to `main`, enable **Settings → Template
+  repository** on GitHub.
+- **Each developer machine:** Node 24 (`.nvmrc`), `corepack enable` (pnpm), Xcode for iOS and/or
+  Android Studio for Android, optionally [Maestro](e2e/mobile/README.md) for mobile E2E.
+
+### 1. Create the project
+
+1. On GitHub, **Use this template** → name the new repo → clone it.
+2. `corepack enable && pnpm install` (also installs the git hooks).
+3. **`pnpm init:project`** — asks for the display name, slug, bundle ID, npm scope and, optionally,
+   the EAS project ID and Sentry DSN; replaces every `Starter App` placeholder, resets the
+   changelogs and product vision, then deletes itself.
+4. `pnpm install && pnpm verify`, then make the first commit.
+
+### 2. Run it
+
+- **Web:** `pnpm web` — no native build needed.
+- **Mobile:** build a development build once (see [Development builds](#development-builds-no-expo-go)),
+  then `pnpm mobile` day to day. Expo Go is not supported.
+- Sign in with **any email and the password `password`** — the in-app mock API answers until a
+  backend is connected.
+
+### 3. Connect the project's services
+
+Configuration only — no starter code changes:
+
+| What                               | Where                                                                                                               |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Backend URL                        | `EXPO_PUBLIC_API_URL` in `apps/*/.env`, then `EXPO_PUBLIC_API_MOCKS=false`                                          |
+| Auth endpoints and response shapes | `AUTH_PATHS` and the Zod schemas in `packages/features/src/auth/types.ts`                                           |
+| EAS (builds, OTA, push tokens)     | `pnpm dlx eas-cli init` in `apps/mobile` → `EAS_PROJECT_ID` ([details](#over-the-air-updates-and-push-per-project)) |
+| Per-environment values             | EAS environment variables for development / preview / production                                                    |
+| Error reporting                    | `EXPO_PUBLIC_SENTRY_DSN` + Sentry EAS variables ([details](#error-reporting-sentry-optional))                       |
+| Google / Apple sign-in             | client IDs in `.env`; each button appears once configured                                                           |
+| Push notifications                 | APNs key, `GOOGLE_SERVICES_JSON` EAS file variable, `DEVICES_PATH`                                                  |
+| Web token storage                  | `EXPO_PUBLIC_WEB_AUTH_MODE=cookie` if the backend supports httpOnly cookies ([details](#web-sign-in-tokens))        |
+| Analytics                          | one vendor adapter — [guide](docs/guides/analytics-adapters.md)                                                     |
+
+### 4. Define the product
+
+Fill in [`docs/00-product/vision.md`](docs/00-product/vision.md) and
+[`glossary.md`](docs/00-product/glossary.md) — every requirement starts from them.
+
+### 5. Build features
+
+Follow the delivery workflow in [How we build features](#how-we-build-features-with-ai): each stage
+writes one doc and a human approves it before the next. Feature code goes in
+`packages/features/src/<feature>/`, shared UI in `packages/ui`, and apps only get thin route files
+([AGENTS.md](AGENTS.md) has the rules agents follow). Record any departure from the decided stack
+with `/adr`.
+
+### 6. Ship
+
+`/ship mobile <bump>` or `/ship web <bump>` — each app is versioned and released independently and
+the command prints the exact steps ([release checklist](docs/05-releases/release-checklist.md)):
+
+- **Mobile:** `eas build` → `eas submit`; JS-only fixes can ship as an OTA update (set the variant
+  and environment — see [Over-the-air updates](#over-the-air-updates-and-push-per-project)).
+- **Web:** `pnpm --filter @starter/web export` (production variant by default) → deploy
+  `apps/web/dist` to any static host.
+
+There is no CI by default — git hooks run the checks on commit and push
+([adding CI](docs/guides/adding-ci.md)).
+
+> **Current temporary states:** the coverage gate is paused in `pnpm verify` (re-enable per
+> ADR-0020), and the starter screens are not yet on the `Screen` / `Stack` / `Card` primitives
+> (ADR-0017).
 
 ## Quick start
 
