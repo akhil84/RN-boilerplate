@@ -21,5 +21,6 @@ Rules
 - A human approves each stage by changing the status. Agents never approve their own output.
 - Templates (`_TEMPLATE.md`) in each folder are the source of truth for structure.
 - Requirements declare `Platforms: mobile | web | both`; plans, designs and E2E follow it.
+- Before the first feature, gather the inputs in [feature intake](guides/feature-intake.md).
 - Guides: [adding CI](guides/adding-ci.md) · [desktop with Electron](guides/desktop-electron.md) ·
   [analytics adapters](guides/analytics-adapters.md) · [enterprise SSO](guides/enterprise-sso.md).
